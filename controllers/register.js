@@ -248,7 +248,6 @@ exports.register = {
             __dirname + "/welcome.ejs",
             {
               name: "infinityai759@gmail.com",
-              action_url: accessToken.token,
               username: decoded.profile.username,
               mainId: decoded.profile.mainId,
             },
