@@ -248,6 +248,9 @@ exports.register = {
             __dirname + "/welcome.ejs",
             {
               name: "infinityai759@gmail.com",
+              action_url: accessToken.token,
+              username: decoded.profile.username,
+              mainId: decoded.profile.mainId,
             },
             async function (err, data) {
               const DOMAIN = "donotreply.v4x.org";
@@ -386,6 +389,7 @@ exports.register = {
           {
             from: "infinityai759@gmail.com",
             action_url: accessToken.token,
+            username: decoded.username,
           },
           async function (err, data) {
             const mailOptions = {
