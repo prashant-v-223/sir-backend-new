@@ -16,7 +16,7 @@ const user = new mongoose.Schema(
     leval: { type: Number, default: 0 },
     mystack: { type: Number, default: 0 },
     teamtotalstack: { type: Number, default: 0 },
-    Rank: { type: String, default: "DIRECT" },
+    Rank: { type: String, default: "Trainee" },
     password: { type: String, trim: true },
     isValid: { type: Boolean, default: false },
     STAKINGBOOSTER: { type: Boolean, default: false },
