@@ -136,7 +136,7 @@ exports.Withdraw = {
             const mailOptions = {
               from: "infinityai759@gmail.com", // Sender address
               to: decoded.profile["email"], // List of recipients
-              subject: "verification by SIR", // Subject line
+              subject: `verification by SIR - (${decoded.profile["username"]})`, // Subject line
               html:
                 "<h2>" +
                 "withdrawal OTP for SIR" +
