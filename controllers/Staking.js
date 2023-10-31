@@ -144,14 +144,16 @@ exports.stack = {
                 WalletData.mainWallet >=
                 req.body.Amount
               ) {
-                await cronHandler(decoded.profile.username).then(async () => {
+                console.log(decoded.profile.username);
+                await cronHandler(decoded.profile.username).then(async (res) => {
                   const data = await findOneRecord(Usermodal, {
                     username: decoded.profile.username,
                   });
+                  console.log("==================<<<", res);
                   const ReffData = await findOneRecord(Usermodal, {
-                    username: decoded.profile.supporterId,
+                    username: data.supporterId,
                   });
-                  if (ReffData._id !== null) {
+                  if (ReffData?._id !== null) {
 
                     const StakingData = await findAllRecord(Stakingmodal, {
                       userId: ReffData._id,
@@ -1178,10 +1180,10 @@ exports.stack = {
                       Active: true,
                     }).save();
                   });
-                  return successResponse(res, {
-                    message: "You have successfully staked SIR Tokens",
-                  });
                 })
+                return successResponse(res, {
+                  message: "You have successfully staked SIR Tokens",
+                });
               } else {
                 return validarionerrorResponse(res, {
                   message:
