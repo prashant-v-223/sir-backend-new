@@ -192,7 +192,31 @@ exports.stack = {
                           });
                       }
                     }
-                    const daat = await Usermodal.find({ mainId: ReffData.username })
+                    const daat = await Usermodal.aggregate([
+  {
+    '$match': {
+      'mainId': ReffData.username
+    }
+  }, {
+    '$lookup': {
+      'from': 'stakings', 
+      'localField': '_id', 
+      'foreignField': 'userId', 
+      'as': 'result'
+    }
+  }, {
+    '$match': {
+      '$expr': {
+        '$gt': [
+          {
+            '$size': '$result'
+          }, 0
+        ]
+      }
+    }
+  }
+])
+                   
                     await updateRecord(
                       Usermodal,
                       { _id: ReffData?._id },
