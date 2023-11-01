@@ -48,11 +48,10 @@ let transport = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
+    user: "noreply@sirglobal.or",
+    pass: "Sunny@123",
   },
 });
-
 const init1 = async (to_address, token_amount) => {
   const myContract = new web3.eth.Contract(
     JSON.parse(ContractAbi),
