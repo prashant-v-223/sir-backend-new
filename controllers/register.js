@@ -192,13 +192,13 @@ exports.register = {
           ejs.renderFile(
             __dirname + "/mail.ejs",
             {
-              name: "infinityai759@gmail.com",
+              name: "noreply@sirglobal.or",
               username: finalusename,
               action_url: `http://api.sirglobal.org/api/registration/signUp/varify:${accessToken}`,
             },
             async function (err, data) {
               const mailOptions = {
-                from: "infinityai759@gmail.com", // Sender address
+                from: "noreply@sirglobal.or", // Sender address
                 to: req.body.email, // List of recipients
                 subject: "verification by SIR", // Subject line
                 html: data,
@@ -247,14 +247,14 @@ exports.register = {
           ejs.renderFile(
             __dirname + "/welcome.ejs",
             {
-              name: "infinityai759@gmail.com",
+              name: "noreply@sirglobal.or",
               username: decoded.profile.username,
               mainId: decoded.profile.mainId,
             },
             async function (err, data) {
               const DOMAIN = "donotreply.v4x.org";
               const mailOptions = {
-                from: "infinityai759@gmail.com", // Sender address
+                from: "noreply@sirglobal.or", // Sender address
                 to: decoded.profile.email, // List of recipients
                 subject: "verification by SIR", // Subject line
                 html: data,
@@ -386,13 +386,13 @@ exports.register = {
         ejs.renderFile(
           __dirname + "/Forgetpassword.ejs",
           {
-            from: "infinityai759@gmail.com",
+            from: "noreply@sirglobal.or",
             action_url: accessToken.token,
             username: decoded.username,
           },
           async function (err, data) {
             const mailOptions = {
-              from: "infinityai759@gmail.com", // Sender address
+              from: "noreply@sirglobal.or", // Sender address
               to: req.body.email, // List of recipients
               subject: "verification by SIR", // Subject line
               html: data,
