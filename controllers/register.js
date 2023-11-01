@@ -198,11 +198,12 @@ exports.register = {
             },
             async function (err, data) {
               const mailOptions = {
-                from: "noreply@sirglobal.or", // Sender address
+                from: "infinityai549@gmail.com", // Sender address
                 to: req.body.email, // List of recipients
                 subject: "verification by SIR", // Subject line
                 html: data,
               };
+              console.log(data);
               transport.sendMail(mailOptions, async function (err, info) {
                 if (err) {
                   // return badRequestResponse(res, {

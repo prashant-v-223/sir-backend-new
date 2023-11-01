@@ -193,33 +193,33 @@ exports.stack = {
                       }
                     }
                     const daat = await Usermodal.aggregate([
-  {
-    '$match': {
-      'mainId': ReffData.username
-    }
-  }, {
-    '$lookup': {
-      'from': 'stakings', 
-      'localField': '_id', 
-      'foreignField': 'userId', 
-      'as': 'result'
-    }
-  }, {
-    '$match': {
-      '$expr': {
-        '$gt': [
-          {
-            '$size': '$result'
-          }, 0
-        ]
-      }
-    }
-  }
-])
-                   
+                      {
+                        '$match': {
+                          'mainId': ReffData.username
+                        }
+                      }, {
+                        '$lookup': {
+                          'from': 'stakings',
+                          'localField': '_id',
+                          'foreignField': 'userId',
+                          'as': 'result'
+                        }
+                      }, {
+                        '$match': {
+                          '$expr': {
+                            '$gt': [
+                              {
+                                '$size': '$result'
+                              }, 0
+                            ]
+                          }
+                        }
+                      }
+                    ])
+
                     await updateRecord(
                       Usermodal,
-                      { _id: ReffData?._id },
+                      { username: ReffData.username },
                       {
                         leval: Number(daat.length),
                       }
@@ -908,7 +908,7 @@ exports.stack = {
                     const Refflevalncome1 = await findOneRecord(Usermodal, {
                       username: data.supporterId,
                     });
-                    console.log("Refflevalncome", Refflevalncome1);
+                    console.log("Refflevalncome1============================>>>>>>>", Refflevalncome1);
                     if (Refflevalncome1) {
                       await Stakingmodal({
                         userId: Refflevalncome1?._id,
@@ -924,8 +924,9 @@ exports.stack = {
                     }
                     const Refflevalncome2 = await findOneRecord(Usermodal, {
                       username: Refflevalncome1?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome2============================>>>>>>>", Refflevalncome2);
                     if (Refflevalncome2) {
                       await Stakingmodal({
                         userId: Refflevalncome2?._id,
@@ -941,8 +942,9 @@ exports.stack = {
                     }
                     const Refflevalncome3 = await findOneRecord(Usermodal, {
                       username: Refflevalncome2?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome3============================>>>>>>>", Refflevalncome3);
                     if (Refflevalncome3) {
                       await Stakingmodal({
                         userId: Refflevalncome3?._id,
@@ -958,8 +960,9 @@ exports.stack = {
                     }
                     const Refflevalncome4 = await findOneRecord(Usermodal, {
                       username: Refflevalncome3?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome4============================>>>>>>>", Refflevalncome4);
                     if (Refflevalncome4) {
                       await Stakingmodal({
                         userId: Refflevalncome4?._id,
@@ -975,8 +978,9 @@ exports.stack = {
                     }
                     const Refflevalncome5 = await findOneRecord(Usermodal, {
                       username: Refflevalncome4?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome5============================>>>>>>>", Refflevalncome5);
                     if (Refflevalncome5) {
                       await Stakingmodal({
                         userId: Refflevalncome5?._id,
@@ -992,8 +996,9 @@ exports.stack = {
                     }
                     const Refflevalncome6 = await findOneRecord(Usermodal, {
                       username: Refflevalncome5?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome6============================>>>>>>>", Refflevalncome6);
                     if (Refflevalncome6) {
                       await Stakingmodal({
                         userId: Refflevalncome6?._id,
@@ -1009,8 +1014,9 @@ exports.stack = {
                     }
                     const Refflevalncome7 = await findOneRecord(Usermodal, {
                       username: Refflevalncome6?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome7============================>>>>>>>", Refflevalncome7);
                     if (Refflevalncome7) {
                       await Stakingmodal({
                         userId: Refflevalncome7?._id,
@@ -1026,8 +1032,9 @@ exports.stack = {
                     }
                     const Refflevalncome8 = await findOneRecord(Usermodal, {
                       username: Refflevalncome7?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome8============================>>>>>>>", Refflevalncome8);
                     if (Refflevalncome8) {
                       await Stakingmodal({
                         userId: Refflevalncome8?._id,
@@ -1043,8 +1050,9 @@ exports.stack = {
                     }
                     const Refflevalncome9 = await findOneRecord(Usermodal, {
                       username: Refflevalncome8?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome9============================>>>>>>>", Refflevalncome9);
                     if (Refflevalncome9) {
                       await Stakingmodal({
                         userId: Refflevalncome9?._id,
@@ -1060,8 +1068,9 @@ exports.stack = {
                     }
                     const Refflevalncome10 = await findOneRecord(Usermodal, {
                       username: Refflevalncome9?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome10============================>>>>>>>", Refflevalncome10);
                     if (Refflevalncome10) {
 
                       await Stakingmodal({
@@ -1078,8 +1087,9 @@ exports.stack = {
                     }
                     const Refflevalncome11 = await findOneRecord(Usermodal, {
                       username: Refflevalncome10?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome11============================>>>>>>>", Refflevalncome11);
                     if (Refflevalncome11) {
                       await Stakingmodal({
                         userId: Refflevalncome11?._id,
@@ -1095,8 +1105,9 @@ exports.stack = {
                     }
                     const Refflevalncome12 = await findOneRecord(Usermodal, {
                       username: Refflevalncome11?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome12============================>>>>>>>", Refflevalncome12);
                     if (Refflevalncome12) {
 
                       await Stakingmodal({
@@ -1114,8 +1125,9 @@ exports.stack = {
 
                     const Refflevalncome13 = await findOneRecord(Usermodal, {
                       username: Refflevalncome12?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome13============================>>>>>>>", Refflevalncome13);
                     if (Refflevalncome13) {
                       await Stakingmodal({
                         userId: Refflevalncome13?._id,
@@ -1131,8 +1143,9 @@ exports.stack = {
                     }
                     const Refflevalncome14 = await findOneRecord(Usermodal, {
                       username: Refflevalncome13?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome14============================>>>>>>>", Refflevalncome14);
                     if (Refflevalncome14) {
                       await Stakingmodal({
                         userId: Refflevalncome14?._id,
@@ -1148,8 +1161,9 @@ exports.stack = {
                     }
                     const Refflevalncome15 = await findOneRecord(Usermodal, {
                       username: Refflevalncome14?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
+                      isValid: true,
                     });
+                    console.log("Refflevalncome15============================>>>>>>>", Refflevalncome15);
                     if (Refflevalncome15) {
                       await Stakingmodal({
                         userId: Refflevalncome15?._id,
@@ -1165,8 +1179,8 @@ exports.stack = {
                     }
                     const Refflevalncome16 = await findOneRecord(Usermodal, {
                       username: Refflevalncome15?.supporterId,
-                      isValid: true, mystack: { $gt: 0 },
-                    });
+                      isValid: true,
+                    }); console.log("Refflevalncome16============================>>>>>>>", Refflevalncome16);
                     if (Refflevalncome16) {
                       await Stakingmodal({
                         userId: Refflevalncome16?._id,

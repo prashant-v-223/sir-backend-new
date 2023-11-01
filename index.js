@@ -213,50 +213,43 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
             case "ACE":
               await updateRank(res[0], "WARRIOR", "SMART PHONE", 7000);
               break;
-            case "SR. EXECUTIVE":
-              await updateRank(res[0], "MANAGER", "INTERNATIONAL TRIP", 20000);
+            case "WARRIOR":
+              await updateRank(res[0], "CADET", "INTERNATIONAL TRIP", 20000);
               break;
-            case "MANAGER":
-              await updateRank(res[0], "SR. MANAGER", "MAC BOOK", 50000);
+            case "CADET":
+              await updateRank(res[0], "CAPTAIN", "MAC BOOK", 50000);
               break;
-            case "SR. MANAGER":
-              await updateRank(res[0], "PEARL", "WAGONR/$6000", 50000);
+            case "CAPTAIN":
+              await updateRank(res[0], "COMMANDER", "WAGONR/$6000", 50000);
               break;
-            case "PEARL":
-              await updateRank(res[0], "SAPPHIRE", "BREEZA/$12500", 300000);
+            case "COMMANDER":
+              await updateRank(res[0], "PIONEER", "BREEZA/$12500", 300000);
               break;
-            case "SAPPHIRE":
-              await updateRank(res[0], "RUBY", "2BHK FLAT/$30000", 700000);
+            case "PIONEER":
+              await updateRank(res[0], "MASTERMIND", "2BHK FLAT/$30000", 700000);
               break;
-            case "RUBY":
-              await updateRank(res[0], "DIAMOND", "MERCEDEZ/$48000", 1500000);
+            case "MASTERMIND":
+              await updateRank(res[0], "RULER", "MERCEDEZ/$48000", 1500000);
               break;
-            case "DIAMOND":
+            case "RULER":
               await updateRank(
                 res[0],
-                "BLUE DIAMOND",
+                "AMBASSADOR",
                 "3/4 BHK APARTMENT/$100000",
                 3400000
               );
               break;
-            case "BLUE DIAMOND":
+            case "AMBASSADOR":
               await updateRank(res[0], "CROWN", "VILLA/ $300000", 7000000);
               break;
             case "CROWN":
               await updateRank(
                 res[0],
-                "CROWN DIAMOND",
+                "CROWN AMBASSADOR",
                 "ROLLS ROYCE/ $400000",
                 15000000
               );
               break;
-            case "CROWN DIAMOND":
-              await updateRank(
-                res[0],
-                "KING",
-                "PRIVATE JET/ $1000000",
-                30000000
-              );
               break;
             default:
               break;
@@ -268,116 +261,116 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
     console.log(error);
   }
 });
-// schedule.scheduleJob("*/5 * * * * *", async () => {
-//   try {
-//     const Userdata = await findAllRecord(Usermodal, {});
-//     for (const user of Userdata) {
-//       const { _id: userId, username } = user;
-//       await Usermodal.aggregate([
-//         {
-//           $match: {
-//             username,
-//           },
-//         },
-//         {
-//           $graphLookup: {
-//             from: "users",
-//             startWith: "$username",
-//             connectFromField: "username",
-//             connectToField: "supporterId",
-//             as: "refers_to",
-//           },
-//         },
-//         {
-//           $lookup: {
-//             from: "stakings",
-//             localField: "refers_to._id",
-//             foreignField: "userId",
-//             as: "amount2",
-//             pipeline: [
-//               {
-//                 $match: {
-//                   Active: true,
-//                   WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
-//                 },
-//               },
-//             ],
-//           },
-//         },
-//         {
-//           $lookup: {
-//             from: "stakings",
-//             localField: "_id",
-//             foreignField: "userId",
-//             as: "amount",
-//             pipeline: [
-//               {
-//                 $match: {
-//                   Active: true,
-//                   WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
-//                 },
-//               },
-//             ],
-//           },
-//         },
-//         {
-//           $project: {
-//             total: {
-//               $reduce: {
-//                 input: "$amount",
-//                 initialValue: 0,
-//                 in: {
-//                   $add: ["$$value", "$$this.Amount"],
-//                 },
-//               },
-//             },
-//             total1: {
-//               $reduce: {
-//                 input: "$amount2",
-//                 initialValue: 0,
-//                 in: {
-//                   $add: ["$$value", "$$this.Amount"],
-//                 },
-//               },
-//             },
-//             email: 1,
-//             username: 1,
-//             level: 1,
-//           },
-//         },
-//       ]).then(async (aggregatedUserData) => {
-//         console.log(aggregatedUserData);
-//         if (aggregatedUserData.length > 0) {
-//           let data1 = await Usermodal.find({
-//             username: aggregatedUserData[0].username,
-//           });
-//           await Stakingmodal.updateMany(
-//             { userId: data1[0]._id, leval: data1[0].leval },
-//             {
-//               Active: true,
-//             }
-//           );
-//           await Usermodal.findOneAndUpdate(
-//             { _id: ObjectId(userId) },
-//             {
-//               teamtotalstack: aggregatedUserData[0].total1,
-//               mystack: aggregatedUserData[0].total,
-//             }
-//           );
-//         } else {
-//           await Usermodal.findOneAndUpdate(
-//             { _id: ObjectId(userId) },
-//             {
-//               mystack: 0,
-//             }
-//           );
-//         }
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+schedule.scheduleJob("*/58 * * * * *", async () => {
+  try {
+    const Userdata = await findAllRecord(Usermodal, {});
+    for (const user of Userdata) {
+      const { _id: userId, username } = user;
+      await Usermodal.aggregate([
+        {
+          $match: {
+            username,
+          },
+        },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$username",
+            connectFromField: "username",
+            connectToField: "supporterId",
+            as: "refers_to",
+          },
+        },
+        {
+          $lookup: {
+            from: "stakings",
+            localField: "refers_to._id",
+            foreignField: "userId",
+            as: "amount2",
+            pipeline: [
+              {
+                $match: {
+                  Active: true,
+                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $lookup: {
+            from: "stakings",
+            localField: "_id",
+            foreignField: "userId",
+            as: "amount",
+            pipeline: [
+              {
+                $match: {
+                  Active: true,
+                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
+                },
+              },
+            ],
+          },
+        },
+        {
+          $project: {
+            total: {
+              $reduce: {
+                input: "$amount",
+                initialValue: 0,
+                in: {
+                  $add: ["$$value", "$$this.Amount"],
+                },
+              },
+            },
+            total1: {
+              $reduce: {
+                input: "$amount2",
+                initialValue: 0,
+                in: {
+                  $add: ["$$value", "$$this.Amount"],
+                },
+              },
+            },
+            email: 1,
+            username: 1,
+            level: 1,
+          },
+        },
+      ]).then(async (aggregatedUserData) => {
+        console.log(aggregatedUserData);
+        if (aggregatedUserData.length > 0) {
+          let data1 = await Usermodal.find({
+            username: aggregatedUserData[0].username,
+          });
+          await Stakingmodal.updateMany(
+            { userId: data1[0]._id, leval: data1[0].leval },
+            {
+              Active: true,
+            }
+          );
+          await Usermodal.findOneAndUpdate(
+            { _id: ObjectId(userId) },
+            {
+              teamtotalstack: aggregatedUserData[0].total1,
+              mystack: aggregatedUserData[0].total,
+            }
+          );
+        } else {
+          await Usermodal.findOneAndUpdate(
+            { _id: ObjectId(userId) },
+            {
+              mystack: 0,
+            }
+          );
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 schedule.scheduleJob(every24hours, async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
