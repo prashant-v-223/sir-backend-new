@@ -12,11 +12,6 @@ const Achivement = new Schema(
       default: 0,
       required: true,
     },
-    Amount: {
-      type: Number,
-      default: 0,
-      required: true,
-    },
     Active: {
       type: Boolean,
       default: true,

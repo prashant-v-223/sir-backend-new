@@ -147,51 +147,56 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
       }
     }
 
-    // data1.sort((a, b) => b.teamtotalstack - a.teamtotalstack);
-    // let lastteamtotalstack = 0;
-    // const lastThreeObjects = data1.slice(-3);
-    // for (let index = 0; index < lastThreeObjects.length; index++) {
-    //   lastteamtotalstack += lastThreeObjects[index].teamtotalstack;
-    // }
-    // lo
-    // if (teamtotalstack * 0.5 <= data1[0].teamtotalstack  * 0.5) {
-    //   if (teamtotalstack * 0.25 <= data1[1].teamtotalstack * 0.25) {
-    //     let lastteamtotalstack = 0;
-    //     const lastThreeObjects = data1.slice(-3);
-    //     for (let index = 0; index < lastThreeObjects.length; index++) {
-    //       lastteamtotalstack += lastThreeObjects[index].teamtotalstack;
-    //     }
-    //     if (teamtotalstack * 0.25 <= lastteamtotalstack * 0.25) {
-    //       await updateRecord(
-    //         Usermodal,
-    //         {
-    //           _id: user._id,
-    //           Rank: user.Rank,
-    //           teamtotalstack: { $gt: teamtotalstack },
-    //         },
-    //         { Rank: newRank }
-    //       );
-    //       const da = await findAllRecord(Usermodal, {
-    //         _id: user._id,
-    //         Rank: newRank,
-    //       });
+    data1.sort((a, b) => b.teamtotalstack - a.teamtotalstack);
+    let lastteamtotalstack = 0;
+    let lastteamtotalstack1 = 0;
+    const lastThreeObjects = data1.slice(-3);
+    for (let index = 0; index < lastThreeObjects.length; index++) {
+      lastteamtotalstack += lastThreeObjects[index].teamtotalstack;
+      lastteamtotalstack1 += lastThreeObjects[index].mystack;
+    }
+    let fastlag = data1[0].teamtotalstack + data1[0].mystack
+    let seclag = data1[0].teamtotalstack + data1[0].mystack
+    let lastlag = lastteamtotalstack1 + lastteamtotalstack
+    console.log(fastlag);
+    console.log(teamtotalstack * 0.5);
+    console.log(seclag);
+    console.log(teamtotalstack * 0.25);
+    console.log(lastlag);
+    console.log(teamtotalstack * 0.25);
+    console.log(user);
+    if (teamtotalstack * 0.5 <= fastlag ) {
+      if (teamtotalstack * 0.25 <= seclag ) {
+        if (teamtotalstack * 0.25 <= lastlag) {
+          await updateRecord(
+            Usermodal,
+            {
+              _id: user._id,
+              Rank: user.Rank,
+            },
+            { Rank: newRank }
+          );
+          const da = await findAllRecord(Usermodal, {
+            _id: user._id,
+            Rank: newRank,
+          });
 
-    //       if (da.length > 0) {
-    //         let data = {
-    //           userId: user._id,
-    //           Note: `You Have Acheicer New ${rewardAmount}`,
-    //           Amount: rewardAmount,
-    //         };
-    //         await Achivement(data).save();
-    //       }
-    //     }
-    //   }
-    // }
+          if (da.length > 0) {
+            let data = {
+              userId: user._id,
+              Note: `You Have Acheicer New ${rewardAmount}`,
+              Amount: rewardAmount,
+            };
+            await Achivement(data).save();
+          }
+        }
+      }
+    }
   }
 };
-schedule.scheduleJob("*/1 * * * *", async () => {
+schedule.scheduleJob("*/20 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, { username: "SIR79897" });
+    const Userdata = await findAllRecord(Usermodal, { username: "SIRadmin" });
     for (const user of Userdata) {
       await Usermodal.aggregate([
         {
@@ -263,116 +268,116 @@ schedule.scheduleJob("*/1 * * * *", async () => {
     console.log(error);
   }
 });
-schedule.scheduleJob("*/5 * * * *", async () => {
-  try {
-    const Userdata = await findAllRecord(Usermodal, {});
-    for (const user of Userdata) {
-      const { _id: userId, username } = user;
-      await Usermodal.aggregate([
-        {
-          $match: {
-            username,
-          },
-        },
-        {
-          $graphLookup: {
-            from: "users",
-            startWith: "$username",
-            connectFromField: "username",
-            connectToField: "supporterId",
-            as: "refers_to",
-          },
-        },
-        {
-          $lookup: {
-            from: "stakings",
-            localField: "refers_to._id",
-            foreignField: "userId",
-            as: "amount2",
-            pipeline: [
-              {
-                $match: {
-                  Active: true,
-                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
-                },
-              },
-            ],
-          },
-        },
-        {
-          $lookup: {
-            from: "stakings",
-            localField: "_id",
-            foreignField: "userId",
-            as: "amount",
-            pipeline: [
-              {
-                $match: {
-                  Active: true,
-                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
-                },
-              },
-            ],
-          },
-        },
-        {
-          $project: {
-            total: {
-              $reduce: {
-                input: "$amount",
-                initialValue: 0,
-                in: {
-                  $add: ["$$value", "$$this.Amount"],
-                },
-              },
-            },
-            total1: {
-              $reduce: {
-                input: "$amount2",
-                initialValue: 0,
-                in: {
-                  $add: ["$$value", "$$this.Amount"],
-                },
-              },
-            },
-            email: 1,
-            username: 1,
-            level: 1,
-          },
-        },
-      ]).then(async (aggregatedUserData) => {
-        console.log(aggregatedUserData);
-        if (aggregatedUserData.length > 0) {
-          let data1 = await Usermodal.find({
-            username: aggregatedUserData[0].username,
-          });
-          await Stakingmodal.updateMany(
-            { userId: data1[0]._id, leval: data1[0].leval },
-            {
-              Active: true,
-            }
-          );
-          await Usermodal.findOneAndUpdate(
-            { _id: ObjectId(userId) },
-            {
-              teamtotalstack: aggregatedUserData[0].total1,
-              mystack: aggregatedUserData[0].total,
-            }
-          );
-        } else {
-          await Usermodal.findOneAndUpdate(
-            { _id: ObjectId(userId) },
-            {
-              mystack: 0,
-            }
-          );
-        }
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
+// schedule.scheduleJob("*/5 * * * * *", async () => {
+//   try {
+//     const Userdata = await findAllRecord(Usermodal, {});
+//     for (const user of Userdata) {
+//       const { _id: userId, username } = user;
+//       await Usermodal.aggregate([
+//         {
+//           $match: {
+//             username,
+//           },
+//         },
+//         {
+//           $graphLookup: {
+//             from: "users",
+//             startWith: "$username",
+//             connectFromField: "username",
+//             connectToField: "supporterId",
+//             as: "refers_to",
+//           },
+//         },
+//         {
+//           $lookup: {
+//             from: "stakings",
+//             localField: "refers_to._id",
+//             foreignField: "userId",
+//             as: "amount2",
+//             pipeline: [
+//               {
+//                 $match: {
+//                   Active: true,
+//                   WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
+//                 },
+//               },
+//             ],
+//           },
+//         },
+//         {
+//           $lookup: {
+//             from: "stakings",
+//             localField: "_id",
+//             foreignField: "userId",
+//             as: "amount",
+//             pipeline: [
+//               {
+//                 $match: {
+//                   Active: true,
+//                   WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
+//                 },
+//               },
+//             ],
+//           },
+//         },
+//         {
+//           $project: {
+//             total: {
+//               $reduce: {
+//                 input: "$amount",
+//                 initialValue: 0,
+//                 in: {
+//                   $add: ["$$value", "$$this.Amount"],
+//                 },
+//               },
+//             },
+//             total1: {
+//               $reduce: {
+//                 input: "$amount2",
+//                 initialValue: 0,
+//                 in: {
+//                   $add: ["$$value", "$$this.Amount"],
+//                 },
+//               },
+//             },
+//             email: 1,
+//             username: 1,
+//             level: 1,
+//           },
+//         },
+//       ]).then(async (aggregatedUserData) => {
+//         console.log(aggregatedUserData);
+//         if (aggregatedUserData.length > 0) {
+//           let data1 = await Usermodal.find({
+//             username: aggregatedUserData[0].username,
+//           });
+//           await Stakingmodal.updateMany(
+//             { userId: data1[0]._id, leval: data1[0].leval },
+//             {
+//               Active: true,
+//             }
+//           );
+//           await Usermodal.findOneAndUpdate(
+//             { _id: ObjectId(userId) },
+//             {
+//               teamtotalstack: aggregatedUserData[0].total1,
+//               mystack: aggregatedUserData[0].total,
+//             }
+//           );
+//         } else {
+//           await Usermodal.findOneAndUpdate(
+//             { _id: ObjectId(userId) },
+//             {
+//               mystack: 0,
+//             }
+//           );
+//         }
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 schedule.scheduleJob(every24hours, async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
