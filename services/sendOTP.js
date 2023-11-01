@@ -3,14 +3,16 @@ const { email } = require("../debugging/debug"),
 module.exports.ticketsend = (customerEmail, username, id) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
+  port: 587,
+  secure: true,
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
+      user: "noreply@sirglobal.or",
+      pass: "Sunny@123",
     },
   });
 
   const mailToSend = {
-    from: process.env.GMAIL_USER,
+    from: noreply@sirglobal.or,
     to: customerEmail,
     subject: "Verify your email",
     html:
