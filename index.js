@@ -165,8 +165,8 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     console.log(lastlag);
     console.log(teamtotalstack * 0.25);
     console.log(user);
-    if (teamtotalstack * 0.5 <= fastlag ) {
-      if (teamtotalstack * 0.25 <= seclag ) {
+    if (teamtotalstack * 0.5 <= fastlag) {
+      if (teamtotalstack * 0.25 <= seclag) {
         if (teamtotalstack * 0.25 <= lastlag) {
           await updateRecord(
             Usermodal,
@@ -194,9 +194,9 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     }
   }
 };
-schedule.scheduleJob("*/20 * * * * *", async () => {
+schedule.scheduleJob("*/58 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, { username: "SIRadmin" });
+    const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
       await Usermodal.aggregate([
         {
