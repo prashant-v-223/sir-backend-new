@@ -134,7 +134,7 @@ exports.Withdraw = {
             };
             await otp(data).save();
             const mailOptions = {
-              from: "infinityai759@gmail.com", // Sender address
+              from: "noreply@sirglobal.or", // Sender address
               to: decoded.profile["email"], // List of recipients
               subject: `verification by SIR - (${decoded.profile["username"]})`, // Subject line
               html:
@@ -254,7 +254,7 @@ exports.Withdraw = {
             };
             await otp(data).save();
             const mailOptions = {
-              from: "infinityai759@gmail.com", // Sender address
+              from: "noreply@sirglobal.or", // Sender address
               to: decoded.profile["email"], // List of recipients
               subject: "verification by SIR", // Subject line
               html:
@@ -428,7 +428,7 @@ exports.Withdraw = {
                         }).save();
 
                         const mailOptions = {
-                          from: "infinityai759@gmail.com", // Sender address
+                          from: "noreply@sirglobal.or", // Sender address
                           to: decoded.profile["email"], // List of recipients
                           subject:
                             "Airdropped withdrawan verification by SIR", // Subject line
@@ -557,7 +557,7 @@ exports.Withdraw = {
                         Active: true,
                       }).save();
                       const mailOptions = {
-                        from: "infinityai759@gmail.com", // Sender address
+                        from: "noreply@sirglobal.or", // Sender address
                         to: decoded.profile["email"], // List of recipients
                         subject: "verification by SIR", // Subject line
                         html:
