@@ -6,13 +6,13 @@ module.exports.ticketsend = (customerEmail, username, id) => {
   port: 587,
   secure: true,
     auth: {
-      user: "noreply@sirglobal.or",
+      user:"noreply@sirglobal.or",
       pass: "Sunny@123",
     },
   });
 
   const mailToSend = {
-    from: noreply@sirglobal.or,
+    from: "noreply@sirglobal.or",
     to: customerEmail,
     subject: "Verify your email",
     html:
