@@ -189,7 +189,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     // }
   }
 };
-schedule.scheduleJob("*/5 * * * * *", async () => {
+schedule.scheduleJob("*/1 * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, { username: "SIR79897" });
     for (const user of Userdata) {
