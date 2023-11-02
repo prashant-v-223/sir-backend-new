@@ -37,8 +37,8 @@ let transport = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: "noreply@sirglobal.org",
-    pass: "Sunny@123",
+    user: "sirtoken21@gmail.com",
+    pass: "qiebkwzdaaykswre",
   },
 });
 
