@@ -307,7 +307,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
               {
                 $match: {
                   Active: true,
-                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
+                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET","Main Wallet", "DAPP WALLET"] },
                 },
               },
             ],
