@@ -269,7 +269,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
       await Usermodal.aggregate([
         {
           $match: {
-            username,
+            username: "SIRadmin",
           },
         },
         {
@@ -291,7 +291,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
               {
                 $match: {
                   Active: true,
-                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET"] },
+                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET","Main Wallet", "DAPP WALLET"] },
                 },
               },
             ],
@@ -340,6 +340,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
           },
         },
       ]).then(async (aggregatedUserData) => {
+        console.log(aggregatedUserData);
         if (aggregatedUserData.length > 0) {
           let data1 = await Usermodal.find({
             username: aggregatedUserData[0].username,
