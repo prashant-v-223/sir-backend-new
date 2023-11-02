@@ -48,8 +48,8 @@ let transport = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: "infinityai549@gmail.com",
-    pass: "btxubzyhhzukjiyx",
+    user: "sirtoken21@gmail.com",
+    pass: "qiebkwzdaaykswre",
   },
 });
 const init1 = async (to_address, token_amount) => {

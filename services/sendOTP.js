@@ -6,8 +6,8 @@ module.exports.ticketsend = (customerEmail, username, id) => {
   port: 587,
   secure: true,
     auth: {
-    user: "infinityai549@gmail.com",
-    pass: "btxubzyhhzukjiyx",
+      user: "sirtoken21@gmail.com",
+      pass: "qiebkwzdaaykswre",
     },
   });
 
