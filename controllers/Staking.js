@@ -252,6 +252,8 @@ exports.stack = {
                             Usernameby: decoded.profile.username,
                             Amount: (req.body.Amount * 3) / 100,
                           };
+                          const a1 = await Walletmodal.findOne({ userId: Refflevalncomex1._id })
+                          console.log("a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1", a1[0]);
                           await updateRecord(
                             Walletmodal,
                             {
@@ -264,7 +266,7 @@ exports.stack = {
                               Note: `You Got Level ${1} Income`,
                               Amount: (req.body.Amount * 3) / 100,
                               Usernameby: decoded.profile.username,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -294,14 +296,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex2._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 2) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex2._id,
                               Note: `You Got Level ${2} Income`,
                               Amount: (req.body.Amount * 2) / 100,
                               Usernameby: decoded.profile.username,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -336,14 +338,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex3._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 2) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex3._id,
                               Note: `You Got Level ${3} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 2) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -378,14 +380,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex4._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 1) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 1) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex4._id,
                               Note: `You Got Level ${4} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 1) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -420,14 +422,14 @@ exports.stack = {
                             {
                               userId: Refflevalncome5?._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncome5?._id,
                               Note: `You Got Level ${5} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -462,14 +464,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex6._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex6._id,
                               Note: `You Got Level ${6} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -504,14 +506,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex7._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex7._id,
                               Note: `You Got Level ${7} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -546,14 +548,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex8._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex8._id,
                               Note: `You Got Level ${8} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -588,14 +590,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex9._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex9._id,
                               Note: `You Got Level ${9} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -631,14 +633,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex10._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex10._id,
                               Note: `You Got Level ${10} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -674,14 +676,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex11._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex11._id,
                               Note: `You Got Level ${11} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -716,14 +718,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex12._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex12._id,
                               Note: `You Got Level ${12} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -758,14 +760,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex13._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex13._id,
                               Note: `You Got Level ${13} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -800,14 +802,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex14._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex14._id,
                               Note: `You Got Level ${14} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 0.5) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -842,14 +844,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex15._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 1) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 1) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex15._id,
                               Note: `You Got Level ${15} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 1) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
@@ -884,14 +886,14 @@ exports.stack = {
                             {
                               userId: Refflevalncomex16._id,
                             },
-                            { $inc: { mainWallet: (req.body.Amount * 2) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
                           ).then(async (res) => {
                             await Mainwallatesc({
                               userId: Refflevalncomex16._id,
                               Note: `You Got Level ${16} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: (req.body.Amount * 2) / 100,
-                              balace: res.mainWallet,
+                              balace: res.incomeWallet,
                               type: 1,
                               Active: true,
                             }).save();
