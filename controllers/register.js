@@ -37,8 +37,8 @@ let transport = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: "infinityai549@gmail.com",
-    pass: "btxubzyhhzukjiyx",
+    user: "noreply@sirglobal.org",
+    pass: "Sunny@123",
   },
 });
 
@@ -206,6 +206,7 @@ exports.register = {
               console.log(data);
               transport.sendMail(mailOptions, async function (err, info) {
                 if (err) {
+                  console.log(err);
                   // return badRequestResponse(res, {
                   //   message: `Email not send error something is wrong ${err}`,
                   // });

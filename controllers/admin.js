@@ -73,7 +73,7 @@ exports.admin = {
         );
         if (decoded) {
           decoded = await cloneDeep(decoded);
-          if (decoded.profile.username === "admin") {
+          if (decoded.profile.username === "SIRadmin") {
             const userdata1 = await findAllRecord(Usermodal, {});
             return successResponse(res, {
               message: "all user data get",

@@ -336,10 +336,10 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
             email: 1,
             username: 1,
             level: 1,
+            amount: 1
           },
         },
       ]).then(async (aggregatedUserData) => {
-        console.log(aggregatedUserData);
         if (aggregatedUserData.length > 0) {
           let data1 = await Usermodal.find({
             username: aggregatedUserData[0].username,
