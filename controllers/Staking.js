@@ -30,6 +30,7 @@ const Ewallateesc = require("../models/Ewallate");
 const env = require("../env");
 const Web3 = require("web3");
 const otp = require("../models/otp");
+const moment = require("moment/moment");
 const maxTimeDifference = 0.75 * 60 * 1000;
 const infraUrl = env.globalAccess.rpcUrl;
 const web3 = new Web3(infraUrl);
@@ -114,6 +115,23 @@ const cronHandler = async (user) => {
 
 
 }
+
+const nowIST = new Date("2023-11-01T16:19:08.981+00:00");
+nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
+const todayIST = new Date(nowIST);
+// todayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for today
+
+const nextDayIST = new Date(todayIST);
+nextDayIST.setDate(nextDayIST.getDate() + 1); // Add one day to get the next day
+nextDayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for the next day
+const startOfDay = moment(new Date()).tz("Asia/Kolkata").startOf('day').toDate();
+const endOfDay = moment(new Date()).tz("Asia/Kolkata").endOf('day').toDate();
+
+
+// const today = new Date();
+// const nextDay = new Date(today);
+// nextDay.setDate(nextDay.getDate() + 1);
+console.log({ todayIST, nextDayIST });
 exports.stack = {
   Buystack: async (req, res) => {
     try {
@@ -2388,6 +2406,8 @@ exports.stack = {
   },
   gelUserWallate: async (req, res) => {
     try {
+      const todayIST = startOfDay; // Start of the user's day
+      const nextDayIST = endOfDay; // End of the user's day
       if (!req.headers.authorization) {
         return badRequestResponse(res, {
           message: "No token provided.",
@@ -2682,6 +2702,36 @@ exports.stack = {
                   },
                 },
               },
+              TodaStakingBonusIncome: {
+                $reduce: {
+                  input: {
+                    $filter: {
+                      input: "$amount3",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $eq: [
+                              "$$item.Note",
+                              "You Got Staking Bonus Income.",
+                            ]
+                          },
+                          {
+                            $gte: ["$$item.createdAt", todayIST],
+                          },
+                          {
+                            $lt: ["$$item.createdAt", nextDayIST],
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
+              },
               ReferandEarn: {
                 $reduce: {
                   input: "$amount3",
@@ -2765,7 +2815,6 @@ exports.stack = {
         ]),
         findAllRecord(V4Xpricemodal, {}),
       ]);
-      console.log(aggregatedUserData);
       return successResponse(res, {
         message: "Wallet data retrieved successfully",
         data: WalletData,
