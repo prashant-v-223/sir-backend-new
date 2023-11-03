@@ -2711,12 +2711,6 @@ exports.stack = {
                       cond: {
                         $and: [
                           {
-                            $eq: [
-                              "$$item.Note",
-                              "You Got Staking Bonus Income.",
-                            ]
-                          },
-                          {
                             $gte: ["$$item.createdAt", todayIST],
                           },
                           {
