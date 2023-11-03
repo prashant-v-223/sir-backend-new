@@ -3579,11 +3579,7 @@ exports.stack = {
               pipeline: [
                 {
                   $match: {
-                    Active: true,
-                    $and: [
-                      { leval: { $lt: leval } }, // Compare with the "leval" field of the current document
-                      { leval: { $gt: 0 } } // Additional condition for "leval" greater than 1
-                    ]
+                    Active: false,
                   },
                 },
               ],
