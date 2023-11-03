@@ -2639,6 +2639,15 @@ exports.stack = {
                   },
                 },
               },
+              total2: {
+                $reduce: {
+                  input: "$amount211",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.TotalRewordRecived"],
+                  },
+                },
+              },
               amountupcomming: {
                 $reduce: {
                   input: "$amountupcoming",
