@@ -210,6 +210,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
+      const { _id: userId, username } = user;
       await Usermodal.aggregate([
         {
           $match: {
@@ -233,7 +234,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
               await updateRank(res[0], "CAPTAIN", "MAC BOOK", 50000);
               break;
             case "CAPTAIN":
-              await updateRank(res[0], "COMMANDER", "WAGONR/$6000", 50000);
+              await updateRank(res[0], "COMMANDER", "WAGONR/$6000", 150000);
               break;
             case "COMMANDER":
               await updateRank(res[0], "PIONEER", "BREEZA/$12500", 300000);
@@ -304,7 +305,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
               {
                 $match: {
                   Active: true,
-                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET","Main Wallet", "DAPP WALLET"] },
+                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
                 },
               },
             ],
@@ -320,7 +321,7 @@ schedule.scheduleJob("*/58 * * * * *", async () => {
               {
                 $match: {
                   Active: true,
-                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET","Main Wallet", "DAPP WALLET"] },
+                  WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
                 },
               },
             ],
