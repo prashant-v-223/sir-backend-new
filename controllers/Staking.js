@@ -171,10 +171,13 @@ exports.stack = {
                   const ReffData = await findOneRecord(Usermodal, {
                     username: data.supporterId,
                   });
+                  const ReffData1 = await findOneRecord(Usermodal, {
+                    username: data.mainId,
+                  });
                   if (ReffData?._id !== null) {
 
                     const StakingData = await findAllRecord(Stakingmodal, {
-                      userId: ReffData._id,
+                      userId: ReffData1._id,
                     });
                     if (StakingData.length > 0) {
                       const data123 = await Stakingbonus.find({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` })
@@ -182,7 +185,7 @@ exports.stack = {
                         await updateRecord(
                           Walletmodal,
                           {
-                            userId: ReffData._id,
+                            userId: ReffData1._id,
                           },
                           {
                             $inc: {
@@ -193,7 +196,7 @@ exports.stack = {
                         )
                           .then(async (res) => {
                             await Ewallateesc({
-                              userId: ReffData?._id,
+                              userId: ReffData1?._id,
                               Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
                               Amount: (req.body.Amount * 5) / 100,
                               type: 1,
@@ -201,7 +204,7 @@ exports.stack = {
                               Active: true,
                             }).save();
                             await Stakingbonus({
-                              userId: ReffData?._id,
+                              userId: ReffData1?._id,
                               ReffId: decoded.profile._id,
                               Amount: (req.body.Amount * 5) / 100,
                               Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
