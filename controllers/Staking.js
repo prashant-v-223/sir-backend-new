@@ -239,7 +239,7 @@ exports.stack = {
                       Usermodal,
                       { username: ReffData.username },
                       {
-                        leval: Number(daat.length === 0 ? 1 : daat.length),
+                        leval: Number(daat.length === 0 ? 1 : daat.length + 1),
                       }
                     ).then(async (data) => {
                       const Refflevalncome = await findOneRecord(Usermodal, {
@@ -1356,7 +1356,7 @@ exports.stack = {
                             Usermodal,
                             { username: ReffData.username },
                             {
-                              leval: Number(daat.length === 0 ? 1 : daat.length),
+                              leval: Number(daat.length === 0 ? 1 : daat.length + 1),
                             }
                           ).then(async (data) => {
                             const Refflevalncome = await findOneRecord(Usermodal, {
