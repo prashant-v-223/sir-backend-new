@@ -3398,8 +3398,8 @@ exports.stack = {
         });
       }
 
-      const { profile: { _id: userId, username } } = decoded;
-
+      const { profile: { _id: userId, username, leval } } = decoded;
+      console.log(leval);
       const [
         stakingData,
         WalletData,
@@ -3552,6 +3552,45 @@ exports.stack = {
           },
           {
             $lookup: {
+              from: "stakings",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amount211",
+              pipeline: [
+                {
+                  $match: {
+                    Active: true,
+                    WalletType: {
+                      $not: {
+                        $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"]
+                      }
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: "stakings",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amountupcoming",
+              pipeline: [
+                {
+                  $match: {
+                    Active: true,
+                    $and: [
+                      { leval: { $lt: leval } }, // Compare with the "leval" field of the current document
+                      { leval: { $gt: 0 } } // Additional condition for "leval" greater than 1
+                    ]
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
               from: "stakingbonus",
               localField: "_id",
               foreignField: "userId",
@@ -3584,6 +3623,26 @@ exports.stack = {
           },
           {
             $project: {
+              total1: {
+                $reduce: {
+                  input: "$amount211",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
+              },
+              amountupcomming: {
+                $reduce: {
+                  input: "$amountupcoming",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
+              },
+              // amount211: 1,
+              // amountupcoming: 1,
               StakingBonusIncome: {
                 $reduce: {
                   input: "$amount3",
