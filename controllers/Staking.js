@@ -28,6 +28,7 @@ const Achivement = require("../models/Achivement");
 const Mainwallatesc = require("../models/Mainwallate");
 const Ewallateesc = require("../models/Ewallate");
 const env = require("../env");
+const HoldCBB = require("../models/HoldCBB");
 const Web3 = require("web3");
 const otp = require("../models/otp");
 const moment = require("moment/moment");
@@ -294,6 +295,13 @@ exports.stack = {
                           });
                           await Communitymodal(data1).save();
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex1._id,
+                          Amount: (req.body.Amount * 3) / 100,
+                          leval: 1,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex2 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex1.mainId,
@@ -336,6 +344,13 @@ exports.stack = {
                             data2,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex2._id,
+                          Amount: (req.body.Amount * 2) / 100,
+                          leval: 2,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex3 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex2.mainId,
@@ -378,6 +393,13 @@ exports.stack = {
                             data3,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex3._id,
+                          Amount: (req.body.Amount * 2) / 100,
+                          leval: 3,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex4 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex3.mainId,
@@ -420,6 +442,13 @@ exports.stack = {
                             data4,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex4._id,
+                          Amount: (req.body.Amount * 1) / 100,
+                          leval: 4,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex5 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex4.mainId,
@@ -462,6 +491,13 @@ exports.stack = {
                             data5,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex5._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 5,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex6 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex5.mainId,
@@ -504,6 +540,13 @@ exports.stack = {
                             data6,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex6._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 6,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex7 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex6.mainId,
@@ -546,6 +589,13 @@ exports.stack = {
                             data7,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex7._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 7,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex8 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex7.mainId,
@@ -588,6 +638,13 @@ exports.stack = {
                             data8,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex8._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 8,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex9 = await findOneRecord(Usermodal, {
                         username: Refflevalncome8.mainId,
@@ -630,6 +687,13 @@ exports.stack = {
                             data9,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex9._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 9,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex10 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex9.mainId,
@@ -673,6 +737,13 @@ exports.stack = {
                             data10,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex10._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 10,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex11 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex10.mainId,
@@ -716,6 +787,13 @@ exports.stack = {
                             data11,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex11._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 11,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex12 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex11.mainId,
@@ -758,6 +836,13 @@ exports.stack = {
                             data12,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex12._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 12,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex13 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex12.mainId,
@@ -800,6 +885,13 @@ exports.stack = {
                             data13,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex13._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 13,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex14 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex13.mainId,
@@ -842,6 +934,13 @@ exports.stack = {
                             data14,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex14._id,
+                          Amount: (req.body.Amount * 0.5) / 100,
+                          leval: 14,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex15 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex14.mainId,
@@ -884,6 +983,13 @@ exports.stack = {
                             data15,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex15._id,
+                          Amount: (req.body.Amount * 1) / 100,
+                          leval: 15,
+                          Active: false
+                        }).save()
                       }
                       const Refflevalncomex16 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex15.mainId,
@@ -926,6 +1032,13 @@ exports.stack = {
                             data16,
                           });
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex16._id,
+                          Amount: (req.body.Amount * 2) / 100,
+                          leval: 16,
+                          Active: false
+                        }).save()
                       }
                     })
                     const Refflevalncome1 = await findOneRecord(Usermodal, {
@@ -1411,6 +1524,13 @@ exports.stack = {
                                 });
                                 await Communitymodal(data1).save();
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex1._id,
+                                Amount: (req.body.Amount * 3) / 100,
+                                leval: 1,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex2 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex1.mainId,
@@ -1453,6 +1573,13 @@ exports.stack = {
                                   data2,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex2._id,
+                                Amount: (req.body.Amount * 2) / 100,
+                                leval: 2,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex3 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex2.mainId,
@@ -1495,6 +1622,13 @@ exports.stack = {
                                   data3,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex3._id,
+                                Amount: (req.body.Amount * 2) / 100,
+                                leval: 3,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex4 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex3.mainId,
@@ -1537,6 +1671,13 @@ exports.stack = {
                                   data4,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex4._id,
+                                Amount: (req.body.Amount * 1) / 100,
+                                leval: 4,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex5 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex4.mainId,
@@ -1579,6 +1720,13 @@ exports.stack = {
                                   data5,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex5._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 5,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex6 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex5.mainId,
@@ -1621,6 +1769,13 @@ exports.stack = {
                                   data6,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex6._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 6,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex7 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex6.mainId,
@@ -1663,6 +1818,13 @@ exports.stack = {
                                   data7,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex7._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 7,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex8 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex7.mainId,
@@ -1705,6 +1867,13 @@ exports.stack = {
                                   data8,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex8._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 8,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex9 = await findOneRecord(Usermodal, {
                               username: Refflevalncome8.mainId,
@@ -1747,6 +1916,13 @@ exports.stack = {
                                   data9,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex9._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 9,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex10 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex9.mainId,
@@ -1790,6 +1966,13 @@ exports.stack = {
                                   data10,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex10._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 10,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex11 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex10.mainId,
@@ -1833,6 +2016,13 @@ exports.stack = {
                                   data11,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex11._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 11,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex12 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex11.mainId,
@@ -1875,6 +2065,13 @@ exports.stack = {
                                   data12,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex12._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 12,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex13 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex12.mainId,
@@ -1917,6 +2114,13 @@ exports.stack = {
                                   data13,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex13._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 13,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex14 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex13.mainId,
@@ -1959,6 +2163,13 @@ exports.stack = {
                                   data14,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex14._id,
+                                Amount: (req.body.Amount * 0.5) / 100,
+                                leval: 14,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex15 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex14.mainId,
@@ -2001,6 +2212,13 @@ exports.stack = {
                                   data15,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex15._id,
+                                Amount: (req.body.Amount * 1) / 100,
+                                leval: 15,
+                                Active: false
+                              }).save()
                             }
                             const Refflevalncomex16 = await findOneRecord(Usermodal, {
                               username: Refflevalncomex15.mainId,
@@ -2043,6 +2261,13 @@ exports.stack = {
                                   data16,
                                 });
                               }
+                            } else {
+                              await HoldCBB({
+                                userId: Refflevalncomex16._id,
+                                Amount: (req.body.Amount * 2) / 100,
+                                leval: 16,
+                                Active: false
+                              }).save()
                             }
                           })
                           const Refflevalncome1 = await findOneRecord(Usermodal, {
