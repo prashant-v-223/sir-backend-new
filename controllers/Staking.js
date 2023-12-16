@@ -14,6 +14,7 @@ const {
   notFoundResponse,
   validarionerrorResponse,
 } = require("../middleware/response");
+const V4XpriceSchemaDetails = require("../models/TokenDetails");
 const { tokenverify } = require("../middleware/token");
 const Stakingmodal = require("../models/Staking");
 const Walletmodal = require("../models/Wallet");
@@ -136,6 +137,7 @@ console.log({ todayIST, nextDayIST });
 exports.stack = {
   Buystack: async (req, res) => {
     try {
+      const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
       if (req.headers.authorization) {
         let { err, decoded } = await tokenverify(
           req.headers.authorization.split(" ")[1]
@@ -155,6 +157,7 @@ exports.stack = {
               userId: decoded.profile._id,
               otp: Number(req.body.otp),
             });
+            console.log(data1);
             if (data1.length !== 0) {
               await otp.remove({
                 userId: decoded.profile._id,
@@ -191,7 +194,7 @@ exports.stack = {
                           {
                             $inc: {
                               incomeWallet:
-                                (req.body.Amount * 5) / 100,
+                                (req.body.Amount / 90 * SIRprice.price * 5) / 100,
                             },
                           }
                         )
@@ -199,7 +202,7 @@ exports.stack = {
                             await Ewallateesc({
                               userId: ReffData1?._id,
                               Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                              Amount: (req.body.Amount * 5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
                               type: 1,
                               balace: res.incomeWallet,
                               Active: true,
@@ -207,7 +210,7 @@ exports.stack = {
                             await Stakingbonus({
                               userId: ReffData1?._id,
                               ReffId: decoded.profile._id,
-                              Amount: (req.body.Amount * 5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
                               Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
                               Active: true,
                             }).save();
@@ -272,7 +275,7 @@ exports.stack = {
                             userId: Refflevalncomex1._id,
                             Note: `You Got Level ${1} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 3) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 3) / 100,
                           };
                           const a1 = await Walletmodal.findOne({ userId: Refflevalncomex1._id })
                           console.log("a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1", a1[0]);
@@ -281,12 +284,12 @@ exports.stack = {
                             {
                               userId: Refflevalncomex1._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 3) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 3) / 100 } }
                           ).then(async (res) => {
                             await Ewallateesc({
                               userId: Refflevalncomex1._id,
                               Note: `You Got Level ${1} Income`,
-                              Amount: (req.body.Amount * 3) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 3) / 100,
                               Usernameby: decoded.profile.username,
                               balace: res.incomeWallet,
                               type: 1,
@@ -298,7 +301,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex1._id,
-                          Amount: (req.body.Amount * 3) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 3) / 100,
                           leval: 1,
                           Active: false
                         }).save()
@@ -318,19 +321,19 @@ exports.stack = {
                             userId: Refflevalncomex2._id,
                             Note: `You Got Level ${2} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 2) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex2._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 2) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex2._id,
                               Note: `You Got Level ${2} Income`,
-                              Amount: (req.body.Amount * 2) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                               Usernameby: decoded.profile.username,
                               balace: res.incomeWallet,
                               type: 1,
@@ -347,7 +350,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex2._id,
-                          Amount: (req.body.Amount * 2) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                           leval: 2,
                           Active: false
                         }).save()
@@ -367,20 +370,20 @@ exports.stack = {
                             userId: Refflevalncomex3._id,
                             Note: `You Got Level ${3} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 2) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex3._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 2) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex3._id,
                               Note: `You Got Level ${3} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 2) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -396,7 +399,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex3._id,
-                          Amount: (req.body.Amount * 2) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                           leval: 3,
                           Active: false
                         }).save()
@@ -416,20 +419,20 @@ exports.stack = {
                             userId: Refflevalncomex4._id,
                             Note: `You Got Level ${4} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 1) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex4._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 1) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 1) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex4._id,
                               Note: `You Got Level ${4} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 1) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -445,7 +448,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex4._id,
-                          Amount: (req.body.Amount * 1) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                           leval: 4,
                           Active: false
                         }).save()
@@ -465,20 +468,20 @@ exports.stack = {
                             userId: Refflevalncomex5._id,
                             Note: `You Got Level ${5} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncome5?._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncome5?._id,
                               Note: `You Got Level ${5} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -494,7 +497,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex5._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 5,
                           Active: false
                         }).save()
@@ -514,20 +517,20 @@ exports.stack = {
                             userId: Refflevalncomex6._id,
                             Note: `You Got Level ${6} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex6._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex6._id,
                               Note: `You Got Level ${6} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -543,7 +546,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex6._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 6,
                           Active: false
                         }).save()
@@ -563,20 +566,20 @@ exports.stack = {
                             userId: Refflevalncomex7._id,
                             Note: `You Got Level ${7} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex7._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex7._id,
                               Note: `You Got Level ${7} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -592,7 +595,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex7._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 7,
                           Active: false
                         }).save()
@@ -612,20 +615,20 @@ exports.stack = {
                             userId: Refflevalncomex8._id,
                             Note: `You Got Level ${8} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex8._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex8._id,
                               Note: `You Got Level ${8} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -641,7 +644,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex8._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 8,
                           Active: false
                         }).save()
@@ -661,20 +664,20 @@ exports.stack = {
                             userId: Refflevalncomex9._id,
                             Note: `You Got Level ${9} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex9._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex9._id,
                               Note: `You Got Level ${9} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -690,7 +693,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex9._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 9,
                           Active: false
                         }).save()
@@ -711,20 +714,20 @@ exports.stack = {
                             userId: Refflevalncomex10._id,
                             Note: `You Got Level ${10} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex10._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex10._id,
                               Note: `You Got Level ${10} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -740,7 +743,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex10._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 10,
                           Active: false
                         }).save()
@@ -761,20 +764,20 @@ exports.stack = {
                             userId: Refflevalncomex11._id,
                             Note: `You Got Level ${11} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex11._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex11._id,
                               Note: `You Got Level ${11} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -790,7 +793,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex11._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 11,
                           Active: false
                         }).save()
@@ -810,20 +813,20 @@ exports.stack = {
                             userId: Refflevalncomex12._id,
                             Note: `You Got Level ${12} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex12._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex12._id,
                               Note: `You Got Level ${12} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -839,7 +842,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex12._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 12,
                           Active: false
                         }).save()
@@ -859,20 +862,20 @@ exports.stack = {
                             userId: Refflevalncomex13._id,
                             Note: `You Got Level ${13} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex13._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex13._id,
                               Note: `You Got Level ${13} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -888,7 +891,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex13._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 13,
                           Active: false
                         }).save()
@@ -908,20 +911,20 @@ exports.stack = {
                             userId: Refflevalncomex14._id,
                             Note: `You Got Level ${14} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 0.5) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex14._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex14._id,
                               Note: `You Got Level ${14} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 0.5) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -937,7 +940,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex14._id,
-                          Amount: (req.body.Amount * 0.5) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                           leval: 14,
                           Active: false
                         }).save()
@@ -957,20 +960,20 @@ exports.stack = {
                             userId: Refflevalncomex15._id,
                             Note: `You Got Level ${15} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 1) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex15._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 1) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 1) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex15._id,
                               Note: `You Got Level ${15} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 1) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -986,7 +989,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex15._id,
-                          Amount: (req.body.Amount * 1) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                           leval: 15,
                           Active: false
                         }).save()
@@ -1006,20 +1009,20 @@ exports.stack = {
                             userId: Refflevalncomex16._id,
                             Note: `You Got Level ${16} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: (req.body.Amount * 2) / 100,
+                            Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex16._id,
                             },
-                            { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
+                            { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 2) / 100 } }
                           ).then(async (res) => {
-                            await Mainwallatesc({
+                            await Ewallateesc({
                               userId: Refflevalncomex16._id,
                               Note: `You Got Level ${16} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (req.body.Amount * 2) / 100,
+                              Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -1035,7 +1038,7 @@ exports.stack = {
                       } else {
                         await HoldCBB({
                           userId: Refflevalncomex16._id,
-                          Amount: (req.body.Amount * 2) / 100,
+                          Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                           leval: 16,
                           Active: false
                         }).save()
@@ -1420,7 +1423,7 @@ exports.stack = {
                                 {
                                   $inc: {
                                     incomeWallet:
-                                      (req.body.Amount * 5) / 100,
+                                      (req.body.Amount / 90 * SIRprice.price * 5) / 100,
                                   },
                                 }
                               )
@@ -1428,7 +1431,7 @@ exports.stack = {
                                   await Ewallateesc({
                                     userId: ReffData?._id,
                                     Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                                    Amount: (req.body.Amount * 5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
                                     type: 1,
                                     balace: res.incomeWallet,
                                     Active: true,
@@ -1436,7 +1439,7 @@ exports.stack = {
                                   await Stakingbonus({
                                     userId: ReffData?._id,
                                     ReffId: decoded.profile._id,
-                                    Amount: (req.body.Amount * 5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
                                     Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
                                     Active: true,
                                   }).save();
@@ -1501,7 +1504,7 @@ exports.stack = {
                                   userId: Refflevalncomex1._id,
                                   Note: `You Got Level ${1} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 3) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 3) / 100,
                                 };
                                 const a1 = await Walletmodal.findOne({ userId: Refflevalncomex1._id })
                                 console.log("a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1", a1[0]);
@@ -1510,12 +1513,12 @@ exports.stack = {
                                   {
                                     userId: Refflevalncomex1._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 3) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 3) / 100 } }
                                 ).then(async (res) => {
                                   await Ewallateesc({
                                     userId: Refflevalncomex1._id,
                                     Note: `You Got Level ${1} Income`,
-                                    Amount: (req.body.Amount * 3) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 3) / 100,
                                     Usernameby: decoded.profile.username,
                                     balace: res.incomeWallet,
                                     type: 1,
@@ -1527,7 +1530,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex1._id,
-                                Amount: (req.body.Amount * 3) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 3) / 100,
                                 leval: 1,
                                 Active: false
                               }).save()
@@ -1547,19 +1550,19 @@ exports.stack = {
                                   userId: Refflevalncomex2._id,
                                   Note: `You Got Level ${2} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 2) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex2._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 2) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex2._id,
                                     Note: `You Got Level ${2} Income`,
-                                    Amount: (req.body.Amount * 2) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                     Usernameby: decoded.profile.username,
                                     balace: res.incomeWallet,
                                     type: 1,
@@ -1576,7 +1579,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex2._id,
-                                Amount: (req.body.Amount * 2) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                 leval: 2,
                                 Active: false
                               }).save()
@@ -1596,20 +1599,20 @@ exports.stack = {
                                   userId: Refflevalncomex3._id,
                                   Note: `You Got Level ${3} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 2) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex3._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 2) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex3._id,
                                     Note: `You Got Level ${3} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 2) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1625,7 +1628,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex3._id,
-                                Amount: (req.body.Amount * 2) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                 leval: 3,
                                 Active: false
                               }).save()
@@ -1645,20 +1648,20 @@ exports.stack = {
                                   userId: Refflevalncomex4._id,
                                   Note: `You Got Level ${4} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 1) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex4._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 1) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 1) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex4._id,
                                     Note: `You Got Level ${4} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 1) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1674,7 +1677,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex4._id,
-                                Amount: (req.body.Amount * 1) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                                 leval: 4,
                                 Active: false
                               }).save()
@@ -1694,20 +1697,20 @@ exports.stack = {
                                   userId: Refflevalncomex5._id,
                                   Note: `You Got Level ${5} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncome5?._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncome5?._id,
                                     Note: `You Got Level ${5} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1723,7 +1726,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex5._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 5,
                                 Active: false
                               }).save()
@@ -1743,20 +1746,20 @@ exports.stack = {
                                   userId: Refflevalncomex6._id,
                                   Note: `You Got Level ${6} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex6._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex6._id,
                                     Note: `You Got Level ${6} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1772,7 +1775,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex6._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 6,
                                 Active: false
                               }).save()
@@ -1792,20 +1795,20 @@ exports.stack = {
                                   userId: Refflevalncomex7._id,
                                   Note: `You Got Level ${7} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex7._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex7._id,
                                     Note: `You Got Level ${7} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1821,7 +1824,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex7._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 7,
                                 Active: false
                               }).save()
@@ -1841,20 +1844,20 @@ exports.stack = {
                                   userId: Refflevalncomex8._id,
                                   Note: `You Got Level ${8} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex8._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex8._id,
                                     Note: `You Got Level ${8} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1870,7 +1873,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex8._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 8,
                                 Active: false
                               }).save()
@@ -1890,20 +1893,20 @@ exports.stack = {
                                   userId: Refflevalncomex9._id,
                                   Note: `You Got Level ${9} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex9._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex9._id,
                                     Note: `You Got Level ${9} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1919,7 +1922,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex9._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 9,
                                 Active: false
                               }).save()
@@ -1940,20 +1943,20 @@ exports.stack = {
                                   userId: Refflevalncomex10._id,
                                   Note: `You Got Level ${10} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex10._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex10._id,
                                     Note: `You Got Level ${10} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -1969,7 +1972,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex10._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 10,
                                 Active: false
                               }).save()
@@ -1990,20 +1993,20 @@ exports.stack = {
                                   userId: Refflevalncomex11._id,
                                   Note: `You Got Level ${11} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex11._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex11._id,
                                     Note: `You Got Level ${11} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -2019,7 +2022,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex11._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 11,
                                 Active: false
                               }).save()
@@ -2039,20 +2042,20 @@ exports.stack = {
                                   userId: Refflevalncomex12._id,
                                   Note: `You Got Level ${12} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex12._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex12._id,
                                     Note: `You Got Level ${12} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -2068,7 +2071,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex12._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 12,
                                 Active: false
                               }).save()
@@ -2088,20 +2091,20 @@ exports.stack = {
                                   userId: Refflevalncomex13._id,
                                   Note: `You Got Level ${13} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex13._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex13._id,
                                     Note: `You Got Level ${13} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -2117,7 +2120,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex13._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 13,
                                 Active: false
                               }).save()
@@ -2137,20 +2140,20 @@ exports.stack = {
                                   userId: Refflevalncomex14._id,
                                   Note: `You Got Level ${14} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 0.5) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex14._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 0.5) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex14._id,
                                     Note: `You Got Level ${14} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 0.5) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -2166,7 +2169,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex14._id,
-                                Amount: (req.body.Amount * 0.5) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 0.5) / 100,
                                 leval: 14,
                                 Active: false
                               }).save()
@@ -2186,20 +2189,20 @@ exports.stack = {
                                   userId: Refflevalncomex15._id,
                                   Note: `You Got Level ${15} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 1) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex15._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 1) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 1) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex15._id,
                                     Note: `You Got Level ${15} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 1) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -2215,7 +2218,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex15._id,
-                                Amount: (req.body.Amount * 1) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 1) / 100,
                                 leval: 15,
                                 Active: false
                               }).save()
@@ -2235,20 +2238,20 @@ exports.stack = {
                                   userId: Refflevalncomex16._id,
                                   Note: `You Got Level ${16} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: (req.body.Amount * 2) / 100,
+                                  Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex16._id,
                                   },
-                                  { $inc: { incomeWallet: (req.body.Amount * 2) / 100 } }
+                                  { $inc: { incomeWallet: (req.body.Amount / 90 * SIRprice.price * 2) / 100 } }
                                 ).then(async (res) => {
-                                  await Mainwallatesc({
+                                  await Ewallateesc({
                                     userId: Refflevalncomex16._id,
                                     Note: `You Got Level ${16} Income`,
                                     Usernameby: decoded.profile.username,
-                                    Amount: (req.body.Amount * 2) / 100,
+                                    Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                     balace: res.incomeWallet,
                                     type: 1,
                                     Active: true,
@@ -2264,7 +2267,7 @@ exports.stack = {
                             } else {
                               await HoldCBB({
                                 userId: Refflevalncomex16._id,
-                                Amount: (req.body.Amount * 2) / 100,
+                                Amount: (req.body.Amount / 90 * SIRprice.price * 2) / 100,
                                 leval: 16,
                                 Active: false
                               }).save()
@@ -2617,10 +2620,11 @@ exports.stack = {
           const StakingData = await findAllRecord(Stakingmodal, {
             userId: decoded.profile._id,
           });
+          const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
           return successResponse(res, {
             message: "staking data get successfully",
             data: StakingData,
-            V4Xtokenprice: 0,
+            SIRprice: SIRprice.price
           });
         }
       } else {
@@ -2642,6 +2646,7 @@ exports.stack = {
         });
       }
 
+      const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
       const token = req.headers.authorization.split(" ")[1];
       const { err, decoded } = await tokenverify(token);
 
@@ -2811,6 +2816,21 @@ exports.stack = {
           },
           {
             $lookup: {
+              from: "holdcbbs",
+              localField: "_id",
+              foreignField: "userId",
+              as: "holdcbbamout",
+              pipeline: [
+                {
+                  $match: {
+                    Active: false,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
               from: "stakings",
               localField: "_id",
               foreignField: "userId",
@@ -2821,8 +2841,13 @@ exports.stack = {
                     Active: true,
                     WalletType: {
                       $not: {
-                        $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"]
-                      }
+                        $in: [
+                          "main-Wallet",
+                          "DAPP-WALLET",
+                          "Main Wallet",
+                          "DAPP WALLET",
+                        ],
+                      },
                     },
                   },
                 },
@@ -2842,6 +2867,22 @@ exports.stack = {
                   },
                 },
               ],
+            },
+          },
+          {
+            $lookup: {
+              from: "ewallates",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amount13",
+            },
+          },
+          {
+            $lookup: {
+              from: "mainwallates",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amount131",
             },
           },
           {
@@ -2892,7 +2933,10 @@ exports.stack = {
                   input: "$amount211",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.TotalRewordRecived"],
+                    $add: [
+                      "$$value",
+                      "$$this.TotalRewordRecived",
+                    ],
                   },
                 },
               },
@@ -2905,8 +2949,6 @@ exports.stack = {
                   },
                 },
               },
-              // amount211: 1,
-              // amountupcoming: 1,
               StakingBonusIncome: {
                 $reduce: {
                   input: "$amount3",
@@ -2930,33 +2972,9 @@ exports.stack = {
                   },
                 },
               },
-              TodaStakingBonusIncome: {
-                $reduce: {
-                  input: {
-                    $filter: {
-                      input: "$amount3",
-                      as: "item",
-                      cond: {
-                        $and: [
-                          {
-                            $gte: ["$$item.createdAt", todayIST],
-                          },
-                          {
-                            $lt: ["$$item.createdAt", nextDayIST],
-                          },
-                        ],
-                      },
-                    },
-                  },
-                  initialValue: 0,
-                  in: {
-                    $add: ["$$value", "$$this.Amount"],
-                  },
-                },
-              },
               ReferandEarn: {
                 $reduce: {
-                  input: "$amount3",
+                  input: "$amount13",
                   initialValue: 0,
                   in: {
                     $add: [
@@ -2965,7 +2983,13 @@ exports.stack = {
                         $cond: {
                           if: {
                             $eq: [
-                              { $substr: ["$$this.Note", 0, 29] },
+                              {
+                                $substr: [
+                                  "$$this.Note",
+                                  0,
+                                  29,
+                                ],
+                              },
                               "You Got Refer and Earn Income",
                             ],
                           },
@@ -2974,6 +2998,36 @@ exports.stack = {
                         },
                       },
                     ],
+                  },
+                },
+              },
+              TodaStakingBonusIncome: {
+                $reduce: {
+                  input: {
+                    $filter: {
+                      input: "$amount131",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $gte: [
+                              "$$item.createdAt",
+                              todayIST,
+                            ],
+                          },
+                          {
+                            $lt: [
+                              "$$item.createdAt",
+                              nextDayIST,
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
                   },
                 },
               },
@@ -2988,7 +3042,13 @@ exports.stack = {
                         $cond: {
                           if: {
                             $eq: [
-                              { $substr: ["$$this.Note", 0, 13] },
+                              {
+                                $substr: [
+                                  "$$this.Note",
+                                  0,
+                                  13,
+                                ],
+                              },
                               "You Got Level",
                             ],
                           },
@@ -3032,6 +3092,18 @@ exports.stack = {
                   },
                 },
               },
+              holdcbbamout: {
+                $reduce: {
+                  input: "$holdcbbamout",
+                  initialValue: 0,
+                  in: {
+                    $add: [
+                      "$$value",
+                      "$$this.Amount",
+                    ],
+                  },
+                },
+              }
             },
           },
         ]),
@@ -3048,6 +3120,7 @@ exports.stack = {
         ReffData: data[0].referBYCount,
         ReffData1: data1,
         income: data123,
+        SIRprice: SIRprice.price
       });
     } catch (error) {
       return errorResponse(error, res);
@@ -3085,7 +3158,7 @@ exports.stack = {
           return successResponse(res, {
             message: "staking data get successfully",
             data: StakingData,
-            profile: decoded.profile,
+            profile: decoded.profile, SIRprice: SIRprice.price
           });
         }
       } else {
@@ -3128,7 +3201,10 @@ exports.stack = {
                     let abc = await Usermodal.find({
                       username: req.body.Username,
                     });
-                    console.log(abc);
+                    let abc1 = await Walletmodal.find({
+                      userId: abc[0]._id,
+                    });
+                    console.log(abc1);
                     let tdata = {
                       userId: decoded.profile._id,
                       tranforWallet: req.body.Wallet,
@@ -3159,8 +3235,16 @@ exports.stack = {
                       {
                         userId: abc[0]._id,
                       },
-                      { $inc: { v4xWallet: req.body.Amount } }
+                      { $inc: { mainWallet: req.body.Amount } }
                     )
+                    await Mainwallatesc({
+                      userId: abc[0]._id,
+                      Note: `You have received coin from ${abc[0].username}`,
+                      Amount: req.body.Amount,
+                      balace: abc1[0]?.mainWallet,
+                      type: 1,
+                      Active: true,
+                    }).save();
                     return successResponse(res, {
                       message: "transactions have been sent successfully",
                     });
@@ -3172,13 +3256,16 @@ exports.stack = {
                   });
                 }
               } else {
-                if (data.v4xWallet >= req.body.Amount) {
-                  let amount = Number(data.v4xWallet - req.body.Amount);
+                if (data.incomeWallet >= req.body.Amount) {
+                  let amount = Number(data.incomeWallet - req.body.Amount);
 
                   if (req.body.Username !== "") {
 
                     let abc = await Usermodal.find({
                       username: req.body.Username,
+                    });
+                    let abc1 = await Walletmodal.find({
+                      userId: abc[0]._id,
                     });
                     console.log(abc);
                     let tdata = {
@@ -3194,14 +3281,14 @@ exports.stack = {
                         userId: decoded.profile._id,
                       },
                       {
-                        v4xWallet: amount,
+                        incomeWallet: amount,
                       }
                     ).then(async (res) => {
                       await Ewallateesc({
                         userId: decoded.profile._id,
                         Note: `You Transfer coin from ${abc[0].username}`,
                         Amount: req.body.Amount,
-                        balace: res?.v4xWallet,
+                        balace: res?.incomeWallet,
                         type: 0,
                         Active: true,
                       }).save();
@@ -3211,8 +3298,16 @@ exports.stack = {
                       {
                         userId: abc[0]._id,
                       },
-                      { $inc: { v4xWallet: req.body.Amount } }
+                      { $inc: { incomeWallet: req.body.Amount } }
                     )
+                    await Ewallateesc({
+                      userId: abc[0]._id,
+                      Note: `You have received coin from ${abc[0].username}`,
+                      Amount: req.body.Amount,
+                      balace: abc1[0]?.incomeWallet,
+                      type: 1,
+                      Active: true,
+                    }).save();
                     return successResponse(res, {
                       message: "transactions have been sent successfully",
                     });
@@ -3602,6 +3697,25 @@ exports.stack = {
           message: "No token provided!",
         });
       }
+    } catch (error) {
+      return errorResponse(error, res);
+    }
+  },
+  finduserdata: async (req, res) => {
+    try {
+
+      let data = await Usermodal.aggregate([
+        {
+          $match: {
+            username: req.params.username,
+          },
+        }
+      ]);
+      return successResponse(res, {
+        message: "wallet data get successfully",
+        data: data,
+      });
+
     } catch (error) {
       return errorResponse(error, res);
     }

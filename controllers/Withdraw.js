@@ -220,9 +220,7 @@ exports.Withdraw = {
   tranferotpsend: async (req, res) => {
     try {
       if (req.headers.authorization) {
-        let { err, decoded } = await tokenverify(
-          req.headers.authorization
-        );
+        let { err, decoded } = await tokenverify(req.headers.authorization);
         if (err) {
           return notFoundResponse(res, {
             message: "user not found",
@@ -339,6 +337,7 @@ exports.Withdraw = {
   },
   Withdrawotpcheck: async (req, res) => {
     try {
+      const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
       if (req.headers.authorization) {
         let { err, decoded } = await tokenverify(
           req.headers.authorization.split(" ")[1]
@@ -351,170 +350,32 @@ exports.Withdraw = {
         if (decoded) {
           const StakingData = await Stakingmodal.find({
             userId: decoded.profile._id,
+            leval: 0,
           });
+          const withdrawalmodal1 = await withdrawalmodal.find({
+            userId: decoded.profile._id,
+          });
+          let totalstaking = 0;
+          let totalwithdrawalmodal = 0;
+          console.log(withdrawalmodal1);
+          for (let i = 0; i < StakingData.length; i++) {
+            totalstaking += StakingData[i].Amount;
+          }
+          for (let i = 0; i < withdrawalmodal1.length; i++) {
+            if (withdrawalmodal1[i].Remark === "Sir Wallate") {
+              totalwithdrawalmodal += withdrawalmodal1[i].withdrawalAmount;
+            }
+          }
+          console.log({ "Remark": req.body.Remark, "totalwithdrawalmodal": withdrawalmodal1 });
+          console.log("StakingData", StakingData);
           if (StakingData.length > 0) {
-            var date1 = new Date(StakingData[0].createdAt);
-            var date2 = new Date();
-            const diffTime = Math.abs(date2 - date1);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            console.log(diffDays);
-            if (diffDays > 14) {
-              if (req.body.Remark === "Airdrop wallate") {
-                if (decoded.profile.iswalletActive) {
-                  let data1 = await otp.find({
-                    userId: decoded.profile._id,
-                    otp: Number(req.body.otp),
-                  });
-                  if (data1.length !== 0) {
-                    const WalletData = await findOneRecord(Usermodal, {
-                      _id: decoded.profile._id,
-                    });
-                    // const to_address = "0xFE30Ada6790A918679A82D63291ae0067c28BB86";
-                    const to_address = req.body["walletaddress"];
-
-                    var token_amount = req.body.Amount;
-
-                    if (to_address == "" || to_address == undefined) {
-                      res.send(failed("Enter a Valid Address"));
-
-                      return;
-                    }
-                    if (
-                      token_amount == "" ||
-                      token_amount == undefined ||
-                      isNaN(token_amount)
-                    ) {
-                      res.send(failed("Enter a Valid Amount"));
-
-                      return;
-                    }
-
-                    token_amount = Number.isInteger(token_amount)
-                      ? token_amount.toString()
-                      : token_amount;
-                    console.log(WalletData);
-                    if (WalletData.Airdropped - req.body.Amount >= 0) {
-                      if (WalletData.mystack !== 0) {
-                        await updateRecord(
-                          Usermodal,
-                          {
-                            _id: decoded.profile._id,
-                          },
-                          {
-                            Airdropped: 0,
-                          }
-                        );
-                        const WalletData1 = await findOneRecord(Walletmodal, {
-                          userId: decoded.profile._id,
-                        });
-                        await withdrawalmodal({
-                          userId: decoded.profile._id,
-                          withdrawalAmount: req.body.Amount,
-                          Admincharges: 0,
-                          Remark: req.body.Remark,
-                          balace: req.body.Amount,
-                          transactionshsh: "",
-                          Active: true,
-                        }).save();
-                        await Mainwallatesc({
-                          userId: decoded.profile._id,
-                          Note: `Airdropped withdrawal successfully`,
-                          Amount: req.body.Amount,
-                          type: 0,
-                          balace: req.body.Amount,
-                          transactionshsh: "",
-                          Active: true,
-                        }).save();
-
-                        const mailOptions = {
-                          from: "noreply@sirglobal.or", // Sender address
-                          to: decoded.profile["email"], // List of recipients
-                          subject:
-                            "Airdropped withdrawan verification by SIR", // Subject line
-                          html:
-                            "<h3>" +
-                            "<b>" +
-                            "GREETINGS FROM SIR Token" +
-                            "</b>" +
-                            "</h3>" +
-                            "<h3>" +
-                            "<b>" +
-                            " (VICTORY FOR XTREME)" +
-                            "</b>" +
-                            "</h3>" +
-                            "<br/>" +
-                            "<br/>" +
-                            "<h4>" +
-                            "DEAR SIR Token USER" +
-                            "</h4>" +
-                            "<h4>" +
-                            "YOU HAVE SUCCESSFULLY WITHDRAWN SIR Token TO FOLLOWING ADDRESS: (" +
-                            to_address
-                            +
-                            ")" +
-                            "</h4>" +
-                            "<br/>" +
-                            "<br/>" +
-                            "<h4>" +
-                            "your SIR Token will send TO FOLLOWING ADDRESS:(" + to_address + ") within 24 hours" +
-                            "</h4>" +
-                            "<br/>" +
-                            "<br/>" +
-                            "<h4>" +
-                            "TEAM SIR Token" +
-                            "</h4>" +
-                            "<h6>" +
-                            "DISCLAMER: CRYPTOCURREENCY TRADING IS SUBJECT TO HIGH MARKET RISK. PLEASE BE AWARE OF PHISHING SITES AND ALWAYS MAKE SURE YOU ARE VISITING THE OFFICIAL SIR.ORG. PLEASE TRADE AND INVEST WITH CAUTION, WE WILL NOT BE RESPONSIBLE FOR YOUR ANY TYPE OF LOSSES.                    " +
-                            "</h6>",
-                        };
-                        await otp.remove({
-                          userId: decoded.profile._id,
-                        });
-                        transport.sendMail(
-                          mailOptions,
-                          async function (err, info) {
-                            if (err) {
-                              console.log(err);
-                            } else {
-                              console.log("done");
-                            }
-                          }
-
-                        );
-                        return successResponse(res, {
-                          message:
-                            "You have successfully withdrawan SIR Tokens",
-                        });
-                      } else {
-                        await otp.remove({
-                          userId: decoded.profile._id,
-                        });
-                        return notFoundResponse(res, {
-                          message: "Transaction failed",
-                        });
-                      }
-                    } else {
-                      await otp.remove({
-                        userId: decoded.profile._id,
-                      });
-                      return notFoundResponse(res, {
-                        message: "Transaction failed",
-                      });
-                    }
-                  } else {
-                    return notFoundResponse(res, {
-                      message: "plase enter valid otp.",
-                    });
-                  }
-                } else {
-                  return notFoundResponse(res, {
-                    message: "something went wrong please try again",
-                  });
-                }
-              } else {
-                if (req.body.Amount > 40) {
-                  const price = await findAllRecord(V4Xpricemodal, {});
-
+            if (req.body.Remark === "Sir Income Wallate") {
+              console.log(((totalstaking * 3) / 90) * SIRprice.price);
+              console.log(totalwithdrawalmodal + req.body.Amount);
+              let cout = totalwithdrawalmodal + req.body.Amount;
+              console.log(((totalstaking * 3) / 90) * SIRprice.price - cout);
+              if (((totalstaking * 3) / 90) * SIRprice.price - cout > 0) {
+                if (req.body.Amount > 25) {
                   if (decoded.profile.iswalletActive) {
                     let data1 = await otp.find({
                       userId: decoded.profile._id,
@@ -531,16 +392,146 @@ exports.Withdraw = {
                           userId: decoded.profile._id,
                         },
                         {
-                          mainWallet:
-                            WalletData.mainWallet - req.body.Amount
-                          ,
+                          incomeWallet:
+                            WalletData.incomeWallet - req.body.Amount,
                         }
                       );
                       await withdrawalmodal({
                         userId: decoded.profile._id,
                         withdrawalAmount:
-                          req.body.Amount - (req.body.Amount * 5) / 100,
-                        Admincharges: (req.body.Amount * 5) / 100,
+                          req.body.Amount,
+                        Admincharges: 0,
+                        Remark: req.body.Remark,
+                        walletaddress: to_address,
+                        balace: WalletData.incomeWallet,
+                        transactionshsh: "",
+                        Active: true,
+                      }).save();
+                      await Ewallateesc({
+                        userId: decoded.profile._id,
+                        Note: `withdrawal successfully`,
+                        Amount: req.body.Amount,
+                        type: 0,
+                        balace: WalletData.incomeWallet,
+                        Active: true,
+                      }).save();
+                      const mailOptions = {
+                        from: "noreply@sirglobal.or", // Sender address
+                        to: decoded.profile["email"], // List of recipients
+                        subject: "verification by SIR", // Subject line
+                        html:
+                          "<h3>" +
+                          "<b>" +
+                          "GREETINGS FROM SIR Token" +
+                          "</b>" +
+                          "</h3>" +
+                          "<h3>" +
+                          "<b>" +
+                          " (VICTORY FOR XTREME)" +
+                          "</b>" +
+                          "</h3>" +
+                          "<br/>" +
+                          "<br/>" +
+                          "<h4>" +
+                          "DEAR SIR Token USER" +
+                          "</h4>" +
+                          "<h4>" +
+                          "YOU HAVE SUCCESSFULLY WITHDRAWN SIR Token TO FOLLOWING ADDRESS: (" +
+                          to_address +
+                          ")" +
+                          "</h4>" +
+                          "<br/>" +
+                          "<br/>" +
+                          "<h4>" +
+                          "your SIR Token will send TO FOLLOWING ADDRESS:(" +
+                          to_address +
+                          ") within 24 hours" +
+                          "</h4>" +
+                          "<br/>" +
+                          "<br/>" +
+                          "<h4>" +
+                          "TEAM SIR Token" +
+                          "</h4>" +
+                          "<h6>" +
+                          "DISCLAMER: CRYPTOCURREENCY TRADING IS SUBJECT TO HIGH MARKET RISK. PLEASE BE AWARE OF PHISHING SITES AND ALWAYS MAKE SURE YOU ARE VISITING THE OFFICIAL SIR.ORG. PLEASE TRADE AND INVEST WITH CAUTION, WE WILL NOT BE RESPONSIBLE FOR YOUR ANY TYPE OF LOSSES.                    " +
+                          "</h6>",
+                      };
+                      await otp.remove({
+                        userId: decoded.profile._id,
+                      });
+                      transport.sendMail(
+                        mailOptions,
+                        async function (err, info) {
+                          if (err) {
+                            console.log(err);
+                          } else {
+                            console.log("done");
+                          }
+                        }
+                      );
+                      await otp.remove({
+                        userId: decoded.profile._id,
+                      });
+                      return successResponse(res, {
+                        message: "You have successfully withdrawan SIR Tokens",
+                      });
+                    } else {
+                      await otp.remove({
+                        userId: decoded.profile._id,
+                      });
+                      return notFoundResponse(res, {
+                        message: "Transaction failed",
+                      });
+                    }
+                  } else {
+                    return notFoundResponse(res, {
+                      message: "plase enter valid otp.",
+                    });
+                  }
+                } else {
+                  return notFoundResponse(res, {
+                    message: "minimum withdrawals limite 25 $",
+                  });
+                }
+              } else {
+                return notFoundResponse(res, {
+                  message: "something went wrong please try again",
+                });
+              }
+            } else {
+              let totalwithdrawalmodal2 = 0
+              for (let i = 0; i < withdrawalmodal1.length; i++) {
+                if (withdrawalmodal1[i].Remark === "main wallate") {
+                  totalwithdrawalmodal2 += withdrawalmodal1[i].withdrawalAmount;
+                }
+              }
+              let cout = totalwithdrawalmodal2 + req.body.Amount;
+              let data = ((totalstaking * 2) / 90) * SIRprice.price
+              if (data - cout > 0) {
+                if (req.body.Amount * 90 / SIRprice.price > 25) {
+                  if (decoded.profile.iswalletActive) {
+                    let data1 = await otp.find({
+                      userId: decoded.profile._id,
+                      otp: Number(req.body.otp),
+                    });
+                    if (data1.length !== 0) {
+                      const WalletData = await findOneRecord(Walletmodal, {
+                        userId: decoded.profile._id,
+                      });
+                      const to_address = req.body["walletaddress"];
+                      await updateRecord(
+                        Walletmodal,
+                        {
+                          userId: decoded.profile._id,
+                        },
+                        {
+                          mainWallet: WalletData.mainWallet - req.body.Amount,
+                        }
+                      );
+                      await withdrawalmodal({
+                        userId: decoded.profile._id,
+                        withdrawalAmount: req.body.Amount,
+                        Admincharges: 0,
                         Remark: req.body.Remark,
                         walletaddress: to_address,
                         balace: WalletData.mainWallet,
@@ -577,14 +568,15 @@ exports.Withdraw = {
                           "</h4>" +
                           "<h4>" +
                           "YOU HAVE SUCCESSFULLY WITHDRAWN SIR Token TO FOLLOWING ADDRESS: (" +
-                          to_address
-                          +
+                          to_address +
                           ")" +
                           "</h4>" +
                           "<br/>" +
                           "<br/>" +
                           "<h4>" +
-                          "your SIR Token will send TO FOLLOWING ADDRESS:(" + to_address + ") within 24 hours" +
+                          "your SIR Token will send TO FOLLOWING ADDRESS:(" +
+                          to_address +
+                          ") within 24 hours" +
                           "</h4>" +
                           "<br/>" +
                           "<br/>" +
@@ -607,14 +599,13 @@ exports.Withdraw = {
                             console.log("done");
                           }
                         }
-                      ); await otp.remove({
+                      );
+                      await otp.remove({
                         userId: decoded.profile._id,
                       });
                       return successResponse(res, {
-                        message:
-                          "You have successfully withdrawan SIR Tokens",
+                        message: "You have successfully withdrawan SIR Tokens",
                       });
-
                     } else {
                       await otp.remove({
                         userId: decoded.profile._id,
@@ -629,16 +620,20 @@ exports.Withdraw = {
                     });
                   }
                 } else {
-                  errorResponse(res, {
-                    message: "something went wrong please try again",
+                  return errorResponse(res, {
+                    message: "minimum withdrawals limite 25 $",
                   });
                 }
+              } else {
+                return notFoundResponse(res, {
+                  message: "something went wrong please try again",
+                });
               }
-            } else {
-              return notFoundResponse(res, {
-                message: "withdrawal locked in fast 15 days.",
-              });
             }
+          } else {
+            return notFoundResponse(res, {
+              message: "something went wrong please try again",
+            });
           }
         } else {
           return notFoundResponse(res, {
@@ -666,7 +661,7 @@ exports.Withdraw = {
           let data = await withdrawalmodal.aggregate([
             {
               $match: {
-                userId: ObjectId(decoded.profile._id)
+                userId: ObjectId(decoded.profile._id),
               },
             },
             {
@@ -753,7 +748,7 @@ exports.Withdraw = {
       let data = await updateRecord(
         withdrawalmodal,
         {
-          _id: req.body._id
+          _id: req.body._id,
         },
         {
           transactionshsh: req.body.transactionshsh,

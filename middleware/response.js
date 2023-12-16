@@ -46,7 +46,7 @@ response.errorResponse = (error, res) => {
   return res.status(500).json({
     isSuccess: false,
     status: 500,
-    message: error.message,
+    message: error?.message || error,
   });
 };
 

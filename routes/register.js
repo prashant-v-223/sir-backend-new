@@ -10,7 +10,7 @@ router.post("/signUp", validator.signUp, (req, res) => {
 router.post("/signUp1", validator.signUp, (req, res) => {
   return registerController.register.signUp(req, res);
 });
-router.get("/signUp/varify:Token", (req, res) => {
+router.post("/signUp/varify", (req, res) => {
   return registerController.register.mailVarify(req, res);
 });
 router.get("/profile:Token", (req, res) => {

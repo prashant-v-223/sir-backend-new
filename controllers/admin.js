@@ -32,6 +32,7 @@ const token = require("../middleware/token");
 const Bannars = require("../models/Bannars");
 const Stakingbonus = require("../models/Stakingbonus");
 const Staking = require("../models/Staking");
+const { ObjectId } = require("mongodb");
 exports.admin = {
   signIn: async (req, res) => {
     try {
@@ -305,18 +306,18 @@ exports.admin = {
         if (price > 0) {
           await updateRecord(
             V4Xpricemodal,
-            {},
+            { _id: ObjectId("6534c9a2f4a5ca9a9161cb3e") },
             {
               price: price,
             }
-          );
-          await V4XpriceSchemaDetails({
-            price: price,
-            ipAddress: "json.IPv4",
-          })
-            .save()
+            );
+            await V4XpriceSchemaDetails({
+              price: price,
+              ipAddress: "json.IPv4",
+            })
+              .save()
           return successResponse(res, {
-            message: "UUDT price chenge successfully!",
+            message: "SIR price chenge successfully!",
           });
         } else {
           return badRequestResponse(res, {
@@ -342,7 +343,7 @@ exports.admin = {
         decoded = await cloneDeep(decoded);
         let data = await V4XpriceSchemaDetails.find({});
         return successResponse(res, {
-          message: "UUDT price chenge successfully!",
+          message: "SIR price chenge successfully!",
           data: data,
         });
       } else {
@@ -446,7 +447,7 @@ exports.admin = {
           },
         ]);
         return successResponse(res, {
-          message: "UUDT price chenge successfully!",
+          message: "SIR price chenge successfully!",
           data: userdata1,
         });
       } else {
