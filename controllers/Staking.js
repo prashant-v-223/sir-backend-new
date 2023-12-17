@@ -2924,7 +2924,8 @@ exports.stack = {
                   input: "$amount211",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value",
+                      "$$this.TotalRewordRecived"],
                   },
                 },
               },
@@ -3245,7 +3246,7 @@ exports.stack = {
                       type: 1,
                       Active: true,
                     }).save();
-                     await otp.remove({
+                    await otp.remove({
                       userId: decoded.profile._id,
                     });
                     return successResponse(res, {
