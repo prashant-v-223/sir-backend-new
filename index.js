@@ -234,8 +234,7 @@ schedule.scheduleJob("*/10 * * * *", async () => {
         // console.log("resresresresresresresresresresresresresresresresresres", res);
         let HoldCBBdata = await findAllRecord(HoldCBB, {
           userId: res[0]._id,
-          leval: res[0].leval,
-          leval: { $lt: res[0].leval },
+          leval: { $lte: res[0].leval },
           Active: false
         });
         console.log(HoldCBBdata);
