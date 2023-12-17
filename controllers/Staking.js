@@ -3116,7 +3116,7 @@ exports.stack = {
         lockeddate: 0,
         mystack: aggregatedUserData[0].total,
         lockamount: aggregatedUserData[0].total2,
-        teamtotalstack: aggregatedUserData[0].total1,
+        teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
         ReffData1: data1,
         income: data123,
@@ -3245,6 +3245,9 @@ exports.stack = {
                       type: 1,
                       Active: true,
                     }).save();
+                     await otp.remove({
+                      userId: decoded.profile._id,
+                    });
                     return successResponse(res, {
                       message: "transactions have been sent successfully",
                     });
@@ -3308,11 +3311,15 @@ exports.stack = {
                       type: 1,
                       Active: true,
                     }).save();
+                    await otp.remove({
+                      userId: decoded.profile._id,
+                    });
                     return successResponse(res, {
                       message: "transactions have been sent successfully",
                     });
                   }
                 } else {
+
                   return validarionerrorResponse(res, {
                     message:
                       "please check your mian wallet balance do not have infoe amount to Transfer!",

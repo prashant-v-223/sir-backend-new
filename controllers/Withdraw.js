@@ -188,7 +188,7 @@ exports.Withdraw = {
                     width="32"
                 /></a>` +
                 "<h6>" +
-                "Visit Us At : www.SIR.org  " +
+                "Visit Us At : www.sirglobal.org  " +
                 "</h6>",
             };
             transport.sendMail(mailOptions, async function (err, info) {
@@ -306,7 +306,7 @@ exports.Withdraw = {
                     width="32"
                 /></a>` +
                 "<h6>" +
-                "Visit Us At : www.SIR.org  " +
+                "Visit Us At : www.sirglobal.org  " +
                 "</h6>",
             };
             transport.sendMail(mailOptions, async function (err, info) {

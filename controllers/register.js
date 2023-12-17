@@ -255,7 +255,7 @@ exports.register = {
                     width="32"
                 /></a>` +
                   "<h6>" +
-                  "Visit Us At : www.SIR.org  " +
+                  "Visit Us At : www.sirglobal.org  " +
                   "</h6>",
               };
               transport.sendMail(mailOptions, async function (err, info) {
@@ -500,7 +500,7 @@ exports.register = {
           async function (err, data) {
             const mailOptions = {
               from: "noreply@sirglobal.or", // Sender address
-              to: req.body.email, // List of recipients
+              to: decoded.email, // List of recipients
               subject: "verification by SIR", // Subject line
               html: data,
             };

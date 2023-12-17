@@ -144,7 +144,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
       let data = await Stakingmodal.find({ userId: user._id });
       for (let index = 0; index < data.length; index++) {
         const element = data[index];
-        let d = await Stakingmodal.find({ userId: element.userId, leval: 0 });
+        let d = await Stakingmodal.find({ userId: element.userId });
         for (let index = 0; index < d.length; index++) {
           const element123 = d[index];
           let a = 500 - element123.Totalsend;
@@ -175,16 +175,16 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
       let fastlag = data1[0].teamtotalstack + data1[0].mystack
       let seclag = data1[1].teamtotalstack + data1[1].mystack
       let lastlag = lastteamtotalstack1 + lastteamtotalstack
-      console.log(fastlag);
+      const SIRprice = await findAllRecord(V4Xpricemodal, {})
       console.log(teamtotalstack * 0.5);
       console.log(seclag);
       console.log(teamtotalstack * 0.25);
       console.log(lastlag);
       console.log(teamtotalstack * 0.25);
       console.log(user);
-      if (teamtotalstack * 0.5 <= fastlag) {
-        if (teamtotalstack * 0.25 <= seclag) {
-          if (teamtotalstack * 0.25 <= lastlag) {
+      if (teamtotalstack * 0.5 <= fastlag / 90 * SIRprice.price) {
+        if (teamtotalstack * 0.25 <= seclag / 90 * SIRprice.price) {
+          if (teamtotalstack * 0.25 <= lastlag / 90 * SIRprice.price) {
             await updateRecord(
               Usermodal,
               {
