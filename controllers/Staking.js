@@ -2828,6 +2828,29 @@ exports.stack = {
                 },
               ],
             },
+          }, {
+            $graphLookup: {
+              from: "users",
+              startWith: "$username",
+              connectFromField: "username",
+              connectToField: "supporterId",
+              as: "refers_to",
+            },
+          },
+          {
+            $lookup: {
+              from: "stakings",
+              localField: "refers_to._id",
+              foreignField: "userId",
+              as: "amountupcoming11",
+              pipeline: [
+                {
+                  $match: {
+                    Active: false,
+                  },
+                },
+              ],
+            },
           },
           {
             $lookup: {
@@ -2943,10 +2966,11 @@ exports.stack = {
               },
               amountupcomming: {
                 $reduce: {
-                  input: "$amountupcoming",
+                  input: "$amountupcoming11",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value",
+                      "$$this.TotalRewordRecived"],
                   },
                 },
               },
