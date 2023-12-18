@@ -2828,11 +2828,10 @@ exports.stack = {
               ],
             },
           }, {
-            $graphLookup: {
+            $lookup: {
               from: "users",
-              startWith: "$username",
-              connectFromField: "username",
-              connectToField: "supporterId",
+              localField: "username",
+              foreignField: "supporterId",
               as: "refers_to",
             },
           },
@@ -2842,6 +2841,21 @@ exports.stack = {
               localField: "refers_to._id",
               foreignField: "userId",
               as: "amountupcoming11",
+              pipeline: [
+                {
+                  $match: {
+                    Active: !false,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: "stakings",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amountupcoming11233",
               pipeline: [
                 {
                   $match: {
@@ -2968,11 +2982,46 @@ exports.stack = {
                   input: "$amountupcoming11",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value",
-                      "$$this.TotalRewordRecived"],
+                    $add: [
+                      "$$value",
+                      {
+                        $subtract: [
+                          {
+                            $divide: [
+                              { $multiply: ["$$this.Amount", "$$this.bonusAmount"] },
+                              100
+                            ]
+                          },
+                          { $multiply: ["$$this.DailyReword", "$$this.Totalsend"] }
+                        ]
+                      }
+                    ]
                   },
                 },
-              }, holdincome: {
+              },
+              amountupcommin1: {
+                $reduce: {
+                  input: "$amountupcoming11233",
+                  initialValue: 0,
+                  in: {
+                    $add: [
+                      "$$value",
+                      {
+                        $subtract: [
+                          {
+                            $divide: [
+                              { $multiply: ["$$this.Amount", "$$this.bonusAmount"] },
+                              100
+                            ]
+                          },
+                          { $multiply: ["$$this.DailyReword", "$$this.Totalsend"] }
+                        ]
+                      }
+                    ]
+                  },
+                },
+              }
+              , holdincome: {
                 $reduce: {
                   input: "$amountupcoming",
                   initialValue: 0,
