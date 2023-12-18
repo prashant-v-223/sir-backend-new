@@ -278,7 +278,6 @@ exports.stack = {
                             Amount: (req.body.Amount / 90 * SIRprice.price * 3) / 100,
                           };
                           const a1 = await Walletmodal.findOne({ userId: Refflevalncomex1._id })
-                          console.log("a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1", a1[0]);
                           await updateRecord(
                             Walletmodal,
                             {
@@ -2880,7 +2879,7 @@ exports.stack = {
           {
             $lookup: {
               from: "stakings",
-              localField: "_id",
+              localField: "refers_to._id",
               foreignField: "userId",
               as: "amountupcoming",
               pipeline: [
@@ -2967,6 +2966,15 @@ exports.stack = {
               amountupcomming: {
                 $reduce: {
                   input: "$amountupcoming11",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value",
+                      "$$this.TotalRewordRecived"],
+                  },
+                },
+              }, holdincome: {
+                $reduce: {
+                  input: "$amountupcoming",
                   initialValue: 0,
                   in: {
                     $add: ["$$value",
