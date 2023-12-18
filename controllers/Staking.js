@@ -1051,11 +1051,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome1?._id,
                         WalletType: `Level ${1} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 10) / 100 / 1000),
+                        DailyReword: Number((req.body.Amount * 10) / 100 / 1000)*2,
                         leval: 1,
-                        bonusAmount: 100,
+                        bonusAmount: 200,
                         Amount: (req.body.Amount * 10) / 100,
-                        TotalRewordRecived: (req.body.Amount * 10) / 100,
+                        TotalRewordRecived: (req.body.Amount * 10) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome1.leval >= 1,
                       }).save();
@@ -1069,11 +1069,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome2?._id,
                         WalletType: `Level ${2} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 7) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 7) / 100 / 1000)*2,
+                        bonusAmount: 200,
                         leval: 2,
                         Amount: (req.body.Amount * 7) / 100,
-                        TotalRewordRecived: (req.body.Amount * 7) / 100,
+                        TotalRewordRecived: (req.body.Amount * 7) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome2.leval >= 2,
                       }).save();
@@ -1087,11 +1087,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome3?._id,
                         WalletType: `Level ${3} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 5) / 100 / 1000),
+                        DailyReword: Number((req.body.Amount * 5) / 100 / 1000)*2,
                         leval: 3,
-                        bonusAmount: 100,
+                        bonusAmount: 200,
                         Amount: (req.body.Amount * 5) / 100,
-                        TotalRewordRecived: (req.body.Amount * 5) / 100,
+                        TotalRewordRecived: (req.body.Amount * 5) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome3.leval >= 3,
                       }).save();
@@ -1105,11 +1105,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome4?._id,
                         WalletType: `Level ${4} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 4) / 100 / 1000),
+                        DailyReword: Number((req.body.Amount * 4) / 100 / 1000)*2,
                         leval: 4,
-                        bonusAmount: 100,
+                        bonusAmount: 200,
                         Amount: (req.body.Amount * 4) / 100,
-                        TotalRewordRecived: (req.body.Amount * 4) / 100,
+                        TotalRewordRecived: (req.body.Amount * 4) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome4.leval >= 4,
                       }).save();
@@ -1123,11 +1123,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome5?._id,
                         WalletType: `Level ${5} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 3) / 100 / 1000),
+                        DailyReword: Number((req.body.Amount * 3) / 100 / 1000)*2,
                         leval: 5,
-                        bonusAmount: 100,
+                        bonusAmount: 200,
                         Amount: (req.body.Amount * 3) / 100,
-                        TotalRewordRecived: (req.body.Amount * 3) / 100,
+                        TotalRewordRecived: (req.body.Amount * 3) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome5.leval >= 5,
                       }).save();
@@ -1141,11 +1141,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome6?._id,
                         WalletType: `Level ${6} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 2) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 2) / 100 / 1000)*2,
+                        bonusAmount: 200,
                         leval: 6,
                         Amount: (req.body.Amount * 2) / 100,
-                        TotalRewordRecived: (req.body.Amount * 2) / 100,
+                        TotalRewordRecived: (req.body.Amount * 2) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome6.leval >= 6,
                       }).save();
@@ -1159,11 +1159,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome7?._id,
                         WalletType: `Level ${7} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                        bonusAmount: 200,
                         leval: 7,
                         Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100,
+                        TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome7.leval >= 7,
                       }).save();
@@ -1177,11 +1177,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome8?._id,
                         WalletType: `Level ${8} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                        bonusAmount: 200,
                         leval: 8,
                         Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100,
+                        TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome8.leval >= 8,
                       }).save();
@@ -1195,11 +1195,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome9?._id,
                         WalletType: `Level ${9} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                        bonusAmount: 200,
                         leval: 9,
                         Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100,
+                        TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome9.leval >= 9,
                       }).save();
@@ -1214,11 +1214,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome10?._id,
                         WalletType: `Level ${10} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                        bonusAmount: 200,
                         leval: 10,
                         Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100,
+                        TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                         transactionHash: "",
                         Active: Refflevalncome10.leval >= 10,
                       }).save();
@@ -1232,11 +1232,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome11?._id,
                         WalletType: `Level ${11} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) *2,
+                        bonusAmount: 200,
                         leval: 11,
                         Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100,
+                        TotalRewordRecived: (req.body.Amount * 1) / 100 *2,
                         transactionHash: "",
                         Active: Refflevalncome11.leval >= 11,
                       }).save();
@@ -1251,11 +1251,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome12?._id,
                         WalletType: `Level ${12} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) *2,
+                        bonusAmount: 200,
                         leval: 12,
                         Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100,
+                        TotalRewordRecived: (req.body.Amount * 1) / 100 *2,
                         transactionHash: "",
                         Active: Refflevalncome12.leval >= 12,
                       }).save();
@@ -1270,11 +1270,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome13?._id,
                         WalletType: `Level ${13} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) *2,
+                        bonusAmount: 200,
                         leval: 13,
                         Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100,
+                        TotalRewordRecived: (req.body.Amount * 1) / 100 *2,
                         transactionHash: "",
                         Active: Refflevalncome13.leval >= 13,
                       }).save();
@@ -1288,11 +1288,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome14?._id,
                         WalletType: `Level ${14} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 2) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 2) / 100 / 1000) *2,
+                        bonusAmount: 200,
                         leval: 14,
                         Amount: (req.body.Amount * 2) / 100,
-                        TotalRewordRecived: (req.body.Amount * 2) / 100,
+                        TotalRewordRecived: (req.body.Amount * 2) / 100 *2,
                         transactionHash: "",
                         Active: Refflevalncome14.leval >= 14,
                       }).save();
@@ -1306,11 +1306,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome15?._id,
                         WalletType: `Level ${15} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 3) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 3) / 100 / 1000)* 2,
+                        bonusAmount: 200,
                         leval: 15,
                         Amount: (req.body.Amount * 3) / 100,
-                        TotalRewordRecived: (req.body.Amount * 3) / 100,
+                        TotalRewordRecived: (req.body.Amount * 3) / 100 * 2,
                         transactionHash: "",
                         Active: Refflevalncome15.leval >= 15,
                       }).save();
@@ -1323,11 +1323,11 @@ exports.stack = {
                       await Stakingmodal({
                         userId: Refflevalncome16?._id,
                         WalletType: `Level ${16} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 5) / 100 / 1000),
-                        bonusAmount: 100,
+                        DailyReword: Number((req.body.Amount * 5) / 100 / 1000) * 2,
+                        bonusAmount: 200,
                         leval: 16,
-                        Amount: (req.body.Amount * 5) / 100,
-                        TotalRewordRecived: (req.body.Amount * 5) / 100,
+                        Amount: (req.body.Amount * 5) / 100 ,
+                        TotalRewordRecived: (req.body.Amount * 5) / 100 * 2,
                         transactionHash: "",
                         Active: Refflevalncome16.leval >= 16,
                       }).save();
@@ -2280,11 +2280,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome1?._id,
                               WalletType: `Level ${1} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 10) / 100 / 1000),
+                              DailyReword: Number((req.body.Amount * 10) / 100 / 1000) *2,
                               leval: 1,
-                              bonusAmount: 100,
+                              bonusAmount: 200,
                               Amount: (req.body.Amount * 10) / 100,
-                              TotalRewordRecived: (req.body.Amount * 10) / 100,
+                              TotalRewordRecived: (req.body.Amount * 10) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome1.leval >= 1,
                             }).save();
@@ -2298,11 +2298,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome2?._id,
                               WalletType: `Level ${2} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 7) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 7) / 100 / 1000) *2,
+                              bonusAmount: 200,
                               leval: 2,
                               Amount: (req.body.Amount * 7) / 100,
-                              TotalRewordRecived: (req.body.Amount * 7) / 100,
+                              TotalRewordRecived: (req.body.Amount * 7) / 100 *2,
                               transactionHash: "",
                               Active: Refflevalncome2.leval >= 2,
                             }).save();
@@ -2316,11 +2316,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome3?._id,
                               WalletType: `Level ${3} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 5) / 100 / 1000),
+                              DailyReword: Number((req.body.Amount * 5) / 100 / 1000) *2,
                               leval: 3,
-                              bonusAmount: 100,
+                              bonusAmount: 200,
                               Amount: (req.body.Amount * 5) / 100,
-                              TotalRewordRecived: (req.body.Amount * 5) / 100,
+                              TotalRewordRecived: (req.body.Amount * 5) / 100 *2,
                               transactionHash: "",
                               Active: Refflevalncome3.leval >= 3,
                             }).save();
@@ -2334,11 +2334,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome4?._id,
                               WalletType: `Level ${4} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 4) / 100 / 1000),
+                              DailyReword: Number((req.body.Amount * 4) / 100 / 1000) *2,
                               leval: 4,
-                              bonusAmount: 100,
+                              bonusAmount: 200,
                               Amount: (req.body.Amount * 4) / 100,
-                              TotalRewordRecived: (req.body.Amount * 4) / 100,
+                              TotalRewordRecived: (req.body.Amount * 4) / 100 *2,
                               transactionHash: "",
                               Active: Refflevalncome4.leval >= 4,
                             }).save();
@@ -2352,11 +2352,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome5?._id,
                               WalletType: `Level ${5} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 3) / 100 / 1000),
+                              DailyReword: Number((req.body.Amount * 3) / 100 / 1000)*2,
                               leval: 5,
-                              bonusAmount: 100,
+                              bonusAmount: 200,
                               Amount: (req.body.Amount * 3) / 100,
-                              TotalRewordRecived: (req.body.Amount * 3) / 100,
+                              TotalRewordRecived: (req.body.Amount * 3) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome5.leval >= 5,
                             }).save();
@@ -2370,11 +2370,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome6?._id,
                               WalletType: `Level ${6} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 2) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 2) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 6,
                               Amount: (req.body.Amount * 2) / 100,
-                              TotalRewordRecived: (req.body.Amount * 2) / 100,
+                              TotalRewordRecived: (req.body.Amount * 2) / 100 *2,
                               transactionHash: "",
                               Active: Refflevalncome6.leval >= 6,
                             }).save();
@@ -2388,11 +2388,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome7?._id,
                               WalletType: `Level ${7} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 7,
                               Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100,
+                              TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome7.leval >= 7,
                             }).save();
@@ -2406,11 +2406,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome8?._id,
                               WalletType: `Level ${8} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 8,
                               Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100,
+                              TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome8.leval >= 8,
                             }).save();
@@ -2424,11 +2424,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome9?._id,
                               WalletType: `Level ${9} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 9,
                               Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100,
+                              TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome9.leval >= 9,
                             }).save();
@@ -2443,11 +2443,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome10?._id,
                               WalletType: `Level ${10} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 10,
                               Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100,
+                              TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome10.leval >= 10,
                             }).save();
@@ -2461,11 +2461,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome11?._id,
                               WalletType: `Level ${11} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 11,
                               Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100,
+                              TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome11.leval >= 11,
                             }).save();
@@ -2480,11 +2480,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome12?._id,
                               WalletType: `Level ${12} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 12,
                               Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100,
+                              TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome12.leval >= 12,
                             }).save();
@@ -2499,11 +2499,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome13?._id,
                               WalletType: `Level ${13} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 13,
                               Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100,
+                              TotalRewordRecived: (req.body.Amount * 1) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome13.leval >= 13,
                             }).save();
@@ -2517,11 +2517,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome14?._id,
                               WalletType: `Level ${14} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 2) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 2) / 100 / 1000)*2,
+                              bonusAmount: 200,
                               leval: 14,
                               Amount: (req.body.Amount * 2) / 100,
-                              TotalRewordRecived: (req.body.Amount * 2) / 100,
+                              TotalRewordRecived: (req.body.Amount * 2) / 100*2,
                               transactionHash: "",
                               Active: Refflevalncome14.leval >= 14,
                             }).save();
@@ -2535,11 +2535,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome15?._id,
                               WalletType: `Level ${15} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 3) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 3) / 100 / 1000) *2,
+                              bonusAmount: 200,
                               leval: 15,
                               Amount: (req.body.Amount * 3) / 100,
-                              TotalRewordRecived: (req.body.Amount * 3) / 100,
+                              TotalRewordRecived: (req.body.Amount * 3) / 100 *2,
                               transactionHash: "",
                               Active: Refflevalncome15.leval >= 15,
                             }).save();
@@ -2552,11 +2552,11 @@ exports.stack = {
                             await Stakingmodal({
                               userId: Refflevalncome16?._id,
                               WalletType: `Level ${16} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 5) / 100 / 1000),
-                              bonusAmount: 100,
+                              DailyReword: Number((req.body.Amount * 5) / 100 / 1000) *2,
+                              bonusAmount: 200,
                               leval: 16,
                               Amount: (req.body.Amount * 5) / 100,
-                              TotalRewordRecived: (req.body.Amount * 5) / 100,
+                              TotalRewordRecived: (req.body.Amount * 5) / 100 *2,
                               transactionHash: "",
                               Active: Refflevalncome16.leval >= 16,
                             }).save();
