@@ -20,9 +20,7 @@ const {
   errorResponse,
   notFoundResponse,
 } = require("../middleware/response");
-const Token = require("../models/Token");
 const { tokenverify } = require("../middleware/token");
-const V4Xpricemodal = require("../models/V4XLiveRate");
 const otp = require("../models/otp");
 const Mainwallatesc = require("../models/Mainwallate");
 const withdrawalmodal = require("../models/withdrawalhistory");
@@ -38,7 +36,7 @@ const ContractAddress = env.globalAccess.V4XContract;
 
 const ContractAbiForBUSD = env.contract.busdAbi.abi;
 
-const ContractAddressForBUSD = env.globalAccess.busdContract;
+const ContractAddressForBUSD = env.globalAccess.busdContract; 
 
 const PrivateKey = env.privateKey;
 

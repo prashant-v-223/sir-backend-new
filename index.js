@@ -8,6 +8,7 @@ app.use(cors());
 const routes = require("./routes/index");
 const Usermodal = require("./models/user");
 const Ewallateesc = require("./models/Ewallate");
+const V4XpriceSchemaDetails = require("./models/TokenDetails");
 const Stakingmodal = require("./models/Staking");
 const {
   findAllRecord,
@@ -49,103 +50,110 @@ const every24hours = "*/10 * * * *";
 schedule.scheduleJob(every24hours, async () => {
   try {
     const stakingRecords = await findAllRecord(Stakingmodal, { Active: true });
-    console.log("stakingRecords");
-    console.log(stakingRecords);
-    console.log("stakingRecords");
     for (const record of stakingRecords) {
       if (record) {
-        const Walletmodal11 = await findAllRecord(Walletmodal, { userId: record.userId });
-        const Stakingmodal12 = await findAllRecord(Stakingmodal, { userId: record.userId, leval: 0 });
-        const result = await Stakingmodal.aggregate([
-          {
-            $match: {
-              userId: record.userId
+        const StakingData = await findAllRecord(Stakingmodal, {
+          userId: record.userId,
+        });
+        if (StakingData.length > 0) {
+          if (record.TotalRewordRecived >= 0) {
+            const StakingData12 = await Stakingmodal.find({
+              userId: record.userId,
+              leval: 0,
+            });
+            const withdrawalmodal1 = await Wallet.find({
+              userId: record.userId,
+            });
+            let totalstaking = 0;
+            for (let i = 0; i < StakingData12.length; i++) {
+              totalstaking += StakingData12[i].Amount;
             }
-          },
-          {
-            $group: {
-              _id: null,
-              totalAmount: {
-                $sum: {
-                  $multiply: ["$Totalsend", "$DailyReword"]
+            if (totalstaking * 3 >= withdrawalmodal1.mainWallet) {
+              const elapsedTimeInDays = await Stakingbonus.aggregate([
+                {
+                  $match: {
+                    rewordId: ObjectId(record._id),
+                    Note: "You Got Staking Bonus Income.",
+                  },
+                },
+              ]);
+              if (elapsedTimeInDays.length < 1000) {
+                const updatedWallet = await updateRecord(
+                  Walletmodal,
+                  { userId: record.userId },
+                  { $inc: { mainWallet: record.DailyReword } }
+                );
+                if (updatedWallet) {
+                  await Promise.all([
+                    Mainwallatesc({
+                      userId: record.userId,
+                      Note: "You Got Staking Bonus Income.",
+                      Amount: record.DailyReword,
+                      type: 1,
+                      balace: updatedWallet.mainWallet,
+                      Active: true,
+                    }).save(),
+                    Stakingbonus({
+                      userId: record.userId,
+                      rewordId: record._id,
+                      Amount: record.DailyReword,
+                      Note: "You Got Staking Bonus Income.",
+                      Active: true,
+                    }).save(),
+                    updateRecord(
+                      Stakingmodal,
+                      { _id: record._id },
+                      {
+                        TotalRewordRecived:
+                          record.TotalRewordRecived - record.DailyReword,
+                        TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
+                        $inc: { Totalsend: 1 },
+                      }
+                    ),
+                  ]);
                 }
+              } else {
+                await Promise.all([
+                  Stakingbonus({
+                    userId: record.userId,
+                    rewordId: record._id,
+                    Amount: 0,
+                    Note: "Your staking plan period is completed. You have received your bonus as per the return.",
+                    Active: false,
+                  }).save(),
+                  updateRecord(
+                    Stakingmodal,
+                    { userId: record.userId },
+                    {
+                      Active: false,
+                    }
+                  ),
+                ]);
               }
             }
+          } else {
+            await Promise.all([
+              Stakingbonus({
+                userId: record.userId,
+                rewordId: record._id,
+                Amount: 0,
+                Note: "Your staking plan period is completed. You have received your bonus as per the return.",
+                Active: false,
+              }).save(),
+              updateRecord(
+                Stakingmodal,
+                { userId: record.userId },
+                {
+                  Active: false,
+                }
+              ),
+            ]);
           }
-        ]);
-        const totalAmount = result.length > 0 ? result[0].totalAmount : 0;
-
-        console.log("Total Amount:", totalAmount);
-        console.log("Total Amount:", Stakingmodal12);
-        for (let index = 0; index < Stakingmodal12.length; index++) {
-          const element = Stakingmodal12[index];
-          console.log(element);
-
         }
-        // const elapsedTimeInDays = await Stakingbonus.aggregate([
-        //   {
-        //     $match: {
-        //       rewordId: ObjectId(record._id),
-        //       Note: "You Got Staking Bonus Income.",
-        //     },
-        //   },
-        // ]);
-        // if (elapsedTimeInDays.length < 1000) {
-        //   const updatedWallet = await updateRecord(
-        //     Walletmodal,
-        //     { userId: record.userId },
-        //     { $inc: { mainWallet: record.DailyReword } }
-        //   );
-        //   if (updatedWallet) {
-        //     await Promise.all([
-        //       Mainwallatesc({
-        //         userId: record.userId,
-        //         Note: "You Got Staking Bonus Income.",
-        //         Amount: record.DailyReword,
-        //         type: 1,
-        //         balace: updatedWallet.mainWallet,
-        //         Active: true,
-        //       }).save(),
-        //       Stakingbonus({
-        //         userId: record.userId,
-        //         rewordId: record._id,
-        //         Amount: record.DailyReword,
-        //         Note: "You Got Staking Bonus Income.",
-        //         Active: true,
-        //       }).save(),
-        //       updateRecord(
-        //         Stakingmodal,
-        //         { _id: record._id },
-        //         {
-        //           TotalRewordRecived:
-        //             record.TotalRewordRecived - record.DailyReword,
-        //           TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
-        //           $inc: { Totalsend: 1 },
-        //         }
-        //       ),
-        //     ]);
-        //   }
-        // } else {
-        //   await Promise.all([
-        //     Stakingbonus({
-        //       userId: record.userId,
-        //       rewordId: record._id,
-        //       Amount: 0,
-        //       Note: "Your staking plan period is completed. You have received your bonus as per the return.",
-        //       Active: false,
-        //     }).save(),
-        //     updateRecord(
-        //       Stakingmodal,
-        //       { userId: record.userId },
-        //       {
-        //         Active: false,
-        //       }
-        //     ),
-        //   ]);
-        // }
       }
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.log(error);
   }
 });
@@ -202,16 +210,9 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
       let fastlag = data1[0].teamtotalstack + data1[0].mystack
       let seclag = data1[1].teamtotalstack + data1[1].mystack
       let lastlag = lastteamtotalstack1 + lastteamtotalstack
-      const SIRprice = await findAllRecord(V4Xpricemodal, {})
-      console.log(teamtotalstack * 0.5);
-      console.log(seclag);
-      console.log(teamtotalstack * 0.25);
-      console.log(lastlag);
-      console.log(teamtotalstack * 0.25);
-      console.log(user);
-      if (teamtotalstack * 0.5 <= fastlag / 90 * SIRprice.price) {
-        if (teamtotalstack * 0.25 <= seclag / 90 * SIRprice.price) {
-          if (teamtotalstack * 0.25 <= lastlag / 90 * SIRprice.price) {
+      if (teamtotalstack * 0.5 <= fastlag) {
+        if (teamtotalstack * 0.25 <= seclag) {
+          if (teamtotalstack * 0.25 <= lastlag) {
             await updateRecord(
               Usermodal,
               {
@@ -231,7 +232,6 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
                 Note: `You Have Acheicer New ${rewardAmount}`,
                 Amount: rewardAmount,
               };
-              console.log(user);
               const da1 = await findAllRecord(Usermodal, {
                 userId: user._id,
                 Note: `You Have Acheicer New ${rewardAmount}`,
@@ -264,7 +264,6 @@ schedule.scheduleJob("*/10 * * * *", async () => {
           leval: { $lte: res[0].leval },
           Active: false
         });
-        console.log(HoldCBBdata);
         if (HoldCBBdata.length >= 0) {
           for (let index = 0; index < HoldCBBdata.length; index++) {
             const element = HoldCBBdata[index];
@@ -351,10 +350,11 @@ schedule.scheduleJob("*/10 * * * *", async () => {
     console.log(error);
   }
 });
-schedule.scheduleJob("*/10  * * * *", async () => {
+schedule.scheduleJob("*/10 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
+      const SIRprice = await V4XpriceSchemaDetails.find({}).sort({ createdAt: -1 })
       const { _id: userId, username } = user;
       await Usermodal.aggregate([
         {
@@ -410,7 +410,7 @@ schedule.scheduleJob("*/10  * * * *", async () => {
                 input: "$amount",
                 initialValue: 0,
                 in: {
-                  $add: ["$$value", "$$this.Amount"],
+                  $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
                 },
               },
             },
@@ -419,7 +419,8 @@ schedule.scheduleJob("*/10  * * * *", async () => {
                 input: "$amount2",
                 initialValue: 0,
                 in: {
-                  $add: ["$$value", "$$this.Amount"],
+                  $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+
                 },
               },
             },
@@ -430,7 +431,12 @@ schedule.scheduleJob("*/10  * * * *", async () => {
           },
         },
       ]).then(async (aggregatedUserData) => {
-        console.log(aggregatedUserData);
+        console.log(username);
+        // console.log(Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1 * 12.85 / 90));
+        console.log(Math.round(aggregatedUserData[0].total));
+        console.log(Math.round(aggregatedUserData[0].total1));
+        // console.log(Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1 / 90 * SIRprice[0].price));
+        console.log(SIRprice[0].price);
         if (aggregatedUserData.length > 0) {
           let data1 = await Usermodal.find({
             username: aggregatedUserData[0].username,
@@ -444,8 +450,8 @@ schedule.scheduleJob("*/10  * * * *", async () => {
           await Usermodal.findOneAndUpdate(
             { _id: ObjectId(userId) },
             {
-              teamtotalstack: aggregatedUserData[0].total1,
-              mystack: aggregatedUserData[0].total,
+              teamtotalstack: Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1),
+              mystack: Math.round(aggregatedUserData[0].total),
             }
           );
         } else {

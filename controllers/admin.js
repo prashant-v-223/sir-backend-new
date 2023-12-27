@@ -1,7 +1,3 @@
-var bcrypt = require("bcryptjs");
-const nodemailer = require("nodemailer");
-const Usermodal = require("../models/user");
-const wallatemodal = require("../models/Wallet");
 const Transactionmodal = require("../models/Transaction");
 const V4Xpricemodal = require("../models/V4XLiveRate");
 const Adminmodal = require("../models/Admin");
