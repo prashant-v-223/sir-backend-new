@@ -56,19 +56,21 @@ schedule.scheduleJob(every24hours, async () => {
           userId: record.userId,
         });
         if (StakingData.length > 0) {
-          if (record.TotalRewordRecived >= 0) {
-            const StakingData12 = await Stakingmodal.find({
-              userId: record.userId,
-              leval: 0,
-            });
-            const withdrawalmodal1 = await Wallet.find({
-              userId: record.userId,
-            });
-            let totalstaking = 0;
-            for (let i = 0; i < StakingData12.length; i++) {
-              totalstaking += StakingData12[i].Amount;
-            }
-            if (totalstaking * 3 >= withdrawalmodal1.mainWallet) {
+
+          const StakingData9 = await Stakingmodal.find({
+            userId: record.userId,
+            leval: 0,
+          });
+          const withdrawalmodal1 = await Wallet.find({
+            userId: record.userId,
+          });
+          let totalstaking = 0;
+          for (let i = 0; i < StakingData9.length; i++) {
+            totalstaking += StakingData9[i].Amount;
+          }
+          const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
+          if (totalstaking * 2 / 90 * SIRprice.price >= withdrawalmodal1.mainWallet) {
+            if (record.TotalRewordRecived >= 0) {
               const elapsedTimeInDays = await Stakingbonus.aggregate([
                 {
                   $match: {
@@ -130,24 +132,24 @@ schedule.scheduleJob(every24hours, async () => {
                   ),
                 ]);
               }
-            }
-          } else {
-            await Promise.all([
-              Stakingbonus({
-                userId: record.userId,
-                rewordId: record._id,
-                Amount: 0,
-                Note: "Your staking plan period is completed. You have received your bonus as per the return.",
-                Active: false,
-              }).save(),
-              updateRecord(
-                Stakingmodal,
-                { userId: record.userId },
-                {
+            } else {
+              await Promise.all([
+                Stakingbonus({
+                  userId: record.userId,
+                  rewordId: record._id,
+                  Amount: 0,
+                  Note: "Your staking plan period is completed. You have received your bonus as per the return.",
                   Active: false,
-                }
-              ),
-            ]);
+                }).save(),
+                updateRecord(
+                  Stakingmodal,
+                  { userId: record.userId },
+                  {
+                    Active: false,
+                  }
+                ),
+              ]);
+            }
           }
         }
       }
@@ -259,38 +261,50 @@ schedule.scheduleJob("*/10 * * * *", async () => {
         },
       ]).then(async (res) => {
         // console.log("resresresresresresresresresresresresresresresresresres", res);
-        let HoldCBBdata = await findAllRecord(HoldCBB, {
-          userId: res[0]._id,
-          leval: { $lte: res[0].leval },
-          Active: false
+        const StakingData9 = await Stakingmodal.find({
+          userId: userId._id,
+          leval: 0,
         });
-        if (HoldCBBdata.length >= 0) {
-          for (let index = 0; index < HoldCBBdata.length; index++) {
-            const element = HoldCBBdata[index];
-            const updatedWallet = await updateRecord(
-              Walletmodal,
-              { userId: element.userId },
-              { $inc: { incomeWallet: element.Amount } }
-            ).then(async (res) => {
-              let HoldCBBdata1 = await findAllRecord(Walletmodal,
-                { userId: element.userId }
-              );
-              await updateRecord(
-                HoldCBB,
-                { _id: element._id },
-                { Active: true }
-              );
-              await Ewallateesc({
-                userId: element.userId,
-                Note: `You have received your level ${element.leval} CBB holding coins`,
-                Amount: element.Amount,
-                balace: HoldCBBdata1.incomeWallet,
-                type: 1,
-                Active: true,
-              }).save();
-            });
+        const withdrawalmodal1 = await Wallet.find({
+          userId: userId._id,
+        });
+        let totalstaking = 0;
+        for (let i = 0; i < StakingData9.length; i++) {
+          totalstaking += StakingData9[i].Amount;
+        }
+        if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
+          let HoldCBBdata = await findAllRecord(HoldCBB, {
+            userId: res[0]._id,
+            leval: { $lte: res[0].leval },
+            Active: false
+          });
+          if (HoldCBBdata.length >= 0) {
+            for (let index = 0; index < HoldCBBdata.length; index++) {
+              const element = HoldCBBdata[index];
+              const updatedWallet = await updateRecord(
+                Walletmodal,
+                { userId: element.userId },
+                { $inc: { incomeWallet: element.Amount } }
+              ).then(async (res) => {
 
-
+                let HoldCBBdata1 = await findAllRecord(Walletmodal,
+                  { userId: element.userId }
+                );
+                await updateRecord(
+                  HoldCBB,
+                  { _id: element._id },
+                  { Active: true }
+                );
+                await Ewallateesc({
+                  userId: element.userId,
+                  Note: `You have received your level ${element.leval} CBB holding coins`,
+                  Amount: element.Amount,
+                  balace: HoldCBBdata1.incomeWallet,
+                  type: 1,
+                  Active: true,
+                }).save();
+              });
+            }
           }
         }
         if (res.length > 0) {

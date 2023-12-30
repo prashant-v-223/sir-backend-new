@@ -197,7 +197,7 @@ exports.stack = {
                       for (let i = 0; i < StakingData.length; i++) {
                         totalstaking += StakingData[i].Amount;
                       }
-                      if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                      if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                         const data123 = await Stakingbonus.find({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` })
                         if (data123.length <= 0) {
                           await updateRecord(
@@ -298,7 +298,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData1.length; i++) {
                             totalstaking += StakingData1[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
 
                             let data1 = {
                               userId: Refflevalncomex1._id,
@@ -357,7 +357,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData2.length; i++) {
                             totalstaking += StakingData2[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data2 = {
                               userId: Refflevalncomex2._id,
                               Note: `You Got Level ${2} Income`,
@@ -419,7 +419,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData3.length; i++) {
                             totalstaking += StakingData3[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data3 = {
                               userId: Refflevalncomex3._id,
                               Note: `You Got Level ${3} Income`,
@@ -482,7 +482,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData4.length; i++) {
                             totalstaking += StakingData4[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data4 = {
                               userId: Refflevalncomex4._id,
                               Note: `You Got Level ${4} Income`,
@@ -544,7 +544,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData5.length; i++) {
                             totalstaking += StakingData5[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data5 = {
                               userId: Refflevalncomex5._id,
                               Note: `You Got Level ${5} Income`,
@@ -607,7 +607,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData6.length; i++) {
                             totalstaking += StakingData6[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data6 = {
                               userId: Refflevalncomex6._id,
                               Note: `You Got Level ${6} Income`,
@@ -669,7 +669,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData7.length; i++) {
                             totalstaking += StakingData7[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data7 = {
                               userId: Refflevalncomex7._id,
                               Note: `You Got Level ${7} Income`,
@@ -731,7 +731,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData8.length; i++) {
                             totalstaking += StakingData8[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data8 = {
                               userId: Refflevalncomex8._id,
                               Note: `You Got Level ${8} Income`,
@@ -794,7 +794,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData9.length; i++) {
                             totalstaking += StakingData9[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data9 = {
                               userId: Refflevalncomex9._id,
                               Note: `You Got Level ${9} Income`,
@@ -858,7 +858,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData10.length; i++) {
                             totalstaking += StakingData10[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data10 = {
                               userId: Refflevalncomex10._id,
                               Note: `You Got Level ${10} Income`,
@@ -921,7 +921,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData11.length; i++) {
                             totalstaking += StakingData11[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data11 = {
                               userId: Refflevalncomex11._id,
                               Note: `You Got Level ${11} Income`,
@@ -985,7 +985,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData12.length; i++) {
                             totalstaking += StakingData12[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data12 = {
                               userId: Refflevalncomex12._id,
                               Note: `You Got Level ${12} Income`,
@@ -1049,7 +1049,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData12.length; i++) {
                             totalstaking += StakingData12[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data13 = {
                               userId: Refflevalncomex13._id,
                               Note: `You Got Level ${13} Income`,
@@ -1113,7 +1113,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData12.length; i++) {
                             totalstaking += StakingData12[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data14 = {
                               userId: Refflevalncomex14._id,
                               Note: `You Got Level ${14} Income`,
@@ -1182,7 +1182,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData12.length; i++) {
                             totalstaking += StakingData12[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data15 = {
                               userId: Refflevalncomex15._id,
                               Note: `You Got Level ${15} Income`,
@@ -1244,7 +1244,7 @@ exports.stack = {
                           for (let i = 0; i < StakingData12.length; i++) {
                             totalstaking += StakingData12[i].Amount;
                           }
-                          if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                          if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                             let data16 = {
                               userId: Refflevalncomex16._id,
                               Note: `You Got Level ${16} Income`,
@@ -1753,7 +1753,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData1.length; i++) {
                                   totalstaking += StakingData1[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
       
                                   let data1 = {
                                     userId: Refflevalncomex1._id,
@@ -1812,7 +1812,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData2.length; i++) {
                                   totalstaking += StakingData2[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data2 = {
                                     userId: Refflevalncomex2._id,
                                     Note: `You Got Level ${2} Income`,
@@ -1874,7 +1874,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData3.length; i++) {
                                   totalstaking += StakingData3[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data3 = {
                                     userId: Refflevalncomex3._id,
                                     Note: `You Got Level ${3} Income`,
@@ -1937,7 +1937,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData4.length; i++) {
                                   totalstaking += StakingData4[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data4 = {
                                     userId: Refflevalncomex4._id,
                                     Note: `You Got Level ${4} Income`,
@@ -1999,7 +1999,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData5.length; i++) {
                                   totalstaking += StakingData5[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data5 = {
                                     userId: Refflevalncomex5._id,
                                     Note: `You Got Level ${5} Income`,
@@ -2062,7 +2062,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData6.length; i++) {
                                   totalstaking += StakingData6[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data6 = {
                                     userId: Refflevalncomex6._id,
                                     Note: `You Got Level ${6} Income`,
@@ -2124,7 +2124,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData7.length; i++) {
                                   totalstaking += StakingData7[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data7 = {
                                     userId: Refflevalncomex7._id,
                                     Note: `You Got Level ${7} Income`,
@@ -2186,7 +2186,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData8.length; i++) {
                                   totalstaking += StakingData8[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data8 = {
                                     userId: Refflevalncomex8._id,
                                     Note: `You Got Level ${8} Income`,
@@ -2249,7 +2249,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData9.length; i++) {
                                   totalstaking += StakingData9[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data9 = {
                                     userId: Refflevalncomex9._id,
                                     Note: `You Got Level ${9} Income`,
@@ -2313,7 +2313,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData10.length; i++) {
                                   totalstaking += StakingData10[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data10 = {
                                     userId: Refflevalncomex10._id,
                                     Note: `You Got Level ${10} Income`,
@@ -2376,7 +2376,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData11.length; i++) {
                                   totalstaking += StakingData11[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data11 = {
                                     userId: Refflevalncomex11._id,
                                     Note: `You Got Level ${11} Income`,
@@ -2440,7 +2440,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData12.length; i++) {
                                   totalstaking += StakingData12[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data12 = {
                                     userId: Refflevalncomex12._id,
                                     Note: `You Got Level ${12} Income`,
@@ -2504,7 +2504,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData12.length; i++) {
                                   totalstaking += StakingData12[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data13 = {
                                     userId: Refflevalncomex13._id,
                                     Note: `You Got Level ${13} Income`,
@@ -2568,7 +2568,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData12.length; i++) {
                                   totalstaking += StakingData12[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data14 = {
                                     userId: Refflevalncomex14._id,
                                     Note: `You Got Level ${14} Income`,
@@ -2637,7 +2637,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData12.length; i++) {
                                   totalstaking += StakingData12[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data15 = {
                                     userId: Refflevalncomex15._id,
                                     Note: `You Got Level ${15} Income`,
@@ -2699,7 +2699,7 @@ exports.stack = {
                                 for (let i = 0; i < StakingData12.length; i++) {
                                   totalstaking += StakingData12[i].Amount;
                                 }
-                                if (totalstaking * 2 >= withdrawalmodal1.incomeWallet) {
+                                if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
                                   let data16 = {
                                     userId: Refflevalncomex16._id,
                                     Note: `You Got Level ${16} Income`,
