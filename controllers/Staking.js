@@ -3169,6 +3169,13 @@ exports.stack = {
               from: "stakings",
               localField: "refers_to._id",
               foreignField: "userId",
+              pipeline: [
+                {
+                  $match: {
+                    leval: 0,
+                  },
+                },
+              ],
               as: "amount2",
             },
           },
@@ -3177,17 +3184,15 @@ exports.stack = {
               from: "stakings",
               localField: "_id",
               foreignField: "userId",
+              pipeline: [
+                {
+                  $match: {
+                    leval: 0,
+                  },
+                },
+              ],
               as: "amount",
             },
-          },
-          {
-            $match: {
-              "amount.level": 0 // Add your additional condition here
-            }
-          },{
-            $match: {
-              "amount2.level": 0 // Add your additional condition here
-            }
           },
           {
             $project: {
