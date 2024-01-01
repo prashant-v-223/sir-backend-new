@@ -46,7 +46,7 @@ app.get('/show-image', (req, res) => {
   res.sendFile(imagePath);
 });
 
-const every24hours = "*/10 * * * *";
+const every24hours = "0 19 * * *";
 schedule.scheduleJob(every24hours, async () => {
   try {
     const stakingRecords = await findAllRecord(Stakingmodal, { Active: true });
@@ -123,7 +123,7 @@ schedule.scheduleJob(every24hours, async () => {
               ),
             ]);
           }
-       h     // }
+        // }
         }
       }
     }
