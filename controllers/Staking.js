@@ -1561,7 +1561,7 @@ exports.stack = {
                       username: Refflevalncome15?.supporterId,
                       isValid: true,
                     });
-                     console.log("Refflevalncome16============================>>>>>>>", Refflevalncome16);
+                    console.log("Refflevalncome16============================>>>>>>>", Refflevalncome16);
                     if (Refflevalncome16) {
                       await Stakingmodal({
                         userId: Refflevalncome16?._id,
@@ -1740,7 +1740,7 @@ exports.stack = {
                               const StakingData = await findAllRecord(Stakingmodal, {
                                 userId: Refflevalncomex1._id,
                               });
-      
+
                               if (StakingData.length > 0) {
                                 const StakingData1 = await Stakingmodal.find({
                                   userId: Refflevalncomex1._id,
@@ -1754,7 +1754,7 @@ exports.stack = {
                                   totalstaking += StakingData1[i].Amount;
                                 }
                                 if (totalstaking * 3 >= withdrawalmodal1.incomeWallet) {
-      
+
                                   let data1 = {
                                     userId: Refflevalncomex1._id,
                                     Note: `You Got Level ${1} Income`,
@@ -1836,7 +1836,7 @@ exports.stack = {
                                       Active: true,
                                     }).save();
                                   });
-      
+
                                   await Communitymodal(data2).save();
                                   console.log("===============>22", {
                                     Refflevalncomex2,
@@ -1899,7 +1899,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data3).save();
-      
+
                                   console.log("===============>33", {
                                     Refflevalncomex3,
                                     data3,
@@ -1925,7 +1925,7 @@ exports.stack = {
                                 userId: Refflevalncomex4._id,
                               });
                               if (StakingData.length > 0) {
-      
+
                                 const StakingData4 = await Stakingmodal.find({
                                   userId: Refflevalncomex4._id,
                                   leval: 0,
@@ -1962,7 +1962,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data4).save();
-      
+
                                   console.log("===============>44", {
                                     Refflevalncomex4,
                                     data4,
@@ -2024,7 +2024,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data5).save();
-      
+
                                   console.log("===============>55", {
                                     Refflevalncomex5,
                                     data5,
@@ -2049,7 +2049,7 @@ exports.stack = {
                               const StakingData = await findAllRecord(Stakingmodal, {
                                 userId: Refflevalncomex6._id,
                               });
-      
+
                               if (StakingData.length > 0) {
                                 const StakingData6 = await Stakingmodal.find({
                                   userId: Refflevalncomex6._id,
@@ -2087,7 +2087,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data6).save();
-      
+
                                   console.log("===============>66", {
                                     Refflevalncomex6,
                                     data6,
@@ -2149,7 +2149,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data7).save();
-      
+
                                   console.log("===============>77", {
                                     Refflevalncomex7,
                                     data7,
@@ -2211,7 +2211,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data8).save();
-      
+
                                   console.log("===============>88", {
                                     Refflevalncomex8,
                                     data8,
@@ -2237,7 +2237,7 @@ exports.stack = {
                                 userId: Refflevalncomex9._id,
                               });
                               if (StakingData.length > 0) {
-      
+
                                 const StakingData9 = await Stakingmodal.find({
                                   userId: Refflevalncomex9._id,
                                   leval: 0,
@@ -2274,7 +2274,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data9).save();
-      
+
                                   console.log("===============>99", {
                                     Refflevalncomex9,
                                     data9,
@@ -2295,13 +2295,13 @@ exports.stack = {
                             if (!Refflevalncomex10) {
                               return;
                             }
-      
+
                             if (Refflevalncomex10.leval >= 10) {
                               const StakingData = await findAllRecord(Stakingmodal, {
                                 userId: Refflevalncomex10._id,
                               });
                               if (StakingData.length > 0) {
-      
+
                                 const StakingData10 = await Stakingmodal.find({
                                   userId: Refflevalncomex10._id,
                                   leval: 0,
@@ -2338,7 +2338,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data10).save();
-      
+
                                   console.log("===============>1010", {
                                     Refflevalncomex10,
                                     data10,
@@ -2359,7 +2359,7 @@ exports.stack = {
                             if (!Refflevalncomex11) {
                               return;
                             }
-      
+
                             if (Refflevalncomex11.leval >= 11) {
                               const StakingData = await findAllRecord(Stakingmodal, {
                                 userId: Refflevalncomex11._id,
@@ -2401,7 +2401,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data11).save();
-      
+
                                   console.log("===============>1111", {
                                     Refflevalncomex11,
                                     data11,
@@ -2427,8 +2427,8 @@ exports.stack = {
                                 userId: Refflevalncomex12._id,
                               });
                               if (StakingData.length > 0) {
-      
-      
+
+
                                 const StakingData12 = await Stakingmodal.find({
                                   userId: Refflevalncomex12._id,
                                   leval: 0,
@@ -2465,7 +2465,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data12).save();
-      
+
                                   console.log("===============>1212", {
                                     Refflevalncomex12,
                                     data12,
@@ -2491,8 +2491,8 @@ exports.stack = {
                                 userId: Refflevalncomex13._id,
                               });
                               if (StakingData.length > 0) {
-      
-      
+
+
                                 const StakingData12 = await Stakingmodal.find({
                                   userId: Refflevalncomex13._id,
                                   leval: 0,
@@ -2529,7 +2529,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data13).save();
-      
+
                                   console.log("===============>1313", {
                                     Refflevalncomex13,
                                     data13,
@@ -2555,8 +2555,8 @@ exports.stack = {
                                 userId: Refflevalncomex14._id,
                               });
                               if (StakingData.length > 0) {
-      
-      
+
+
                                 const StakingData12 = await Stakingmodal.find({
                                   userId: Refflevalncomex14._id,
                                   leval: 0,
@@ -2593,7 +2593,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data14).save();
-      
+
                                   console.log("===============>1414", {
                                     Refflevalncomex14,
                                     data14,
@@ -2662,7 +2662,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data15).save();
-      
+
                                   console.log("===============>1515", {
                                     Refflevalncomex15,
                                     data15,
@@ -2724,7 +2724,7 @@ exports.stack = {
                                     }).save();
                                   });
                                   await Communitymodal(data16).save();
-      
+
                                   console.log("===============>1616", {
                                     Refflevalncome16,
                                     data16,
@@ -3179,6 +3179,15 @@ exports.stack = {
               foreignField: "userId",
               as: "amount",
             },
+          },
+          {
+            $match: {
+              "amount.level": 0 // Add your additional condition here
+            }
+          },{
+            $match: {
+              "amount2.level": 0 // Add your additional condition here
+            }
           },
           {
             $project: {
