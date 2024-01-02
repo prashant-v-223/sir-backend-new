@@ -9,6 +9,7 @@ const routes = require("./routes/index");
 const Usermodal = require("./models/user");
 const Ewallateesc = require("./models/Ewallate");
 const V4XpriceSchemaDetails = require("./models/TokenDetails");
+const withdrawalmodal = require("./models/withdrawalhistory");
 const Stakingmodal = require("./models/Staking");
 const {
   findAllRecord,
@@ -23,6 +24,7 @@ const Achivement = require("./models/Achivement");
 const path = require("path");
 const { ObjectId } = require("mongodb");
 const Passive = require("./models/Passive");
+const Wallet = require("./models/Wallet");
 
 app.use(
   express.json({
@@ -47,6 +49,7 @@ app.get('/show-image', (req, res) => {
 });
 
 const every24hours = "0 19 * * *";
+// const every24hours = "*/10 * * * * *";
 schedule.scheduleJob(every24hours, async () => {
   try {
     const stakingRecords = await findAllRecord(Stakingmodal, { Active: true });
@@ -56,74 +59,83 @@ schedule.scheduleJob(every24hours, async () => {
           userId: record.userId,
         });
         if (StakingData.length > 0) {
-
           const StakingData9 = await Stakingmodal.find({
             userId: record.userId,
             leval: 0,
-          });
-          const withdrawalmodal1 = await Wallet.find({
-            userId: record.userId,
           });
           let totalstaking = 0;
           for (let i = 0; i < StakingData9.length; i++) {
             totalstaking += StakingData9[i].Amount;
           }
-          const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
-          // if (totalstaking * 2 / 90 * SIRprice.price >= withdrawalmodal1.mainWallet) {
-          if (record.TotalRewordRecived >= 0) {
-            const updatedWallet = await updateRecord(
-              Walletmodal,
-              { userId: record.userId },
-              { $inc: { mainWallet: record.DailyReword } }
-            );
-            if (updatedWallet) {
+          let totalgetrewords = await Mainwallatesc.aggregate([
+            {
+              $match: {
+                userId: record.userId,
+                type: 1,
+              },
+            },
+            {
+              $group: {
+                _id: "$userId",
+                totalAmount: { $sum: "$Amount" },
+              },
+            },
+          ]);
+          if (totalstaking * 2 >= totalgetrewords[0].totalAmount) {
+            if (record.TotalRewordRecived >= 0) {
+              const updatedWallet = await updateRecord(
+                Walletmodal,
+                { userId: record.userId },
+                { $inc: { mainWallet: record.DailyReword } }
+              );
+              if (updatedWallet) {
+                await Promise.all([
+                  Mainwallatesc({
+                    userId: record.userId,
+                    Note: "You Got Staking Bonus Income.",
+                    Amount: record.DailyReword,
+                    type: 1,
+                    balace: updatedWallet.mainWallet,
+                    Active: true,
+                  }).save(),
+                  Stakingbonus({
+                    userId: record.userId,
+                    rewordId: record._id,
+                    Amount: record.DailyReword,
+                    Note: "You Got Staking Bonus Income.",
+                    Active: true,
+                  }).save(),
+                  updateRecord(
+                    Stakingmodal,
+                    { _id: record._id },
+                    {
+                      TotalRewordRecived:
+                        record.TotalRewordRecived - record.DailyReword,
+                      TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
+                      $inc: { Totalsend: 1 },
+                    }
+                  ),
+                ]);
+              }
+            } else {
               await Promise.all([
-                Mainwallatesc({
-                  userId: record.userId,
-                  Note: "You Got Staking Bonus Income.",
-                  Amount: record.DailyReword,
-                  type: 1,
-                  balace: updatedWallet.mainWallet,
-                  Active: true,
-                }).save(),
                 Stakingbonus({
                   userId: record.userId,
                   rewordId: record._id,
-                  Amount: record.DailyReword,
-                  Note: "You Got Staking Bonus Income.",
-                  Active: true,
+                  Amount: 0,
+                  Note: "Your staking plan period is completed. You have received your bonus as per the return.",
+                  Active: false,
                 }).save(),
                 updateRecord(
                   Stakingmodal,
-                  { _id: record._id },
+                  { userId: record.userId },
                   {
-                    TotalRewordRecived:
-                      record.TotalRewordRecived - record.DailyReword,
-                    TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
-                    $inc: { Totalsend: 1 },
+                    Active: false,
                   }
                 ),
               ]);
             }
-          } else {
-            await Promise.all([
-              Stakingbonus({
-                userId: record.userId,
-                rewordId: record._id,
-                Amount: 0,
-                Note: "Your staking plan period is completed. You have received your bonus as per the return.",
-                Active: false,
-              }).save(),
-              updateRecord(
-                Stakingmodal,
-                { userId: record.userId },
-                {
-                  Active: false,
-                }
-              ),
-            ]);
           }
-        // }
         }
       }
     }
