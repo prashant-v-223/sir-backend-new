@@ -3725,7 +3725,7 @@ exports.stack = {
           return successResponse(res, {
             message: "staking data get successfully",
             data: StakingData,
-            profile: decoded.profile, SIRprice: SIRprice.price
+            profile: decoded.profile, SIRprice: 12.85
           });
         }
       } else {
