@@ -4227,6 +4227,7 @@ exports.stack = {
                 from: "users",
                 startWith: "$username",
                 connectFromField: "username",
+                depthField: "depthleval",
                 connectToField: "supporterId",
                 as: "referBY",
               },
