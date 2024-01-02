@@ -3321,13 +3321,14 @@ exports.stack = {
           {
             $lookup: {
               from: "stakings",
-              localField: "refers_to._id",
+              localField: "_id",
               foreignField: "userId",
               as: "amountupcoming11",
               pipeline: [
                 {
                   $match: {
-                    Active: !false,
+                    Active: { $ne: false }, // Active is not false
+                    leval: { $gt: 0 } // leval is greater than 0
                   },
                 },
               ],
@@ -3342,8 +3343,8 @@ exports.stack = {
               pipeline: [
                 {
                   $match: {
-                    Active: !false,
-                    leval: 0
+                    Active: { $ne: false }, // Active is not false
+                    leval: { $lt: 1 } // leval is greater than 0
                   },
                 },
               ],
