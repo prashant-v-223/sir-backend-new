@@ -3476,7 +3476,7 @@ exports.stack = {
                               100
                             ]
                           },
-                          { $multiply: ["$$this.DailyReword", "$$this.Totalsend"] }
+                          { $multiply: ["$$this.Totalsend", "$$this.DailyReword"] }
                         ]
                       }
                     ]
@@ -3498,7 +3498,7 @@ exports.stack = {
                               100
                             ]
                           },
-                          { $multiply: ["$$this.DailyReword", "$$this.Totalsend"] }
+                          { $multiply: ["$$this.Totalsend", "$$this.DailyReword"] }
                         ]
                       }
                     ]
