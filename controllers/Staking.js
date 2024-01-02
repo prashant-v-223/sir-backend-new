@@ -1724,7 +1724,7 @@ exports.stack = {
                               username: decoded.profile.username,
                               isValid: true,
                             });
-      
+
                             console.log("==========================================================>", Refflevalncome);
                             // if (!Refflevalncome) {
                             //   return;
@@ -3343,6 +3343,7 @@ exports.stack = {
                 {
                   $match: {
                     Active: !false,
+                    leval: 0
                   },
                 },
               ],
