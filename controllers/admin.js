@@ -6,6 +6,7 @@ const Sopprtmodal = require("../models/Ticket");
 const V4XpriceSchemaDetails = require("../models/TokenDetails");
 const Stakingmodal = require("../models/Staking");
 const Mainwallatesc = require("../models/Mainwallate");
+const Usermodal = require("./models/user");
 const Ewallateesc = require("../models/Ewallate");
 var ejs = require("ejs");
 const jwt = require("jsonwebtoken");

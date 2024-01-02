@@ -152,17 +152,35 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   let data1 = await findAllRecord(Usermodal, {
     mainId: data.username,
   });
-
+  const data12 = Usermodal.aggregate([
+    {
+      $match: {
+        mainId: data.usernam,
+        mystack: { $gt: data.mystack }
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        totalSelfStaking: {
+          $sum: "$mystack"
+        }
+      },
+      createdAt: { $first: "$createdAt" } // Include the first createdDate value
+    }
+  ]
+  )
   const fifteenDaysAgo = new Date();
   fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
-  if (new Date(data.createdAt) < fifteenDaysAgo) {
-    if (data1.length >= 5) {
+  if (data12.length >= 5) {
+    if (new Date(data12.createdAt) < fifteenDaysAgo) {
       await Usermodal.findByIdAndUpdate(
         { _id: user._id },
         {
           STAKINGBOOSTER: true,
         }
       );
+
       let data = await Stakingmodal.find({ userId: user._id });
       for (let index = 0; index < data.length; index++) {
         const element = data[index];
@@ -180,58 +198,58 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
           );
         }
       }
-
-      data1.sort((a, b) => {
-        let data = b.teamtotalstack + b.mystack
-        let data1 = a.teamtotalstack + a.mystack
-        return data - data1
-      });
-      let lastteamtotalstack = 0;
-      let lastteamtotalstack1 = 0;
-      console.log(data1);
-      const lastThreeObjects = data1.slice(-3);
-      for (let index = 0; index < lastThreeObjects.length; index++) {
-        lastteamtotalstack += lastThreeObjects[index].teamtotalstack;
-        lastteamtotalstack1 += lastThreeObjects[index].mystack;
-      }
-      let fastlag = data1[0].teamtotalstack + data1[0].mystack
-      let seclag = data1[1].teamtotalstack + data1[1].mystack
-      let lastlag = lastteamtotalstack1 + lastteamtotalstack
-      if (teamtotalstack * 0.5 <= fastlag) {
-        if (teamtotalstack * 0.25 <= seclag) {
-          if (teamtotalstack * 0.25 <= lastlag) {
-            await updateRecord(
-              Usermodal,
-              {
-                _id: user._id,
-                Rank: user.Rank,
-              },
-              { Rank: newRank }
-            );
-            const da = await findAllRecord(Usermodal, {
+    }
+    data1.sort((a, b) => {
+      let data = b.teamtotalstack + b.mystack
+      let data1 = a.teamtotalstack + a.mystack
+      return data - data1
+    });
+    let lastteamtotalstack = 0;
+    let lastteamtotalstack1 = 0;
+    console.log(data1);
+    const lastThreeObjects = data1.slice(-3);
+    for (let index = 0; index < lastThreeObjects.length; index++) {
+      lastteamtotalstack += lastThreeObjects[index].teamtotalstack;
+      lastteamtotalstack1 += lastThreeObjects[index].mystack;
+    }
+    let fastlag = data1[0].teamtotalstack + data1[0].mystack
+    let seclag = data1[1].teamtotalstack + data1[1].mystack
+    let lastlag = lastteamtotalstack1 + lastteamtotalstack
+    if (teamtotalstack * 0.5 <= fastlag) {
+      if (teamtotalstack * 0.25 <= seclag) {
+        if (teamtotalstack * 0.25 <= lastlag) {
+          await updateRecord(
+            Usermodal,
+            {
               _id: user._id,
-              Rank: newRank,
-            });
+              Rank: user.Rank,
+            },
+            { Rank: newRank }
+          );
+          const da = await findAllRecord(Usermodal, {
+            _id: user._id,
+            Rank: newRank,
+          });
 
-            if (da.length > 0) {
-              let data = {
-                userId: user._id,
-                Note: `You Have Acheicer New ${rewardAmount}`,
-                Amount: rewardAmount,
-              };
-              const da1 = await findAllRecord(Usermodal, {
-                userId: user._id,
-                Note: `You Have Acheicer New ${rewardAmount}`,
-              });
-              if (da1.length === 0) {
-                await Achivement(data).save();
-              }
+          if (da.length > 0) {
+            let data = {
+              userId: user._id,
+              Note: `You Have Acheicer New ${rewardAmount}`,
+              Amount: rewardAmount,
+            };
+            const da1 = await findAllRecord(Usermodal, {
+              userId: user._id,
+              Note: `You Have Acheicer New ${rewardAmount}`,
+            });
+            if (da1.length === 0) {
+              await Achivement(data).save();
             }
           }
         }
       }
     }
   }
+
 };
 schedule.scheduleJob("*/10 * * * *", async () => {
   try {
