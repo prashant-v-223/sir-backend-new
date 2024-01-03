@@ -204,11 +204,15 @@ exports.register = {
                 to: res1["email"], // List of recipients
                 subject: "verification by SIR", // Subject line
                 html:
+                  `<img src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/lock5.png?alt=media&token=27f3dd18-fa76-4c77-bcbe-7e8c8959c5ac" height="100" class="img-fluid" width="100">` +
                   "<h2>" +
-                  "OTP for SIR" +
+                  "SIR GLOBAL TO CADEMY" +
+                  "</h2>" +
+                  "<h2>" +
+                  "Hello" + "(" + res1.username + ")" +
                   "</h2>" +
                   "<h4>" +
-                  "OTP To Validate Your SIR  is: " +
+                  "Thank you for choosing SIR GLOBAL Aeadery. the this OTP to complete your signup procedures and verify your account" +
                   "</h4>" +
                   "<br/>" +
                   `<h2  style="
@@ -216,7 +220,11 @@ exports.register = {
                   OTP +
                   "</h2>" +
                   "<h6>" +
-                  "If You Have Not Send This OTP Request , Kindly Contact Support" +
+                  "If you didn't request this, you can ignore this email or let us know to support esirglades" +
+                  "</h6>" +
+                  "<br/>" +
+                  "<h6>" +
+                  "thank you" +
                   "</h6>" +
                   "<h6>" +
                   "support@SIR.org" +
@@ -254,6 +262,7 @@ exports.register = {
                     title="facebook"
                     width="32"
                 /></a>` +
+                  "</h6>" +
                   "<h6>" +
                   "Visit Us At : www.sirglobal.org  " +
                   "</h6>",
