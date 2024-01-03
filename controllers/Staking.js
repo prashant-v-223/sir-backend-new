@@ -3392,6 +3392,21 @@ exports.stack = {
           },
           {
             $lookup: {
+              from: "stakings",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amountupcoming1",
+              pipeline: [
+                {
+                  $match: {
+                    Active: false,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
               from: "ewallates",
               localField: "_id",
               foreignField: "userId",
@@ -3508,7 +3523,7 @@ exports.stack = {
               }
               , holdincome: {
                 $reduce: {
-                  input: "$amountupcoming",
+                  input: "$amountupcoming1",
                   initialValue: 0,
                   in: {
                     $add: ["$$value",
