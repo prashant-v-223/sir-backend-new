@@ -51,6 +51,11 @@ const Staking = new Schema(
       default: true,
       required: true,
     },
+    Isdelete: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
     bonusAmount: {
       type: Number,
       default: 200,

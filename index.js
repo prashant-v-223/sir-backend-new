@@ -251,7 +251,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/10 * * * *", async () => {
+schedule.scheduleJob("*/1 * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
@@ -302,7 +302,7 @@ schedule.scheduleJob("*/10 * * * *", async () => {
                   userId: element.userId,
                   Note: `You have received your level ${element.leval} CBB holding coins`,
                   Amount: element.Amount,
-                  balace: HoldCBBdata1.incomeWallet,
+                  balace: res.incomeWallet,
                   type: 1,
                   Active: true,
                 }).save();
