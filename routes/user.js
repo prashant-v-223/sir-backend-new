@@ -32,6 +32,9 @@ router.get("/Passive/Building/income", (req, res) => {
 router.get("/indaireactteam", (req, res) => {
   return stackController.stack.indaireactteam(req, res);
 });
+router.get("/CBBteam", (req, res) => {
+  return stackController.stack.CBBteam(req, res);
+});
 router.get("/daireactteam", (req, res) => {
   return stackController.stack.daireactteam(req, res);
 });

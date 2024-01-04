@@ -4237,6 +4237,14 @@ exports.stack = {
               },
             },
             {
+              $lookup: {
+                from: "stakings",
+                localField: "_id",
+                foreignField: "userId",
+                as: "result",
+              },
+            },
+            {
               $project: {
                 referredUser: 0,
                 password: 0,
@@ -4256,6 +4264,89 @@ exports.stack = {
                 Airdropped: 0,
               },
             },
+          ]);
+          return successResponse(res, {
+            message: "wallet data get successfully",
+            ReffData: data,
+          });
+        }
+      } else {
+        return badRequestResponse(res, {
+          message: "No token provided.",
+        });
+      }
+    } catch (error) {
+      return errorResponse(error, res);
+    }
+  },
+  CBBteam: async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        let { err, decoded } = await tokenverify(
+          req.headers.authorization
+        );
+        if (err) {
+          return notFoundResponse(res, {
+            message: "user not found",
+          });
+        }
+        if (decoded) {
+          decoded = await cloneDeep(decoded);
+          let data = await Usermodal.aggregate([
+            {
+              $match: {
+                username: decoded.profile.username,
+              },
+            },
+            {
+              $graphLookup: {
+                from: "users",
+                startWith: "$username",
+                connectFromField: "username",
+                depthField: "depthleval",
+                connectToField: "mainId",
+                as: "referBY",
+              },
+            },
+            {
+              $lookup: {
+                from: "stakings",
+                localField: "referBY._id",
+                foreignField: "userId",
+                as: "result",
+              },
+            },
+            {
+              $addFields: {
+                referBY: {
+                  $map: {
+                    input: "$referBY",
+                    as: "user",
+                    in: {
+                      $mergeObjects: [
+                        "$$user",
+                        {
+                          stakingData: {
+                            $filter: {
+                              input: "$result",
+                              as: "staking",
+                              cond: {
+                                $eq: ["$$staking.userId", "$$user._id"]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            {
+              $project: {
+                result: 0 // Exclude the original staking data array if needed
+              }
+            }
           ]);
           return successResponse(res, {
             message: "wallet data get successfully",
