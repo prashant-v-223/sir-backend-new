@@ -3085,9 +3085,62 @@ exports.stack = {
         }
         if (decoded) {
           decoded = await cloneDeep(decoded);
-          const StakingData = await findAllRecord(Stakingmodal, {
-            userId: decoded.profile._id,
-          });
+          // const StakingData = await findAllRecord(Stakingmodal, {
+          //   userId: decoded.profile._id,
+          // });
+          const StakingData = await Stakingmodal.aggregate([
+            {
+              $match: {
+                userId: ObjectId(decoded.profile._id),
+              },
+            },
+            {
+              $lookup: {
+                from: "users",
+                let: {
+                  walletType: {
+                    $split: ["$WalletType", "("],
+                  },
+                },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: [
+                          "$username",
+                          {
+                            $cond: {
+                              if: {
+                                $eq: [
+                                  { $size: "$$walletType" },
+                                  1,
+                                ],
+                              },
+                              then: "$$walletType",
+                              else: {
+                                $trim: {
+                                  input: {
+                                    $arrayElemAt: [
+                                      "$$walletType",
+                                      1,
+                                    ],
+                                  },
+                                  chars: ")",
+                                },
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                ],
+                as: "result",
+              },
+            },
+          ])
+          // console.log(StakingData1);
+          console.log(StakingData);
           const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
           return successResponse(res, {
             message: "staking data get successfully",
