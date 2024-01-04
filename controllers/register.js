@@ -204,7 +204,7 @@ exports.register = {
                 to: res1["email"], // List of recipients
                 subject: "verification by SIR", // Subject line
                 html:
-                  `<img src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/lock5.png?alt=media&token=27f3dd18-fa76-4c77-bcbe-7e8c8959c5ac" height="100" class="img-fluid" width="100">` +
+                  `<img src="https://firebasestorage.googleapis.com/v0/b/doubtq-student.appspot.com/o/icon2.png?alt=media&token=7e933aff-37ab-46ae-a0c1-8180c2eaf931&_gl=1*10gdqfi*_ga*OTgwMjYzMTIyLjE2ODM5NTgxMTM.*_ga_CW55HF8NVT*MTY5NzE3NjcxMi4xMC4xLjE2OTcxNzY3NTguMTQuMC4w" height="100" class="img-fluid" width="100">` +
                   "<h2>" +
                   "SIR GLOBAL TO CADEMY" +
                   "</h2>" +
