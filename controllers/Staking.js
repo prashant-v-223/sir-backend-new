@@ -82,7 +82,7 @@ const cronHandler = async (user) => {
       if (refExists.referred.length < 5) {
         const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
           $set: {
-            supporterId: refExists.supporterId || refExists.refId,
+            supporterId: refExists.refId,
           }
         });
         refExists.referred.push(newRef.refId);
