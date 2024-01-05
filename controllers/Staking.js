@@ -78,45 +78,44 @@ const cronHandler = async (user) => {
     const id = user.refId;
     const refId = user.mainId;
     console.log(refExists);
-    if (refExists.referred.length !== 0) {
-      if (refExists.referred.length < 5) {
-        const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
-          $set: {
-            supporterId: refExists.refId,
-          }
-        });
-        refExists.referred.push(newRef.refId);
-        await refExists.save();
-        // console.log("refIdExistsInReferred2", refIdExistsInReferred);
-        //   res.send(`added`);
-      } else {
-        await getRef(refExists.referred[refExists.nextRefIndex], refId, id);
-
-        refExists.nextRefIndex = refExists.nextRefIndex + 1 > 4 ? 0 : refExists.nextRefIndex + 1;
-
-        let isExistsInNextRefIdsToBeSkipped = false;
-        do {
-          const index = refExists.nextRefIdsToBeSkipped.indexOf(refExists.referred[refExists.nextRefIndex]);
-          isExistsInNextRefIdsToBeSkipped = index !== -1;
-          if (isExistsInNextRefIdsToBeSkipped) {
-            refExists.nextRefIdsToBeSkipped.splice(index, 1);
-            refExists.nextRefIndex = refExists.nextRefIndex + 1 > 4 ? 0 : refExists.nextRefIndex + 1;
-          }
-        } while (isExistsInNextRefIdsToBeSkipped);
-        await refExists.save();
-      }
+    // if (refExists.mainId === null) {
+    if (refExists.referred.length < 5) {
+      const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
+        $set: {
+          supporterId: refExists.supporterId || refExists.refId,
+        }
+      });
+      refExists.referred.push(newRef.refId);
+      await refExists.save();
+      // console.log("refIdExistsInReferred2", refIdExistsInReferred);
+      //   res.send(`added`);
     } else {
-      await getRef(refId, refId, id);
-      const refIdExistsInReferred = await Usermodal.findOne({ referred: { $elemMatch: { $eq: refId } } });
-      if (refIdExistsInReferred) {
-        refIdExistsInReferred.nextRefIdsToBeSkipped.push(refId);
-        await refIdExistsInReferred.save();
-      }
+      await getRef(refExists.referred[refExists.nextRefIndex], refId, id);
+
+      refExists.nextRefIndex = refExists.nextRefIndex + 1 > 4 ? 0 : refExists.nextRefIndex + 1;
+
+      let isExistsInNextRefIdsToBeSkipped = false;
+      do {
+        const index = refExists.nextRefIdsToBeSkipped.indexOf(refExists.referred[refExists.nextRefIndex]);
+        isExistsInNextRefIdsToBeSkipped = index !== -1;
+        if (isExistsInNextRefIdsToBeSkipped) {
+          refExists.nextRefIdsToBeSkipped.splice(index, 1);
+          refExists.nextRefIndex = refExists.nextRefIndex + 1 > 4 ? 0 : refExists.nextRefIndex + 1;
+        }
+      } while (isExistsInNextRefIdsToBeSkipped);
+      await refExists.save();
     }
+    console.log(refId, refId, id);
+    // } else {
+    //   await getRef(refId, refId, id);
+    //   const refIdExistsInReferred = await Usermodal.findOne({ referred: { $elemMatch: { $eq: refId } } });
+    //   if (refIdExistsInReferred) {
+    //     refIdExistsInReferred.nextRefIdsToBeSkipped.push(refId);
+    //     await refIdExistsInReferred.save();
+    //   }
+    // }
 
   }
-
-
 }
 
 const nowIST = new Date("2023-11-01T16:19:08.981+00:00");

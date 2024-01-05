@@ -216,8 +216,11 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     }
   }
   const fifteenDaysAgo = new Date();
-  fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+  console.log("data1", data1);
+  fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() + 15);
   if (data1.length >= 5) {
+    console.log("data1", fifteenDaysAgo);
+    console.log("data1", new Date(data.createdAt));
     if (new Date(data.createdAt) < fifteenDaysAgo) {
       console.log("data1data1===1", data.mystack <= data1[0].mystack, data1[0].mystack);
       console.log("data1data1===2", data.mystack <= data1[1].mystack, data1[1].mystack);
@@ -268,9 +271,9 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/10 * * * *", async () => {
+schedule.scheduleJob("*/10 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, { username: "SIR81214" });
+    const Userdata = await findAllRecord(Usermodal, { username: "SIR63514" });
     for (const user of Userdata) {
       const { _id: userId, username } = user;
       console.log(username);
@@ -309,6 +312,7 @@ schedule.scheduleJob("*/10 * * * *", async () => {
         }
       }
       if (user) {
+        console.log(user);
         switch (user?.Rank) {
           case "Trainee":
             await updateRank(user, "ACE", "SMART WATCH", 1000);
@@ -363,7 +367,7 @@ schedule.scheduleJob("*/10 * * * *", async () => {
     console.log(error);
   }
 });
-schedule.scheduleJob("*/10 * * * *", async () => {
+schedule.scheduleJob("*/10 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
