@@ -265,7 +265,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/20 * * * * *", async () => {
+schedule.scheduleJob("*/10 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, { username: "SIR81214" });
     for (const user of Userdata) {
@@ -360,7 +360,7 @@ schedule.scheduleJob("*/20 * * * * *", async () => {
     console.log(error);
   }
 });
-schedule.scheduleJob("*/20 * * * * *", async () => {
+schedule.scheduleJob("*/10 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
