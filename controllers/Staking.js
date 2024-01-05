@@ -77,8 +77,8 @@ const cronHandler = async (user) => {
     if (!refExists) return;
     const id = user.refId;
     const refId = user.mainId;
-
-    if (refExists.mainId === null) {
+    console.log(refExists);
+    if (refExists.referred.length !== 0) {
       if (refExists.referred.length < 5) {
         const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
           $set: {
@@ -3009,6 +3009,7 @@ exports.stack = {
         userData,
         aggregatedUserData,
         data1,
+        data22,
         data,
         data123,
       ] = await Promise.all([
@@ -3110,6 +3111,30 @@ exports.stack = {
           {
             $match: {
               supporterId: username,
+            },
+          },
+          {
+            $project: {
+              // Exclude unnecessary fields
+              referredUser: 0,
+              walletaddress: 0,
+              profileimg: 0,
+              password: 0,
+              isActive: 0,
+              isValid: 0,
+              createdAt: 0,
+              updatedAt: 0,
+              __v: 0,
+              referredUser: 0,
+              AirdroppedActive: 0,
+              Airdropped: 0,
+            },
+          },
+        ]),
+        Usermodal.aggregate([
+          {
+            $match: {
+              mainId: username,
             },
           },
           {
@@ -3572,6 +3597,7 @@ exports.stack = {
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
         ReffData1: data1,
+        ReffData2: data22,
         income: data123,
         SIRprice: SIRprice.price
       });
