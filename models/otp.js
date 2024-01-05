@@ -6,6 +6,6 @@ var OtpSchema = new mongoose.Schema({
     ref: "user",
   },
   otp: Number,
-  createdAt: { type: Date, expires: "1m", default: Date.now },
+  createdAt: { type: Date, expires: "10 m", default: Date.now },
 });
 module.exports = mongoose.model("otp", OtpSchema);
