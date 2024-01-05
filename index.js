@@ -212,40 +212,57 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
       }
     }
   }
-  console.log("lastThreeObjects", 8000 * 0.25);
-  console.log("lastThreeObjects", lastlag);
-  // console.log("lastThreeObjects", teamtotalstack * 0.25);
+  const fifteenDaysAgo = new Date();
+  fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+  if (data1.length >= 5) {
+    if (new Date(data.createdAt) < fifteenDaysAgo) {
+      console.log("data1data1===1", data.mystack <= data1[0].mystack, data1[0].mystack);
+      console.log("data1data1===2", data.mystack <= data1[1].mystack, data1[1].mystack);
+      console.log("data1data1===3", data.mystack <= data1[2].mystack, data1[2].mystack);
+      console.log("data1data1===4", data.mystack <= data1[3].mystack, data1[3].mystack);
+      console.log("data1data1===5", data.mystack <= data1[4].mystack, data1[4].mystack);
+      console.log("datadatadata", data.mystack);
+      if (data.mystack <= data1[0].mystack) {
 
-  // const fifteenDaysAgo = new Date();
-  // fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
-  // if (data12.length >= 5) {
-  //   if (new Date(data12.createdAt) < fifteenDaysAgo) {
-  //     await Usermodal.findByIdAndUpdate(
-  //       { _id: user._id },
-  //       {
-  //         STAKINGBOOSTER: true,
-  //       }
-  //     );
+        if (data.mystack <= data1[1].mystack) {
+          if (data.mystack <= data1[2].mystack) {
+            if (data.mystack <= data1[3].mystack) {
+              if (data.mystack <= data1[4].mystack) {
+                if (user.STAKINGBOOSTER === false) {
+                  await Usermodal.findByIdAndUpdate(
+                    { _id: user._id },
+                    {
+                      STAKINGBOOSTER: true,
+                    }
+                  );
+                  let data = await Stakingmodal.find({ userId: user._id });
+                  for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    let d = await Stakingmodal.find({ userId: element.userId });
+                    for (let index = 0; index < d.length; index++) {
+                      const element123 = d[index];
+                      let a = 500 - element123.Totalsend;
+                      let b = element123.Amount / 1000 * 2;
+                      await Stakingmodal.findOneAndUpdate(
+                        { _id: element123._id },
+                        {
+                          DailyReword: b,
+                          TotaldaysTosendReword: a,
+                        }
+                      );
+                    }
+                  }
+                }
+              } else {
+                console.log("done11");
+              }
+            }
+          }
+        }
+      }
 
-  //     let data = await Stakingmodal.find({ userId: user._id });
-  //     for (let index = 0; index < data.length; index++) {
-  //       const element = data[index];
-  //       let d = await Stakingmodal.find({ userId: element.userId });
-  //       for (let index = 0; index < d.length; index++) {
-  //         const element123 = d[index];
-  //         let a = 500 - element123.Totalsend;
-  //         let b = element123.Amount / 1000 * 2;
-  //         await Stakingmodal.findOneAndUpdate(
-  //           { _id: element123._id },
-  //           {
-  //             DailyReword: b,
-  //             TotaldaysTosendReword: a,
-  //           }
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
+    }
+  }
 
 };
 schedule.scheduleJob("*/3 * * * * *", async () => {
@@ -289,7 +306,6 @@ schedule.scheduleJob("*/3 * * * * *", async () => {
         }
       }
       if (user) {
-        console.log("===>>res[0]", user);
         switch (user?.Rank) {
           case "Trainee":
             await updateRank(user, "ACE", "SMART WATCH", 1000);
