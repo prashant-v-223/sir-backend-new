@@ -221,53 +221,52 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   if (data1.length >= 5) {
     console.log("data1", fifteenDaysAgo);
     console.log("data1", new Date(data.createdAt));
-    if (new Date(data.createdAt) < fifteenDaysAgo) {
-      console.log("data1data1===1", data.mystack <= data1[0].mystack, data1[0].mystack);
-      console.log("data1data1===2", data.mystack <= data1[1].mystack, data1[1].mystack);
-      console.log("data1data1===3", data.mystack <= data1[2].mystack, data1[2].mystack);
-      console.log("data1data1===4", data.mystack <= data1[3].mystack, data1[3].mystack);
-      console.log("data1data1===5", data.mystack <= data1[4].mystack, data1[4].mystack);
-      console.log("datadatadata", data.mystack);
-      if (data.mystack <= data1[0].mystack) {
+    // if (new Date(data.createdAt) < fifteenDaysAgo) {
+    console.log("data1data1===1", data.mystack <= data1[0].mystack, data1[0].mystack);
+    console.log("data1data1===2", data.mystack <= data1[1].mystack, data1[1].mystack);
+    console.log("data1data1===3", data.mystack <= data1[2].mystack, data1[2].mystack);
+    console.log("data1data1===4", data.mystack <= data1[3].mystack, data1[3].mystack);
+    console.log("data1data1===5", data.mystack <= data1[4].mystack, data1[4].mystack);
+    console.log("datadatadata", data.mystack);
+    if (data.mystack <= data1[0].mystack) {
 
-        if (data.mystack <= data1[1].mystack) {
-          if (data.mystack <= data1[2].mystack) {
-            if (data.mystack <= data1[3].mystack) {
-              if (data.mystack <= data1[4].mystack) {
-                if (user.STAKINGBOOSTER === false) {
-                  await Usermodal.findByIdAndUpdate(
-                    { _id: user._id },
-                    {
-                      STAKINGBOOSTER: true,
-                    }
-                  );
-                  let data = await Stakingmodal.find({ userId: user._id });
-                  for (let index = 0; index < data.length; index++) {
-                    const element = data[index];
-                    let d = await Stakingmodal.find({ userId: element.userId });
-                    for (let index = 0; index < d.length; index++) {
-                      const element123 = d[index];
-                      let a = 500 - element123.Totalsend;
-                      let b = element123.Amount / 1000 * 2;
-                      await Stakingmodal.findOneAndUpdate(
-                        { _id: element123._id },
-                        {
-                          DailyReword: b,
-                          TotaldaysTosendReword: a,
-                        }
-                      );
-                    }
+      if (data.mystack <= data1[1].mystack) {
+        if (data.mystack <= data1[2].mystack) {
+          if (data.mystack <= data1[3].mystack) {
+            if (data.mystack <= data1[4].mystack) {
+              if (user.STAKINGBOOSTER === false) {
+                await Usermodal.findByIdAndUpdate(
+                  { _id: user._id },
+                  {
+                    STAKINGBOOSTER: true,
+                  }
+                );
+                let data = await Stakingmodal.find({ userId: user._id });
+                for (let index = 0; index < data.length; index++) {
+                  const element = data[index];
+                  let d = await Stakingmodal.find({ userId: element.userId });
+                  for (let index = 0; index < d.length; index++) {
+                    const element123 = d[index];
+                    let a = 500 - element123.Totalsend;
+                    let b = element123.Amount / 1000 * 2;
+                    await Stakingmodal.findOneAndUpdate(
+                      { _id: element123._id },
+                      {
+                        DailyReword: b,
+                        TotaldaysTosendReword: a,
+                      }
+                    );
                   }
                 }
-              } else {
-                console.log("done11");
               }
+            } else {
+              console.log("done11");
             }
           }
         }
       }
-
     }
+    // }
   }
 
 };
