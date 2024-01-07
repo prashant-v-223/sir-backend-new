@@ -54,10 +54,12 @@ const every24hours = "0 19 * * *";
 const every24hours1 = "30 19 * * *";
 schedule.scheduleJob(every24hours, async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, { username: "SIR32764" });
-    const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, userId: ObjectId(Userdata[0]._id) });
+    const Userdata = await findAllRecord(Usermodal, {});
+    for (let index = 0; index < Userdata.length; index++) {
+      const element = Userdata[index];
+      
+    const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, userId: ObjectId(element._id) });
     console.log("stakingRecordsstakingRecordsstakingRecords", stakingRecords);
-    console.log("UserdataUserdataUserdataUserdata", Userdata);
     for (const record of stakingRecords) {
       if (record) {
         const StakingData = await findAllRecord(Stakingmodal, {
@@ -146,6 +148,7 @@ schedule.scheduleJob(every24hours, async () => {
           // }s
         }
       }
+    }
     }
   }
   catch (error) {
