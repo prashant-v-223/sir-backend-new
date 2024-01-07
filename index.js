@@ -52,7 +52,7 @@ app.get('/show-image', (req, res) => {
 
 const every24hours = "0 19 * * *";
 const every24hours1 = "30 19 * * *";
-schedule.scheduleJob("*/6 * * * * *", async () => {
+schedule.scheduleJob(every24hours, async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, { username: "SIR32764" });
     const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, userId: ObjectId(Userdata[0]._id) });
@@ -373,7 +373,7 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
     console.log(error);
   }
 });
-schedule.scheduleJob(every24hours1, async () => {
+schedule.scheduleJob("*/30 * * * * *", async () => {
   try {
     let data = await Usermodal.aggregate([
       {
@@ -472,22 +472,24 @@ schedule.scheduleJob(every24hours1, async () => {
             },
           }
         ).then(async (res) => {
-          await Royalty({
-            userId: Userdata1[0]?._id,
-            Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.totalAmountSum * 10 / 100,
-            type: 1,
-            balace: res.incomeWallet,
-            Active: true,
-          }).save();
-          await Ewallateesc({
-            userId: Userdata1[0]?._id,
-            Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.totalAmountSum * 10 / 100,
-            type: 1,
-            balace: res.incomeWallet,
-            Active: true,
-          }).save();
+          if (element1.totalAmountSum > 0) {
+            await Royalty({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.totalAmountSum * 10 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+            await Ewallateesc({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.totalAmountSum * 10 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+          }
         });
       }
     }
@@ -587,22 +589,24 @@ schedule.scheduleJob(every24hours1, async () => {
             },
           }
         ).then(async (res) => {
-          await Royalty({
-            userId: Userdata1[0]?._id,
-            Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-            type: 1,
-            balace: res.incomeWallet,
-            Active: true,
-          }).save();
-          await Ewallateesc({
-            userId: Userdata1[0]?._id,
-            Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-            type: 1,
-            balace: res.incomeWallet,
-            Active: true,
-          }).save();
+          if (element1.totalAmountSum > 0) {
+            await Royalty({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+            await Ewallateesc({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+          }
         });
       }
 
@@ -705,22 +709,24 @@ schedule.scheduleJob(every24hours1, async () => {
             },
           }
         ).then(async (res) => {
-          await Royalty({
-            userId: Userdata1[0]?._id,
-            Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-            type: 1,
-            balace: res.incomeWallet,
-            Active: true,
-          }).save();
-          await Ewallateesc({
-            userId: Userdata1[0]?._id,
-            Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-            type: 1,
-            balace: res.incomeWallet,
-            Active: true,
-          }).save();
+          if (element1.totalAmountSum > 0) {
+            await Royalty({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+            await Ewallateesc({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+          }
         });
       }
 
