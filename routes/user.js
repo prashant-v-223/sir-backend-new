@@ -26,6 +26,9 @@ router.get("/Community/Building/income", (req, res) => {
 router.get("/Achievement/Building/income", (req, res) => {
   return stackController.stack.getAchievementincome(req, res);
 });
+router.get("/royalty/Building/income", (req, res) => {
+  return stackController.stack.getRoyalty(req, res);
+});
 router.get("/Passive/Building/income", (req, res) => {
   return stackController.stack.gePassiveincome(req, res);
 });

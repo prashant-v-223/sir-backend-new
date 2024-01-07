@@ -15,6 +15,7 @@ const {
   validarionerrorResponse,
 } = require("../middleware/response");
 const V4XpriceSchemaDetails = require("../models/TokenDetails");
+const Royaltymodal = require("../models/Royalty");
 const withdrawalmodal = require("../models/withdrawalhistory");
 const { tokenverify } = require("../middleware/token");
 const Stakingmodal = require("../models/Staking");
@@ -4126,6 +4127,35 @@ exports.stack = {
           });
           return successResponse(res, {
             message: "Achievement Income get successfully",
+            data: data,
+          });
+        }
+      } else {
+        return badRequestResponse(res, {
+          message: "No token provided.",
+        });
+      }
+    } catch (error) {
+      return errorResponse(error, res);
+    }
+  },
+  getRoyalty: async (req, res) => {
+    try {
+      if (req.headers.authorization) {
+        let { err, decoded } = await tokenverify(
+          req.headers.authorization.split(" ")[1]
+        );
+        if (err) {
+          return notFoundResponse(res, {
+            message: "user not found",
+          });
+        }
+        if (decoded) {
+          let data = await findAllRecord(Royaltymodal, {
+            userId: decoded.profile._id,
+          });
+          return successResponse(res, {
+            message: "Royalty Income get successfully",
             data: data,
           });
         }

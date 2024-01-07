@@ -276,7 +276,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
 };
 schedule.scheduleJob("*/30 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, {  });
+    const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
       const { _id: userId, username } = user;
       console.log(username);
@@ -487,7 +487,6 @@ schedule.scheduleJob(every24hours1, async () => {
           }).save();
         });
       }
-
     }
     let data1 = await Usermodal.aggregate([
       {
@@ -568,12 +567,11 @@ schedule.scheduleJob(every24hours1, async () => {
     ]
     )
     for (let index = 0; index < data1.length; index++) {
-      const element = data[index];
+      const element = data1[index];
+      console.log("element", element);
       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
       for (let index = 0; index < element.referBY.length; index++) {
         const element1 = element.referBY[index];
-        console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1.totalAmountSum * 5 / 100,
-          Userdata1[0].username);
         await updateRecord(
           Walletmodal,
           {
@@ -582,14 +580,14 @@ schedule.scheduleJob(every24hours1, async () => {
           {
             $inc: {
               incomeWallet:
-                element1.totalAmountSum * 5 / 100,
+                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
             },
           }
         ).then(async (res) => {
           await Royalty({
             userId: Userdata1[0]?._id,
             Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.totalAmountSum * 5 / 100,
+            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
             type: 1,
             balace: res.incomeWallet,
             Active: true,
@@ -597,7 +595,7 @@ schedule.scheduleJob(every24hours1, async () => {
           await Ewallateesc({
             userId: Userdata1[0]?._id,
             Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.totalAmountSum * 5 / 100,
+            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
             type: 1,
             balace: res.incomeWallet,
             Active: true,
@@ -685,7 +683,7 @@ schedule.scheduleJob(every24hours1, async () => {
     ]
     )
     for (let index = 0; index < data2.length; index++) {
-      const element = data[index];
+      const element = data2[index];
       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
       for (let index = 0; index < element.referBY.length; index++) {
         const element1 = element.referBY[index];
@@ -699,14 +697,15 @@ schedule.scheduleJob(every24hours1, async () => {
           {
             $inc: {
               incomeWallet:
-                element1.totalAmountSum * 5 / 100,
+
+                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
             },
           }
         ).then(async (res) => {
           await Royalty({
             userId: Userdata1[0]?._id,
             Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.totalAmountSum * 5 / 100,
+            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
             type: 1,
             balace: res.incomeWallet,
             Active: true,
@@ -714,7 +713,7 @@ schedule.scheduleJob(every24hours1, async () => {
           await Ewallateesc({
             userId: Userdata1[0]?._id,
             Note: `You Got Royalty Income From ${element1.username}`,
-            Amount: element1.totalAmountSum * 5 / 100,
+            Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
             type: 1,
             balace: res.incomeWallet,
             Active: true,
