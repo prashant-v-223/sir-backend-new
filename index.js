@@ -52,14 +52,18 @@ app.get('/show-image', (req, res) => {
 
 const every24hours = "0 19 * * *";
 const every24hours1 = "30 19 * * *";
-schedule.scheduleJob(every24hours, async () => {
+schedule.scheduleJob("*/6 * * * * *", async () => {
   try {
-    const stakingRecords = await findAllRecord(Stakingmodal, { Active: true });
+    const Userdata = await findAllRecord(Usermodal, { username: "SIR32764" });
+    const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, userId: ObjectId(Userdata[0]._id) });
+    console.log("stakingRecordsstakingRecordsstakingRecords", stakingRecords);
+    console.log("UserdataUserdataUserdataUserdata", Userdata);
     for (const record of stakingRecords) {
       if (record) {
         const StakingData = await findAllRecord(Stakingmodal, {
           userId: record.userId,
         });
+        console.log(record);
         if (StakingData.length > 0) {
           // const StakingData9 = await Stakingmodal.find({
           //   userId: record.userId,
@@ -252,11 +256,10 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
                   for (let index = 0; index < d.length; index++) {
                     const element123 = d[index];
                     let a = 500 - element123.Totalsend;
-                    let b = element123.Amount / 1000 * 2;
                     await Stakingmodal.findOneAndUpdate(
                       { _id: element123._id },
                       {
-                        DailyReword: b,
+                        DailyReword: element123.DailyReword * 2,
                         TotaldaysTosendReword: a,
                       }
                     );
@@ -274,102 +277,102 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/30 * * * * *", async () => {
-  try {
-    const Userdata = await findAllRecord(Usermodal, { username: "SIR32764" });
-    for (const user of Userdata) {
-      const { _id: userId, username } = user;
-      console.log(username);
-      console.log(userId);
-      let HoldCBBdata = await findAllRecord(HoldCBB, {
-        userId: user._id,
-        leval: { $lte: user.leval },
-        Active: false
-      });
-      if (HoldCBBdata.length >= 0) {
-        for (let index = 0; index < HoldCBBdata.length; index++) {
-          const element = HoldCBBdata[index];
-          const updatedWallet = await updateRecord(
-            Walletmodal,
-            { userId: element.userId },
-            { $inc: { incomeWallet: element.Amount } }
-          ).then(async (res) => {
+// schedule.scheduleJob("*/30 * * * * *", async () => {
+//   try {
+//     const Userdata = await findAllRecord(Usermodal, { username: "SIR32764" });
+//     for (const user of Userdata) {
+//       const { _id: userId, username } = user;
+//       console.log(username);
+//       console.log(userId);
+//       let HoldCBBdata = await findAllRecord(HoldCBB, {
+//         userId: user._id,
+//         leval: { $lte: user.leval },
+//         Active: false
+//       });
+//       if (HoldCBBdata.length >= 0) {
+//         for (let index = 0; index < HoldCBBdata.length; index++) {
+//           const element = HoldCBBdata[index];
+//           const updatedWallet = await updateRecord(
+//             Walletmodal,
+//             { userId: element.userId },
+//             { $inc: { incomeWallet: element.Amount } }
+//           ).then(async (res) => {
 
-            let HoldCBBdata1 = await findAllRecord(Walletmodal,
-              { userId: element.userId }
-            );
-            await updateRecord(
-              HoldCBB,
-              { _id: element._id },
-              { Active: true }
-            );
-            await Ewallateesc({
-              userId: element.userId,
-              Note: `You have received your level ${element.leval} CBB holding coins`,
-              Amount: element.Amount,
-              balace: res.incomeWallet,
-              type: 1,
-              Active: true,
-            }).save();
-          });
-        }
-      }
-      if (user) {
-        console.log(user);
-        switch (user?.Rank) {
-          case "Trainee":
-            await updateRank(user, "ACE", "SMART WATCH", 1000);
-            break;
-          case "ACE":
-            await updateRank(user, "WARRIOR", "SMART PHONE", 8000);
-            break;
-          case "WARRIOR":
-            await updateRank(user, "CADET", "INTERNATIONAL TRIP", 28000);
-            break;
-          case "CADET":
-            await updateRank(user, "CAPTAIN", "MAC BOOK", 78000);
-            break;
-          case "CAPTAIN":
-            await updateRank(user, "COMMANDER", "WAGONR/$6000", 228000);
-            break;
-          case "COMMANDER":
-            await updateRank(user, "PIONEER", "BREEZA/$12500", 528000);
-            break;
-          case "PIONEER":
-            await updateRank(user, "MASTERMIND", "2BHK FLAT/$30000", 12528000);
-            break;
-          case "MASTERMIND":
-            await updateRank(user, "RULER", "MERCEDEZ/$48000", 14028000);
-            break;
-          case "RULER":
-            await updateRank(
-              user,
-              "AMBASSADOR",
-              "3/4 BHK APARTMENT/$100000",
-              17428000
-            );
-            break;
-          case "AMBASSADOR":
-            await updateRank(user, "CROWN", "VILLA/ $300000", 24428000);
-            break;
-          case "CROWN":
-            await updateRank(
-              user,
-              "CROWN AMBASSADOR",
-              "ROLLS ROYCE/ $400000",
-              39428000
-            );
-            break;
-            break;
-          default:
-            break;
-        }
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
+//             let HoldCBBdata1 = await findAllRecord(Walletmodal,
+//               { userId: element.userId }
+//             );
+//             await updateRecord(
+//               HoldCBB,
+//               { _id: element._id },
+//               { Active: true }
+//             );
+//             await Ewallateesc({
+//               userId: element.userId,
+//               Note: `You have received your level ${element.leval} CBB holding coins`,
+//               Amount: element.Amount,
+//               balace: res.incomeWallet,
+//               type: 1,
+//               Active: true,
+//             }).save();
+//           });
+//         }
+//       }
+//       if (user) {
+//         console.log(user);
+//         switch (user?.Rank) {
+//           case "Trainee":
+//             await updateRank(user, "ACE", "SMART WATCH", 1000);
+//             break;
+//           case "ACE":
+//             await updateRank(user, "WARRIOR", "SMART PHONE", 8000);
+//             break;
+//           case "WARRIOR":
+//             await updateRank(user, "CADET", "INTERNATIONAL TRIP", 28000);
+//             break;
+//           case "CADET":
+//             await updateRank(user, "CAPTAIN", "MAC BOOK", 78000);
+//             break;
+//           case "CAPTAIN":
+//             await updateRank(user, "COMMANDER", "WAGONR/$6000", 228000);
+//             break;
+//           case "COMMANDER":
+//             await updateRank(user, "PIONEER", "BREEZA/$12500", 528000);
+//             break;
+//           case "PIONEER":
+//             await updateRank(user, "MASTERMIND", "2BHK FLAT/$30000", 12528000);
+//             break;
+//           case "MASTERMIND":
+//             await updateRank(user, "RULER", "MERCEDEZ/$48000", 14028000);
+//             break;
+//           case "RULER":
+//             await updateRank(
+//               user,
+//               "AMBASSADOR",
+//               "3/4 BHK APARTMENT/$100000",
+//               17428000
+//             );
+//             break;
+//           case "AMBASSADOR":
+//             await updateRank(user, "CROWN", "VILLA/ $300000", 24428000);
+//             break;
+//           case "CROWN":
+//             await updateRank(
+//               user,
+//               "CROWN AMBASSADOR",
+//               "ROLLS ROYCE/ $400000",
+//               39428000
+//             );
+//             break;
+//             break;
+//           default:
+//             break;
+//         }
+//       }
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 schedule.scheduleJob(every24hours1, async () => {
   try {
     let data = await Usermodal.aggregate([
