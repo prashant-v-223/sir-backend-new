@@ -82,7 +82,7 @@ const cronHandler = async (user) => {
     if (refExists.referred.length < 5) {
       const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
         $set: {
-          supporterId: refExists.supporterId || refExists.refId,
+          supporterId: refExists.refId || refExists.supporterId,
         }
       });
       refExists.referred.push(newRef.refId);
@@ -117,22 +117,128 @@ const cronHandler = async (user) => {
 
   }
 }
-
 const nowIST = new Date("2023-11-01T16:19:08.981+00:00");
 nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
 const todayIST = new Date(nowIST);
-// todayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for today
-
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1); // Add one day to get the next day
 nextDayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for the next day
 const startOfDay = moment(new Date()).tz("Asia/Kolkata").startOf('day').toDate();
 const endOfDay = moment(new Date()).tz("Asia/Kolkata").endOf('day').toDate();
+const amountupdate = async (username) => {
+  const Userdata = await findAllRecord(Usermodal, { username: username });
+  for (const user of Userdata) {
+    const SIRprice = await V4XpriceSchemaDetails.find({}).sort({ createdAt: -1 })
+    const { _id: userId, username } = user;
+    await Usermodal.aggregate([
+      {
+        $match: {
+          username
+        },
+      },
+      {
+        $graphLookup: {
+          from: "users",
+          startWith: "$username",
+          connectFromField: "username",
+          connectToField: "supporterId",
+          as: "refers_to",
+        },
+      },
+      {
+        $lookup: {
+          from: "stakings",
+          localField: "refers_to._id",
+          foreignField: "userId",
+          as: "amount2",
+          pipeline: [
+            {
+              $match: {
+                Active: true,
+                WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "stakings",
+          localField: "_id",
+          foreignField: "userId",
+          as: "amount",
+          pipeline: [
+            {
+              $match: {
+                Active: true,
+                WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          total: {
+            $reduce: {
+              input: "$amount",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+              },
+            },
+          },
+          total1: {
+            $reduce: {
+              input: "$amount2",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
 
-
-// const today = new Date();
-// const nextDay = new Date(today);
-// nextDay.setDate(nextDay.getDate() + 1);
+              },
+            },
+          },
+          email: 1,
+          username: 1,
+          level: 1,
+          amount: 1
+        },
+      },
+    ]).then(async (aggregatedUserData) => {
+      console.log(username);
+      // console.log(Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1 * 12.85 / 90));
+      console.log(Math.round(aggregatedUserData[0].total));
+      console.log(Math.round(aggregatedUserData[0].total1));
+      // console.log(Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1 / 90 * SIRprice[0].price));
+      console.log(SIRprice[0].price);
+      if (aggregatedUserData.length > 0) {
+        let data1 = await Usermodal.find({
+          username: aggregatedUserData[0].username,
+        });
+        await Stakingmodal.updateMany(
+          { userId: data1[0]._id, leval: data1[0].leval },
+          {
+            Active: true,
+          }
+        );
+        await Usermodal.findOneAndUpdate(
+          { _id: ObjectId(userId) },
+          {
+            teamtotalstack: Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1),
+            mystack: Math.round(aggregatedUserData[0].total),
+          }
+        );
+      } else {
+        await Usermodal.findOneAndUpdate(
+          { _id: ObjectId(userId) },
+          {
+            mystack: 0,
+          }
+        );
+      }
+    });
+  }
+}
 console.log({ todayIST, nextDayIST });
 exports.stack = {
   Buystack: async (req, res) => {
@@ -1418,6 +1524,7 @@ exports.stack = {
                     }).save();
                   });
                 })
+                await amountupdate(decoded.profile.username)
                 return successResponse(res, {
                   message: "You have successfully staked SIR Tokens",
                 });
@@ -1458,7 +1565,6 @@ exports.stack = {
                         userId: decoded.profile._id,
                       });
 
-                      console.log(decoded.profile.username);
                       await cronHandler(decoded.profile.username).then(async (res) => {
                         const data = await findOneRecord(Usermodal, {
                           username: decoded.profile.username,
@@ -2858,6 +2964,7 @@ exports.stack = {
                           transactionHash: "",
                         }).save();
                       })
+                      await amountupdate(decoded.profile.username)
                       return successResponse(res, {
                         message: "You have successfully staked SIR Tokens",
                       });
