@@ -177,7 +177,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     (e, s) => s.totalInvestment - e.totalInvestment
   );
   // const lastThreeObjects = data123.slice(-3);
-  const startIndex = 1;
+  const startIndex = 2;
   const endIndex = startIndex + 2;
   const lastThreeObjects = data123.slice(startIndex, endIndex);
   for (let index = 0; index < lastThreeObjects.length; index++) {
@@ -220,7 +220,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     }
   }
   const fifteenDaysAgo = new Date();
-  console.log("data1", data1);
+  console.log("data1data1data1data1data1", lastThreeObjects);
   fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() + 15);
   if (data1.length >= 5) {
     console.log("data1", fifteenDaysAgo);
@@ -276,7 +276,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
 };
 schedule.scheduleJob("*/30 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, {});
+    const Userdata = await findAllRecord(Usermodal, { username: "SIR32764" });
     for (const user of Userdata) {
       const { _id: userId, username } = user;
       console.log(username);
