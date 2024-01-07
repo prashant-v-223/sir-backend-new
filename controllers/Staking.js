@@ -3457,7 +3457,24 @@ exports.stack = {
             },
           },
           {
+            $lookup: {
+              from: "royalties",
+              localField: "_id",
+              foreignField: "userId",
+              as: "Royalty1",
+            },
+          },
+          {
             $project: {
+              Royalty: {
+                $reduce: {
+                  input: "$Royalty1",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
+              },
               total1: {
                 $reduce: {
                   input: "$amount211",
