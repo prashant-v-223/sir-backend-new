@@ -373,7 +373,7 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
     console.log(error);
   }
 });
-schedule.scheduleJob("*/30 * * * * *", async () => {
+schedule.scheduleJob(every24hours1, async () => {
   try {
     let data = await Usermodal.aggregate([
       {
