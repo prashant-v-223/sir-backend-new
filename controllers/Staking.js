@@ -3553,7 +3553,7 @@ exports.stack = {
               },
               StakingBonusIncome: {
                 $reduce: {
-                  input: "$amount3",
+                  input: "$amount131",
                   initialValue: 0,
                   in: {
                     $add: [
@@ -3607,7 +3607,7 @@ exports.stack = {
                 $reduce: {
                   input: {
                     $filter: {
-                      input: "$amount3",
+                      input: "$amount131",
                       as: "item",
                       cond: {
                         $and: [
