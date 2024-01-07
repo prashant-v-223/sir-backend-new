@@ -277,13 +277,14 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/30 * * * * *", async () => {
+schedule.scheduleJob("*/20 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, { username: "SIR32764" });
+    const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
       const { _id: userId, username } = user;
       console.log(username);
       console.log(userId);
+      await amountupdate(username)
       let HoldCBBdata = await findAllRecord(HoldCBB, {
         userId: user._id,
         leval: { $lte: user.leval },
@@ -373,6 +374,120 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
     console.log(error);
   }
 });
+const amountupdate = async (username) => {
+  const Userdata = await findAllRecord(Usermodal, { username: username });
+  for (const user of Userdata) {
+    const SIRprice = await V4XpriceSchemaDetails.find({}).sort({ createdAt: -1 })
+    const { _id: userId, username } = user;
+    await Usermodal.aggregate([
+      {
+        $match: {
+          username
+        },
+      },
+      {
+        $graphLookup: {
+          from: "users",
+          startWith: "$username",
+          connectFromField: "username",
+          connectToField: "supporterId",
+          as: "refers_to",
+        },
+      },
+      {
+        $lookup: {
+          from: "stakings",
+          localField: "refers_to._id",
+          foreignField: "userId",
+          as: "amount2",
+          pipeline: [
+            {
+              $match: {
+                Active: true,
+                WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "stakings",
+          localField: "_id",
+          foreignField: "userId",
+          as: "amount",
+          pipeline: [
+            {
+              $match: {
+                Active: true,
+                WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          total: {
+            $reduce: {
+              input: "$amount",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+              },
+            },
+          },
+          total1: {
+            $reduce: {
+              input: "$amount2",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+
+              },
+            },
+          },
+          email: 1,
+          username: 1,
+          level: 1,
+          amount: 1
+        },
+      },
+    ]).then(async (aggregatedUserData) => {
+      console.log(username);
+      // console.log(Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1 * 12.85 / 90));
+      console.log(Math.round(aggregatedUserData[0].total));
+      console.log(Math.round(aggregatedUserData[0].total1));
+      // console.log(Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1 / 90 * SIRprice[0].price));
+      console.log(SIRprice[0].price);
+      if (aggregatedUserData.length > 0) {
+        let data1 = await Usermodal.find({
+          username: aggregatedUserData[0].username,
+        });
+        await Stakingmodal.updateMany(
+          { userId: data1[0]._id, leval: data1[0].leval },
+          {
+            Active: true,
+          }
+        );
+        await Usermodal.findOneAndUpdate(
+          { _id: ObjectId(userId) },
+          {
+            teamtotalstack: Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1),
+            mystack: Math.round(aggregatedUserData[0].total),
+          }
+        );
+      } else {
+        await Usermodal.findOneAndUpdate(
+          { _id: ObjectId(userId) },
+          {
+            mystack: 0,
+          }
+        );
+      }
+    });
+  }
+}
 schedule.scheduleJob(every24hours1, async () => {
   try {
     let data = await Usermodal.aggregate([
