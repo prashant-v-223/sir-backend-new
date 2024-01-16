@@ -135,15 +135,14 @@ const currentDate = moment();
 // const endOfDay  = currentDate.clone().add(1, 'day').set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
 // console.log(startOfDay);
 // console.log(endOfDay  );
-moment.tz.setDefault('Asia/Kolkata');
 
 // Get the current date
 let todayday = new Date().getDate()
 // Set the start time to 7:00 PM on the 15th day of the month
-const startOfDay = currentDate.clone().date( todayday -1).set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
+const startOfDay = currentDate.clone().date( todayday -1).set({ hour: 0, minute: 50, second: 0, millisecond: 0 }).toDate();
 
 // Set the end time to 7:00 PM on the 16th day of the month
-const endOfDay = currentDate.clone().date(todayday).set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
+const endOfDay = currentDate.clone().date(todayday).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toDate();
 
 console.log('Start Time (15th):', new Date().getDate());
 console.log('Start Time (15th):', startOfDay);
