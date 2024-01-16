@@ -123,9 +123,31 @@ nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0);
 const todayIST = new Date(nowIST);
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1); // Add one day to get the next day
-nextDayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for the next day
-const startOfDay = moment(new Date()).tz('America/New_York').startOf('day').toDate();
-const endOfDay = moment(new Date()).tz('America/New_York').endOf('day').toDate();
+nextDayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for the next daymoment.tz.setDefault('Asia/Kolkata');
+
+// Get the current date
+const currentDate = moment();
+
+// // Set the start time to 7:00 PM today
+// const startOfDay = currentDate.clone().set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
+
+// // Set the end time to 7:00 PM tomorrow
+// const endOfDay  = currentDate.clone().add(1, 'day').set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
+// console.log(startOfDay);
+// console.log(endOfDay  );
+moment.tz.setDefault('Asia/Kolkata');
+
+// Get the current date
+let todayday = new Date().getDate()
+// Set the start time to 7:00 PM on the 15th day of the month
+const startOfDay = currentDate.clone().date( todayday -1).set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
+
+// Set the end time to 7:00 PM on the 16th day of the month
+const endOfDay = currentDate.clone().date(todayday).set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
+
+console.log('Start Time (15th):', new Date().getDate());
+console.log('Start Time (15th):', startOfDay);
+console.log('End Time (16th):', endOfDay);
 const amountupdate = async (username) => {
   const Userdata = await findAllRecord(Usermodal, { username: username });
   for (const user of Userdata) {
