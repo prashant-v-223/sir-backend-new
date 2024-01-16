@@ -124,8 +124,8 @@ const todayIST = new Date(nowIST);
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1); // Add one day to get the next day
 nextDayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for the next day
-const startOfDay = moment(new Date()).tz("Asia/Kolkata").startOf('day').toDate();
-const endOfDay = moment(new Date()).tz("Asia/Kolkata").endOf('day').toDate();
+const startOfDay = moment(new Date()).startOf('day').toDate();
+const endOfDay = moment(new Date()).endOf('day').toDate();
 const amountupdate = async (username) => {
   const Userdata = await findAllRecord(Usermodal, { username: username });
   for (const user of Userdata) {
