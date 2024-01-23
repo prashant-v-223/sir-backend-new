@@ -3626,16 +3626,25 @@ exports.stack = {
                   },
                 },
               },
+              // TodaStakingBonusIncome: {
+              //   $reduce: {
+              //     input: {
+              //       $reduce: {
+              //         input: "$amount13123456",
+              //         as: "item",
+              //       },
+              //     },
+              //     in: {
+              //       $add: ["$$value", "$$this.Amount"],
+              //     },
+              //   },
+              // },
               TodaStakingBonusIncome: {
                 $reduce: {
-                  input: {
-                    $map: {
-                      input: "$amount13123456",
-                      as: "item",
-                    },
-                  },
+                  input: "$amount13123456",
+                  initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value", "$$this.DailyReword"],
                   },
                 },
               },
