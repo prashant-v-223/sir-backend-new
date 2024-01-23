@@ -27,7 +27,6 @@ const Passive = require("./models/Passive");
 const Wallet = require("./models/Wallet");
 const { isMoment } = require("moment");
 const Royalty = require("./models/Royalty");
-var sliderCaptcha = require('@slider-captcha/core');
 
 app.use(
   express.json({
@@ -40,37 +39,6 @@ app.use(
     extended: true,
   })
 );
-// Function to generate dynamic captcha data (replace with your logic)
-function generateDynamicCaptchaData() {
-  // Replace this with your dynamic data generation logic
-  return {
-    exampleField: 'DynamicValue123',
-    // Add more fields as needed
-  };
-} app.get('/captcha/create', function (req, res) {
-  // Set a specific image URL as captcha
-  req.session.captcha = "https://th.bing.com/th/id/OIP.QJLxpY_zZF5p-8YUUd3QDQAAAA?rs=1&pid=ImgDetMain";
-  req.session.save();
-
-  // Generate dynamic data for the captcha
-  const dynamicCaptchaData = generateDynamicCaptchaData();
-
-  res.status(200).send({
-    captchaImageUrl: req.session.captcha,
-    dynamicData: dynamicCaptchaData
-  });
-});
-
-app.post('/captcha/verify', function (req, res) {
-  sliderCaptcha.verify(req.session.captcha, req.body)
-    .then(function (verification) {
-      if (verification.result === 'success') {
-        req.session.token = verification.token;
-        req.session.save();
-      }
-      res.status(200).send(verification);
-    });
-});
 app.use("/api", routes);
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
