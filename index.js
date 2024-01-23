@@ -27,6 +27,7 @@ const Passive = require("./models/Passive");
 const Wallet = require("./models/Wallet");
 const { isMoment } = require("moment");
 const Royalty = require("./models/Royalty");
+var sliderCaptcha = require('@slider-captcha/core');
 
 app.use(
   express.json({
@@ -39,7 +40,37 @@ app.use(
     extended: true,
   })
 );
+// Function to generate dynamic captcha data (replace with your logic)
+function generateDynamicCaptchaData() {
+  // Replace this with your dynamic data generation logic
+  return {
+    exampleField: 'DynamicValue123',
+    // Add more fields as needed
+  };
+} app.get('/captcha/create', function (req, res) {
+  // Set a specific image URL as captcha
+  req.session.captcha = "https://th.bing.com/th/id/OIP.QJLxpY_zZF5p-8YUUd3QDQAAAA?rs=1&pid=ImgDetMain";
+  req.session.save();
 
+  // Generate dynamic data for the captcha
+  const dynamicCaptchaData = generateDynamicCaptchaData();
+
+  res.status(200).send({
+    captchaImageUrl: req.session.captcha,
+    dynamicData: dynamicCaptchaData
+  });
+});
+
+app.post('/captcha/verify', function (req, res) {
+  sliderCaptcha.verify(req.session.captcha, req.body)
+    .then(function (verification) {
+      if (verification.result === 'success') {
+        req.session.token = verification.token;
+        req.session.save();
+      }
+      res.status(200).send(verification);
+    });
+});
 app.use("/api", routes);
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -57,98 +88,98 @@ schedule.scheduleJob(every24hours, async () => {
     const Userdata = await findAllRecord(Usermodal, {});
     for (let index = 0; index < Userdata.length; index++) {
       const element = Userdata[index];
-      
-    const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, userId: ObjectId(element._id) });
-    console.log("stakingRecordsstakingRecordsstakingRecords", stakingRecords);
-    for (const record of stakingRecords) {
-      if (record) {
-        const StakingData = await findAllRecord(Stakingmodal, {
-          userId: record.userId,
-        });
-        console.log(record);
-        if (StakingData.length > 0) {
-          // const StakingData9 = await Stakingmodal.find({
-          //   userId: record.userId,
-          //   leval: 0,
-          // });
-          // let totalstaking = 0;
-          // for (let i = 0; i < StakingData9.length; i++) {
-          //   totalstaking += StakingData9[i].Amount;
-          // }
-          // let totalgetrewords = await Mainwallatesc.aggregate([
-          //   {
-          //     $match: {
-          //       userId: record.userId,
-          //       type: 1,
-          //     },
-          //   },
-          //   {
-          //     $group: {
-          //       _id: "$userId",
-          //       totalAmount: { $sum: "$Amount" },
-          //     },
-          //   },
-          // ]);
-          // console.log(totalstaking * 2);
-          // console.log(totalgetrewords[0].totalAmount);
-          // if (totalstaking * 2 >= totalAmount[0].totalAmount) {
-          if (record.TotalRewordRecived >= 0) {
-            const updatedWallet = await updateRecord(
-              Walletmodal,
-              { userId: record.userId },
-              { $inc: { mainWallet: record.DailyReword } }
-            );
-            if (updatedWallet) {
+
+      const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, userId: ObjectId(element._id) });
+      console.log("stakingRecordsstakingRecordsstakingRecords", stakingRecords);
+      for (const record of stakingRecords) {
+        if (record) {
+          const StakingData = await findAllRecord(Stakingmodal, {
+            userId: record.userId,
+          });
+          console.log(record);
+          if (StakingData.length > 0) {
+            // const StakingData9 = await Stakingmodal.find({
+            //   userId: record.userId,
+            //   leval: 0,
+            // });
+            // let totalstaking = 0;
+            // for (let i = 0; i < StakingData9.length; i++) {
+            //   totalstaking += StakingData9[i].Amount;
+            // }
+            // let totalgetrewords = await Mainwallatesc.aggregate([
+            //   {
+            //     $match: {
+            //       userId: record.userId,
+            //       type: 1,
+            //     },
+            //   },
+            //   {
+            //     $group: {
+            //       _id: "$userId",
+            //       totalAmount: { $sum: "$Amount" },
+            //     },
+            //   },
+            // ]);
+            // console.log(totalstaking * 2);
+            // console.log(totalgetrewords[0].totalAmount);
+            // if (totalstaking * 2 >= totalAmount[0].totalAmount) {
+            if (record.TotalRewordRecived >= 0) {
+              const updatedWallet = await updateRecord(
+                Walletmodal,
+                { userId: record.userId },
+                { $inc: { mainWallet: record.DailyReword } }
+              );
+              if (updatedWallet) {
+                await Promise.all([
+                  Mainwallatesc({
+                    userId: record.userId,
+                    Note: "You Got Staking Bonus Income.",
+                    Amount: record.DailyReword,
+                    type: 1,
+                    balace: updatedWallet.mainWallet,
+                    Active: true,
+                  }).save(),
+                  Stakingbonus({
+                    userId: record.userId,
+                    rewordId: record._id,
+                    Amount: record.DailyReword,
+                    Note: "You Got Staking Bonus Income.",
+                    Active: true,
+                  }).save(),
+                  updateRecord(
+                    Stakingmodal,
+                    { _id: record._id },
+                    {
+                      TotalRewordRecived:
+                        record.TotalRewordRecived - record.DailyReword,
+                      TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
+                      $inc: { Totalsend: 1 },
+                    }
+                  ),
+                ]);
+              }
+            } else {
               await Promise.all([
-                Mainwallatesc({
-                  userId: record.userId,
-                  Note: "You Got Staking Bonus Income.",
-                  Amount: record.DailyReword,
-                  type: 1,
-                  balace: updatedWallet.mainWallet,
-                  Active: true,
-                }).save(),
                 Stakingbonus({
                   userId: record.userId,
                   rewordId: record._id,
-                  Amount: record.DailyReword,
-                  Note: "You Got Staking Bonus Income.",
-                  Active: true,
+                  Amount: 0,
+                  Note: "Your staking plan period is completed. You have received your bonus as per the return.",
+                  Active: false,
                 }).save(),
                 updateRecord(
                   Stakingmodal,
-                  { _id: record._id },
+                  { userId: record.userId },
                   {
-                    TotalRewordRecived:
-                      record.TotalRewordRecived - record.DailyReword,
-                    TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
-                    $inc: { Totalsend: 1 },
+                    Active: false,
                   }
                 ),
               ]);
             }
-          } else {
-            await Promise.all([
-              Stakingbonus({
-                userId: record.userId,
-                rewordId: record._id,
-                Amount: 0,
-                Note: "Your staking plan period is completed. You have received your bonus as per the return.",
-                Active: false,
-              }).save(),
-              updateRecord(
-                Stakingmodal,
-                { userId: record.userId },
-                {
-                  Active: false,
-                }
-              ),
-            ]);
+            // }s
           }
-          // }s
         }
       }
-    }
     }
   }
   catch (error) {
@@ -175,7 +206,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   for (const obj of data1) {
     if (obj) {
       resultArray.push({
-        totalInvestment: obj.teamtotalstack,
+        totalInvestment: obj.cbbteamtotalstack,
         username: obj.username,
       });
     }
@@ -190,8 +221,8 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   for (let index = 0; index < lastThreeObjects.length; index++) {
     lastteamtotalstack += lastThreeObjects[index].totalInvestment;
   }
-  let fastlag = data1[0]?.teamtotalstack
-  let seclag = data1[1]?.teamtotalstack
+  let fastlag = data123[0]?.teamtotalstack
+  let seclag = data123[1]?.teamtotalstack
   let lastlag = lastteamtotalstack
   if (teamtotalstack * 0.5 <= fastlag) {
     if (teamtotalstack * 0.25 <= seclag) {
@@ -280,7 +311,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/20 * * * *", async () => {
+schedule.scheduleJob("*/20 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
@@ -415,6 +446,30 @@ const amountupdate = async (username) => {
       },
       {
         $lookup: {
+          from: "users",
+          localField: "username",
+          foreignField: "mainId",
+          as: "refers_to123",
+        },
+      },
+      {
+        $lookup: {
+          from: "stakings",
+          localField: "refers_to123._id",
+          foreignField: "userId",
+          as: "amountaa2",
+          pipeline: [
+            {
+              $match: {
+                Active: true,
+                WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
           from: "stakings",
           localField: "_id",
           foreignField: "userId",
@@ -450,6 +505,16 @@ const amountupdate = async (username) => {
               },
             },
           },
+          cbbtotal1: {
+            $reduce: {
+              input: "$amountaa2",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+
+              },
+            },
+          },
           email: 1,
           username: 1,
           level: 1,
@@ -457,7 +522,7 @@ const amountupdate = async (username) => {
         },
       },
     ]).then(async (aggregatedUserData) => {
-      console.log(username);
+      console.log("username", username);
       // console.log(Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1 * 12.85 / 90));
       console.log(Math.round(aggregatedUserData[0].total));
       console.log(Math.round(aggregatedUserData[0].total1));
@@ -477,6 +542,7 @@ const amountupdate = async (username) => {
           { _id: ObjectId(userId) },
           {
             teamtotalstack: Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1),
+            cbbteamtotalstack: Math.round(aggregatedUserData[0].total + aggregatedUserData[0].cbbtotal1),
             mystack: Math.round(aggregatedUserData[0].total),
           }
         );

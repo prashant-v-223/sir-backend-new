@@ -193,6 +193,30 @@ const amountupdate = async (username) => {
             },
           ],
         },
+      }, {
+        $graphLookup: {
+          from: "users",
+          startWith: "$username",
+          connectFromField: "username",
+          connectToField: "mainId",
+          as: "refers_to123",
+        },
+      },
+      {
+        $lookup: {
+          from: "stakings",
+          localField: "refers_to123._id",
+          foreignField: "userId",
+          as: "amountaa2",
+          pipeline: [
+            {
+              $match: {
+                Active: true,
+                WalletType: { $in: ["main-Wallet", "DAPP-WALLET", "Main Wallet", "DAPP WALLET"] },
+              },
+            },
+          ],
+        },
       },
       {
         $project: {
@@ -202,6 +226,15 @@ const amountupdate = async (username) => {
               initialValue: 0,
               in: {
                 $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+              },
+            },
+          }, cbbtotal1: {
+            $reduce: {
+              input: "$amountaa2",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+
               },
             },
           },
@@ -242,6 +275,7 @@ const amountupdate = async (username) => {
           { _id: ObjectId(userId) },
           {
             teamtotalstack: Math.round(aggregatedUserData[0].total + aggregatedUserData[0].total1),
+            cbbteamtotalstack: Math.round(aggregatedUserData[0].total + aggregatedUserData[0].cbbtotal1),
             mystack: Math.round(aggregatedUserData[0].total),
           }
         );
