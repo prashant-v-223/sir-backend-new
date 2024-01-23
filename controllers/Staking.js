@@ -136,7 +136,7 @@ const currentDate = moment();
 // console.log(startOfDay);
 // console.log(endOfDay  );
 let todayday = new Date().getDate()
-const startOfDay = currentDate.clone().date( todayday -1).set({ hour: 0, minute: 35, second: 0, millisecond: 0 }).toDate();
+const startOfDay = currentDate.clone().date(todayday - 1).set({ hour: 0, minute: 35, second: 0, millisecond: 0 }).toDate();
 const endOfDay = currentDate.clone().date(todayday).set({ hour: 24, minute: 30, second: 0, millisecond: 0 }).toDate();
 
 console.log('Start Time (15th):', new Date().getDate());
@@ -3439,6 +3439,13 @@ exports.stack = {
               foreignField: "userId",
               as: "amount131",
             },
+          }, {
+            $lookup: {
+              from: "stakings",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amount13123456",
+            },
           },
           {
             $lookup: {
@@ -3622,28 +3629,11 @@ exports.stack = {
               TodaStakingBonusIncome: {
                 $reduce: {
                   input: {
-                    $filter: {
-                      input: "$amount131",
+                    $map: {
+                      input: "$amount13123456",
                       as: "item",
-                      cond: {
-                        $and: [
-                          {
-                            $gte: [
-                              "$$item.createdAt",
-                              todayIST,
-                            ],
-                          },
-                          {
-                            $lt: [
-                              "$$item.createdAt",
-                              nextDayIST,
-                            ],
-                          },
-                        ],
-                      },
                     },
                   },
-                  initialValue: 0,
                   in: {
                     $add: ["$$value", "$$this.Amount"],
                   },
