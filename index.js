@@ -411,12 +411,12 @@ const amountupdate = async (username) => {
             },
           ],
         },
-      },
-      {
-        $lookup: {
+      },{
+        $graphLookup: {
           from: "users",
-          localField: "username",
-          foreignField: "mainId",
+          startWith: "$username",
+          connectFromField: "username",
+          connectToField: "mainId",
           as: "refers_to123",
         },
       },
