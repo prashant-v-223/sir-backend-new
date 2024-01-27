@@ -261,7 +261,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
                     await Stakingmodal.findOneAndUpdate(
                       { _id: element123._id },
                       {
-                        DailyReword: element123.DailyReword * 2,
+                        DailyReword: element123.Amount * element123.bonusAmount / 100 / 1000 * 2,
                         TotaldaysTosendReword: a,
                       }
                     );
