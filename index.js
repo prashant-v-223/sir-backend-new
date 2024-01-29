@@ -164,8 +164,8 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     mainId: data.username,
   });
   data1.sort((a, b) => {
-    let data = b.teamtotalstack + b.mystack
-    let data1 = a.teamtotalstack + a.mystack
+    let data = b.cbbteamtotalstack + b.mystack
+    let data1 = a.cbbteamtotalstack + a.mystack
     return data - data1
   });
   let lastteamtotalstack = 0;
@@ -189,12 +189,16 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   for (let index = 0; index < lastThreeObjects.length; index++) {
     lastteamtotalstack += lastThreeObjects[index].totalInvestment;
   }
-  let fastlag = data123[0]?.teamtotalstack
-  let seclag = data123[1]?.teamtotalstack
+  let fastlag = data123[0]?.totalInvestment
+  let seclag = data123[1]?.totalInvestment
   let lastlag = lastteamtotalstack
+  console.log("lastlag", teamtotalstack * 0.5, fastlag);
+  console.log("lastlag", teamtotalstack * 0.25, seclag);
+  console.log("lastlag", teamtotalstack * 0.25, lastlag);
   if (teamtotalstack * 0.5 <= fastlag) {
     if (teamtotalstack * 0.25 <= seclag) {
       if (teamtotalstack * 0.25 <= lastlag) {
+        console.log("useruseruseruser", user);
         await updateRecord(
           Usermodal,
           {
@@ -232,11 +236,6 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
     console.log("data1", fifteenDaysAgo);
     console.log("data1", new Date(data.createdAt));
     // if (new Date(data.createdAt) < fifteenDaysAgo) {
-    console.log("data1data1===1", data.mystack <= data1[0].mystack, data1[0].mystack);
-    console.log("data1data1===2", data.mystack <= data1[1].mystack, data1[1].mystack);
-    console.log("data1data1===3", data.mystack <= data1[2].mystack, data1[2].mystack);
-    console.log("data1data1===4", data.mystack <= data1[3].mystack, data1[3].mystack);
-    console.log("data1data1===5", data.mystack <= data1[4].mystack, data1[4].mystack);
     console.log("datadatadata", data.mystack);
     if (data.mystack <= data1[0].mystack) {
 
@@ -279,7 +278,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/20 * * * *", async () => {
+schedule.scheduleJob("*/5 * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
@@ -411,7 +410,7 @@ const amountupdate = async (username) => {
             },
           ],
         },
-      },{
+      }, {
         $graphLookup: {
           from: "users",
           startWith: "$username",
