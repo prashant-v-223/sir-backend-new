@@ -27,6 +27,7 @@ const Passive = require("./models/Passive");
 const Wallet = require("./models/Wallet");
 const { isMoment } = require("moment");
 const Royalty = require("./models/Royalty");
+const Staking = require("./models/Staking");
 
 app.use(
   express.json({
@@ -152,6 +153,26 @@ schedule.scheduleJob(every24hours, async () => {
   }
   catch (error) {
     console.log(error);
+  }
+});
+schedule.scheduleJob("0 0 1 * *", async () => {
+  try {
+    // Find all documents where Active is true
+    const activeStakings = await Staking.find({ Active: true });
+
+    // Update documents and set Active to false, Removed to true, and reset Totalsend to 0
+    await Promise.all(activeStakings.map(async (staking) => {
+      await Staking.findByIdAndUpdate(staking._id, {
+        Active: false,
+        Removed: true,
+        Totalsend: 0,
+      });
+    }));
+    const result = await HoldCBB.deleteMany({});
+
+    console.log("Monthly check completed successfully.");
+  } catch (error) {
+    console.error("Error during the monthly check:", error);
   }
 });
 const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
@@ -500,7 +521,7 @@ const amountupdate = async (username) => {
           username: aggregatedUserData[0].username,
         });
         await Stakingmodal.updateMany(
-          { userId: data1[0]._id, leval: data1[0].leval },
+          { userId: data1[0]._id, leval: data1[0].leval, Removed: false },
           {
             Active: true,
           }
