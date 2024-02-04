@@ -363,7 +363,7 @@ exports.stack = {
                           {
                             $inc: {
                               incomeWallet:
-                                (req.body.Amount / 90 * SIRprice.price * 5) / 100,
+                              Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                             },
                           }
                         )
@@ -371,7 +371,7 @@ exports.stack = {
                             await Ewallateesc({
                               userId: ReffData1?._id,
                               Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                              Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
+                              Amount: Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                               type: 1,
                               balace: res.incomeWallet,
                               Active: true,
@@ -379,7 +379,7 @@ exports.stack = {
                             await Stakingbonus({
                               userId: ReffData1?._id,
                               ReffId: decoded.profile._id,
-                              Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
+                              Amount: Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                               Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
                               Active: true,
                             }).save();
@@ -1639,7 +1639,7 @@ exports.stack = {
                               {
                                 $inc: {
                                   incomeWallet:
-                                    (req.body.Amount / 90 * SIRprice.price * 5) / 100,
+                                  Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                                 },
                               }
                             )
@@ -1647,7 +1647,7 @@ exports.stack = {
                                 await Ewallateesc({
                                   userId: ReffData?._id,
                                   Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                                  Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
+                                  Amount: Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                                   type: 1,
                                   balace: res.incomeWallet,
                                   Active: true,
@@ -1655,7 +1655,7 @@ exports.stack = {
                                 await Stakingbonus({
                                   userId: ReffData?._id,
                                   ReffId: decoded.profile._id,
-                                  Amount: (req.body.Amount / 90 * SIRprice.price * 5) / 100,
+                                  Amount: Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                                   Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
                                   Active: true,
                                 }).save();
