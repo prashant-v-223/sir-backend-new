@@ -50,8 +50,8 @@ app.get('/show-image', (req, res) => {
   res.sendFile(imagePath);
 });
 
-const every24hours = "01 12 * * *";
-const every24hours1 = "30 12 * * *";
+const every24hours = "30 19 * * *";
+const every24hours1 = "40 19 * * *";
 schedule.scheduleJob(every24hours, async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
