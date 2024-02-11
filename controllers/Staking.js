@@ -2993,6 +2993,7 @@ exports.stack = {
       ] = await Promise.all([
         findAllRecord(Stakingmodal, {
           userId: userId,
+          leval: 0
         }),
         findAllRecord(Walletmodal, {
           userId: userId,
