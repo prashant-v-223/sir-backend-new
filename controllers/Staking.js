@@ -363,7 +363,7 @@ exports.stack = {
                           {
                             $inc: {
                               incomeWallet:
-                              Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
+                                Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                             },
                           }
                         )
@@ -1639,7 +1639,7 @@ exports.stack = {
                               {
                                 $inc: {
                                   incomeWallet:
-                                  Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
+                                    Math.ceil((req.body.Amount / 90 * SIRprice.price * 5) / 100),
                                 },
                               }
                             )
@@ -3593,6 +3593,7 @@ exports.stack = {
         ReffData1: data1,
         ReffData2: data22,
         income: data123,
+        stakingData: stakingData,
         SIRprice: SIRprice.price
       });
     } catch (error) {

@@ -34,42 +34,65 @@ const { ticketsend } = require("../services/sendOTP");
 const e = require("express");
 const { default: axios } = require("axios");
 const otp = require("../models/otp");
-let transport = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+const transport = nodemailer.createTransport({
+  host: 'smtp.hostinger.com',
   port: 465,
   secure: true,
   auth: {
-    user: "sirtoken21@gmail.com",
-    pass: "qiebkwzdaaykswre",
+    user: 'otp@sirglobal.org',
+    pass: 'otpSir@2024',
   },
+  connectionTimeout: 5000, // 5 seconds
+  socketTimeout: 7000
+});
+const transport2 = nodemailer.createTransport({
+  host: 'smtp.hostinger.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'support@sirglobal.org',
+    pass: 'otpSir@2024',
+  },
+  connectionTimeout: 5000, // 5 seconds
+  socketTimeout: 7000
 });
 
-async function getRef(refSelectedId, refId, id) {
-  const refSelected = await Usermodal.findOne({ refId: refSelectedId });
-  if (refSelected?.referred?.length < 5) {
-    const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
-      $set: {
-        supporterId: refSelected.refId
-      }
-    });
-    refSelected.referred.push(newRef.refId);
-    refSelected.save();
-  } else {
-    await getRef(refSelected.referred[refSelected.nextRefIndex], refId, id);
+// let transport1 = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: "sirtoken21@gmail.com",
+//     pass: "qiebkwzdaaykswre",
+//   },
+// });
 
-    refSelected.nextRefIndex = refSelected.nextRefIndex + 1 > 4 ? 0 : refSelected.nextRefIndex + 1;
-    let isExistsInNextRefIdsToBeSkipped = false;
-    do {
-      const index = refSelected.nextRefIdsToBeSkipped.indexOf(refSelected.referred[refSelected.nextRefIndex]);
-      isExistsInNextRefIdsToBeSkipped = index !== -1;
-      if (isExistsInNextRefIdsToBeSkipped) {
-        refSelected.nextRefIdsToBeSkipped.splice(index, 1);
-        refSelected.nextRefIndex = refSelected.nextRefIndex + 1 > 4 ? 0 : refSelected.nextRefIndex + 1;
-      }
-    } while (isExistsInNextRefIdsToBeSkipped);
-    await refSelected.save();
-  }
-}
+// async function getRef(refSelectedId, refId, id) {
+//   const refSelected = await Usermodal.findOne({ refId: refSelectedId });
+//   if (refSelected?.referred?.length < 5) {
+//     const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
+//       $set: {
+//         supporterId: refSelected.refId
+//       }
+//     });
+//     refSelected.referred.push(newRef.refId);
+//     refSelected.save();
+//   } else {
+//     await getRef(refSelected.referred[refSelected.nextRefIndex], refId, id);
+
+//     refSelected.nextRefIndex = refSelected.nextRefIndex + 1 > 4 ? 0 : refSelected.nextRefIndex + 1;
+//     let isExistsInNextRefIdsToBeSkipped = false;
+//     do {
+//       const index = refSelected.nextRefIdsToBeSkipped.indexOf(refSelected.referred[refSelected.nextRefIndex]);
+//       isExistsInNextRefIdsToBeSkipped = index !== -1;
+//       if (isExistsInNextRefIdsToBeSkipped) {
+//         refSelected.nextRefIdsToBeSkipped.splice(index, 1);
+//         refSelected.nextRefIndex = refSelected.nextRefIndex + 1 > 4 ? 0 : refSelected.nextRefIndex + 1;
+//       }
+//     } while (isExistsInNextRefIdsToBeSkipped);
+//     await refSelected.save();
+//   }
+// }
 
 // const cronHandler = async () => {
 //   const usersPendingRef = await Usermodal.find({
@@ -200,7 +223,7 @@ exports.register = {
             };
             await otp(data).save();
             const mailOptions = {
-              from: "noreply@sirglobal.or", // Sender address
+              from: "otp@sirglobal.org", // Sender address
               to: res1["email"], // List of recipients
               subject: "verification by SIR", // Subject line
               html:
@@ -361,12 +384,12 @@ exports.register = {
           async function (err, data) {
             const DOMAIN = "donotreply.v4x.org";
             const mailOptions = {
-              from: "noreply@sirglobal.or", // Sender address
+              from: "support@sirglobal.org", // Sender address
               to: data12[0].email, // List of recipients
               subject: "verification by SIR", // Subject line
               html: data,
             };
-            transport.sendMail(mailOptions, async function (err, info) {
+            transport2.sendMail(mailOptions, async function (err, info) {
               if (err) {
                 return badRequestResponse(res, {
                   message: `Email not send error something is wrong ${error}`,
@@ -508,12 +531,12 @@ exports.register = {
           },
           async function (err, data) {
             const mailOptions = {
-              from: "noreply@sirglobal.or", // Sender address
+              from: "support@sirglobal.org", // Sender address
               to: decoded.email, // List of recipients
               subject: "verification by SIR", // Subject line
               html: data,
             };
-            transport.sendMail(mailOptions, async function (err, info) {
+            transport2.sendMail(mailOptions, async function (err, info) {
               if (err) {
                 badRequestResponse(res, {
                   message: `Email not send error something is wrong ${err}`,
