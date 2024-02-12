@@ -3581,7 +3581,7 @@ exports.stack = {
           },
         ]),
         findAllRecord(V4Xpricemodal, {}),
-      ]);
+      ]); 
       return successResponse(res, {
         message: "Wallet data retrieved successfully",
         data: WalletData,
