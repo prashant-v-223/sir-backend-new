@@ -24,9 +24,34 @@ exports.profile = {
     try {
 
       let username = req.body.username;
-      let data = await findAllRecord(Usermodal, {
-        mainId: username,
-      });
+      let data = await Usermodal.aggregate([
+        {
+          $match: {
+            mainId: username,
+          },
+        },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$username",
+            connectFromField: "username",
+            connectToField: "mainId",
+            as: "refers_to",
+          },
+        },
+        {
+          $project: {
+            Fullname: 1,
+            username: 1,
+            leval: 1,
+            createdAt: 1,
+            mystack: 1,
+            teamtotalstack: 1,
+            cbbteamtotalstack: 1,
+            scbleval: { $size: "$refers_to" },
+          },
+        },
+      ]);
       console.log(data);
       return successResponse(res, {
         message: "My Supporters Are here",
@@ -45,9 +70,35 @@ exports.profile = {
       let username = req.body.username;
 
       if (!username) return res.send('username');
-      let data = await findAllRecord(Usermodal, {
-        supporterId: username,
-      });
+
+      let data = await Usermodal.aggregate([
+        {
+          $match: {
+            supporterId: username,
+          },
+        },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$username",
+            connectFromField: "username",
+            connectToField: "supporterId",
+            as: "refers_to",
+          },
+        },
+        {
+          $project: {
+            Fullname: 1,
+            username: 1,
+            leval: 1,
+            createdAt: 1,
+            mystack: 1,
+            teamtotalstack: 1,
+            cbbteamtotalstack: 1,
+            scbleval: { $size: "$refers_to" },
+          },
+        },
+      ]);
       console.log(data);
       return successResponse(res, {
         message: "My Supporters Are here",
