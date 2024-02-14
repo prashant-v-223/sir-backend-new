@@ -229,7 +229,7 @@ exports.register = {
               html:
                 `<img src="https://firebasestorage.googleapis.com/v0/b/doubtq-student.appspot.com/o/icon2.png?alt=media&token=7e933aff-37ab-46ae-a0c1-8180c2eaf931&_gl=1*10gdqfi*_ga*OTgwMjYzMTIyLjE2ODM5NTgxMTM.*_ga_CW55HF8NVT*MTY5NzE3NjcxMi4xMC4xLjE2OTcxNzY3NTguMTQuMC4w" height="100" class="img-fluid" width="100">` +
                 "<h2>" +
-                "SIR GLOBAL TO CADEMY" +
+                "SIR GLOBAL TO ACADEMY" +
                 "</h2>" +
                 "<h2>" +
                 "Hello" + "(" + res1.username + ")" +
