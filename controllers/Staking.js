@@ -389,7 +389,7 @@ exports.stack = {
                     const daat = await Usermodal.aggregate([
                       {
                         '$match': {
-                          'mainId': ReffData.username
+                          'mainId': ReffData1.username
                         }
                       }, {
                         '$lookup': {
@@ -413,9 +413,9 @@ exports.stack = {
 
                     await updateRecord(
                       Usermodal,
-                      { username: ReffData.username },
+                      { username: ReffData1.username },
                       {
-                        leval: Number(daat.length === 0 ? 1 : daat.length + 1),
+                        leval: Number(daat.length),
                       }
                     ).then(async (data) => {
                       const Refflevalncome = await findOneRecord(Usermodal, {
@@ -434,7 +434,7 @@ exports.stack = {
                       // if (!Refflevalncomex1) {
                       //   return;
                       // }
-                      console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Refflevalncomex1);
+                      console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Math.ceil(req.body.Amount / 90 * SIRprice.price));
                       if (Refflevalncomex1.leval >= 1) {
                         const StakingData = await findAllRecord(Stakingmodal, {
                           userId: Refflevalncomex1._id,
@@ -1263,7 +1263,7 @@ exports.stack = {
                     const Refflevalncome1 = await findOneRecord(Usermodal, {
                       username: data.supporterId,
                     });
-                    console.log("Refflevalncome1============================>>>>>>>", Refflevalncome1);
+                    console.log("Refflevalncome1============================>>>>>>>", req.body.Amount);
                     if (Refflevalncome1) {
                       await Stakingmodal({
                         userId: Refflevalncome1?._id,
@@ -1624,6 +1624,9 @@ exports.stack = {
                         const ReffData = await findOneRecord(Usermodal, {
                           username: data.supporterId,
                         });
+                        const ReffData1 = await findOneRecord(Usermodal, {
+                          username: data.mainId,
+                        });
                         if (ReffData?._id !== null) {
                           // const StakingData = await findAllRecord(Stakingmodal, {
                           //   userId: ReffData._id,
@@ -1665,7 +1668,7 @@ exports.stack = {
                           const daat = await Usermodal.aggregate([
                             {
                               '$match': {
-                                'mainId': ReffData.username
+                                'mainId': ReffData1.username
                               }
                             }, {
                               '$lookup': {
@@ -1689,9 +1692,9 @@ exports.stack = {
 
                           await updateRecord(
                             Usermodal,
-                            { username: ReffData.username },
+                            { username: ReffData1.username },
                             {
-                              leval: Number(daat.length === 0 ? 1 : daat.length + 1),
+                              leval: Number(daat.length),
                             }
                           ).then(async (data) => {
                             const Refflevalncome = await findOneRecord(Usermodal, {
@@ -1710,7 +1713,7 @@ exports.stack = {
                             // if (!Refflevalncomex1) {
                             //   return;
                             // }
-                            console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Refflevalncomex1);
+                            console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Math.ceil(req.body.Amount / 90 * SIRprice.price));
                             if (Refflevalncomex1.leval >= 1) {
                               const StakingData = await findAllRecord(Stakingmodal, {
                                 userId: Refflevalncomex1._id,
@@ -2539,7 +2542,7 @@ exports.stack = {
                           const Refflevalncome1 = await findOneRecord(Usermodal, {
                             username: data.supporterId,
                           });
-                          console.log("Refflevalncome1============================>>>>>>>", Refflevalncome1);
+                          console.log("Refflevalncome1============================>>>>>>>", req.body.Amount);
                           if (Refflevalncome1) {
                             await Stakingmodal({
                               userId: Refflevalncome1?._id,
