@@ -431,6 +431,7 @@ exports.stack = {
                         username: Refflevalncome.mainId,
                         isValid: true,
                       });
+                      await amountupdate(Refflevalncomex1.username)
                       // if (!Refflevalncomex1) {
                       //   return;
                       // }
@@ -1263,6 +1264,7 @@ exports.stack = {
                     const Refflevalncome1 = await findOneRecord(Usermodal, {
                       username: data.supporterId,
                     });
+                    await amountupdate(Refflevalncome1.username)
                     console.log("Refflevalncome1============================>>>>>>>", req.body.Amount);
                     if (Refflevalncome1) {
                       await Stakingmodal({
@@ -1710,6 +1712,7 @@ exports.stack = {
                               username: Refflevalncome.mainId,
                               isValid: true,
                             });
+                            await amountupdate(Refflevalncomex1.username)
                             // if (!Refflevalncomex1) {
                             //   return;
                             // }
@@ -2542,6 +2545,7 @@ exports.stack = {
                           const Refflevalncome1 = await findOneRecord(Usermodal, {
                             username: data.supporterId,
                           });
+                          await amountupdate(Refflevalncome1.username)
                           console.log("Refflevalncome1============================>>>>>>>", req.body.Amount);
                           if (Refflevalncome1) {
                             await Stakingmodal({
