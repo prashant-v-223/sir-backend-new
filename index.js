@@ -250,20 +250,28 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
       }
     }
   }
-  const fifteenDaysAgo = new Date();
-  console.log("data1data1data1data1data1", lastThreeObjects);
-  fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() + 15);
-  if (data1.length >= 5) {
-    console.log("data1", fifteenDaysAgo);
-    console.log("data1", new Date(data.createdAt));
-    // if (new Date(data.createdAt) < fifteenDaysAgo) {
-    console.log("datadatadata", data.mystack);
-    if (data.mystack <= data1[0].mystack) {
 
-      if (data.mystack <= data1[1].mystack) {
-        if (data.mystack <= data1[2].mystack) {
-          if (data.mystack <= data1[3].mystack) {
-            if (data.mystack <= data1[4].mystack) {
+
+  const filteredData = data1.filter((data) => {
+    let fifteenDaysAgo = new Date(user.createdAt);
+    const fifteenDaysInMilliseconds = 15 * 24 * 60 * 60 * 1000;
+    let d1 = new Date(fifteenDaysAgo.getTime() + fifteenDaysInMilliseconds)
+    const userCreatedAtDate = new Date(data.createdAt);
+    return d1.getTime() >= userCreatedAtDate.getTime();
+  });
+
+
+  if (filteredData.length >= 5) {
+    console.log("data1", filteredData);
+
+    let filteredDatasort = filteredData.sort(
+      (e, s) => s.totalInvestment - e.totalInvestment
+    );
+    if (data.mystack <= filteredDatasort[0].mystack) {
+      if (data.mystack <= filteredDatasort[1].mystack) {
+        if (data.mystack <= filteredDatasort[2].mystack) {
+          if (data.mystack <= filteredDatasort[3].mystack) {
+            if (data.mystack <= filteredDatasort[4].mystack) {
               if (user.STAKINGBOOSTER === false) {
                 await Usermodal.findByIdAndUpdate(
                   { _id: user._id },
@@ -295,7 +303,6 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
         }
       }
     }
-    // }
   }
 
 };
