@@ -41,14 +41,16 @@ const ContractAddressForBUSD = env.globalAccess.busdContract;
 const PrivateKey = env.privateKey;
 
 const web3 = new Web3(infraUrl);
-let transport = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+ const transport = nodemailer.createTransport({
+  host: 'smtp.hostinger.com',
   port: 465,
   secure: true,
   auth: {
-    user: "sirtoken21@gmail.com",
-    pass: "qiebkwzdaaykswre",
+    user: 'otp@sirglobal.org',
+    pass: 'otpSir@2024',
   },
+  connectionTimeout: 5000, // 5 seconds
+  socketTimeout: 7000
 });
 const init1 = async (to_address, token_amount) => {
   const myContract = new web3.eth.Contract(
@@ -131,7 +133,7 @@ exports.Withdraw = {
             };
             await otp(data).save();
             const mailOptions = {
-              from: "noreply@sirglobal.or", // Sender address
+              from: "otp@sirglobal.org", // Sender address
               to: decoded.profile["email"], // List of recipients
               subject: `verification by SIR - (${decoded.profile["username"]})`, // Subject line
               html:
