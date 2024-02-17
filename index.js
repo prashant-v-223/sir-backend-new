@@ -155,26 +155,26 @@ schedule.scheduleJob(every24hours, async () => {
     console.log(error);
   }
 });
-schedule.scheduleJob("0 0 1 * *", async () => {
-  try {
-    // Find all documents where Active is true
-    const activeStakings = await Staking.find({ Active: true });
+// schedule.scheduleJob("0 0 1 * *", async () => {
+//   try {
+//     // Find all documents where Active is true
+//     const activeStakings = await Staking.find({ Active: true });
 
-    // Update documents and set Active to false, Removed to true, and reset Totalsend to 0
-    await Promise.all(activeStakings.map(async (staking) => {
-      await Staking.findByIdAndUpdate(staking._id, {
-        Active: false,
-        Removed: true,
-        Totalsend: 0,
-      });
-    }));
-    const result = await HoldCBB.deleteMany({});
+//     // Update documents and set Active to false, Removed to true, and reset Totalsend to 0
+//     await Promise.all(activeStakings.map(async (staking) => {
+//       await Staking.findByIdAndUpdate(staking._id, {
+//         Active: false,
+//         Removed: true,
+//         Totalsend: 0,
+//       });
+//     }));
+//     const result = await HoldCBB.deleteMany({});
 
-    console.log("Monthly check completed successfully.");
-  } catch (error) {
-    console.error("Error during the monthly check:", error);
-  }
-});
+//     console.log("Monthly check completed successfully.");
+//   } catch (error) {
+//     console.error("Error during the monthly check:", error);
+//   }
+// });
 const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   let data = await findOneRecord(Usermodal, {
     _id: user._id,
