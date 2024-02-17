@@ -34,16 +34,14 @@ const { ticketsend } = require("../services/sendOTP");
 const e = require("express");
 const { default: axios } = require("axios");
 const otp = require("../models/otp");
-const transport = nodemailer.createTransport({
-  host: 'smtp.hostinger.com',
+let transport = nodemailer.createTransport({
+  host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
-    user: 'otp@sirglobal.org',
-    pass: 'otpSir@2024',
+    user: "sirtoken21@gmail.com",
+    pass: "qiebkwzdaaykswre",
   },
-  connectionTimeout: 5000, // 5 seconds
-  socketTimeout: 7000
 });
 const transport2 = nodemailer.createTransport({
   host: 'smtp.hostinger.com',
