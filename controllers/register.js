@@ -43,16 +43,14 @@ let transport = nodemailer.createTransport({
     pass: "qiebkwzdaaykswre",
   },
 });
-const transport2 = nodemailer.createTransport({
-  host: 'smtp.hostinger.com',
+let transport2 = nodemailer.createTransport({
+  host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
-    user: 'support@sirglobal.org',
-    pass: 'otpSir@2024',
+    user: "sirtoken21@gmail.com",
+    pass: "qiebkwzdaaykswre",
   },
-  connectionTimeout: 5000, // 5 seconds
-  socketTimeout: 7000
 });
 
 // let transport1 = nodemailer.createTransport({
