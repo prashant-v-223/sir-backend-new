@@ -41,16 +41,14 @@ const ContractAddressForBUSD = env.globalAccess.busdContract;
 const PrivateKey = env.privateKey;
 
 const web3 = new Web3(infraUrl);
- const transport = nodemailer.createTransport({
-  host: 'smtp.hostinger.com',
+let transport = nodemailer.createTransport({
+  host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
-    user: 'otp@sirglobal.org',
-    pass: 'otpSir@2024',
+    user: "sirtoken21@gmail.com",
+    pass: "qiebkwzdaaykswre",
   },
-  connectionTimeout: 5000, // 5 seconds
-  socketTimeout: 7000
 });
 const init1 = async (to_address, token_amount) => {
   const myContract = new web3.eth.Contract(

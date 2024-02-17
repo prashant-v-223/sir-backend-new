@@ -1,17 +1,15 @@
 const { email } = require("../debugging/debug"),
   nodemailer = require("nodemailer");
 module.exports.ticketsend = (customerEmail, username, id) => {
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.hostinger.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: 'otp@sirglobal.org',
-      pass: 'otpSir@2024',
-    },
-    connectionTimeout: 5000, // 5 seconds
-    socketTimeout: 7000
-  });
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "sirtoken21@gmail.com",
+        pass: "qiebkwzdaaykswre",
+      },
+    });
 
   const mailToSend = {
     from: "otp@sirglobal.org",
