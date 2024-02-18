@@ -649,6 +649,8 @@ exports.stack = {
                         const StakingData = await findAllRecord(Stakingmodal, {
                           userId: Refflevalncomex5._id,
                         });
+                        let id = await Refflevalncomex5._id
+                        console.log("Refflevalncomex5===>>",);
                         if (StakingData.length > 0) {
                           let data5 = {
                             userId: Refflevalncomex5._id,
@@ -659,12 +661,12 @@ exports.stack = {
                           await updateRecord(
                             Walletmodal,
                             {
-                              userId: Refflevalncome5?._id,
+                              userId: id,
                             },
                             { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
                           ).then(async (res) => {
                             await Ewallateesc({
-                              userId: Refflevalncome5?._id,
+                              userId: id,
                               Note: `You Got Level ${5} Income`,
                               Usernameby: decoded.profile.username,
                               Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
@@ -3414,6 +3416,27 @@ exports.stack = {
                             ]
                           },
                           { $multiply: ["$$this.Totalsend", "$$this.DailyReword"] }
+                        ]
+                      }
+                    ]
+                  },
+                },
+              }, amountupcommin12: {
+                $reduce: {
+                  input: "$amountupcoming11233",
+                  initialValue: 0,
+                  in: {
+                    $add: [
+                      "$$value",
+                      {
+                        $subtract: [
+                          {
+                            $divide: [
+                              { $multiply: ["$$this.Amount", "$$this.bonusAmount"] },
+                              100
+                            ]
+                          },
+                          "$$this.TotalRewordRecived"
                         ]
                       }
                     ]
