@@ -3737,7 +3737,7 @@ exports.stack = {
                     )
                     await Mainwallatesc({
                       userId: abc[0]._id,
-                      Note: `You have received coin from ${abc[0].username}`,
+                      Note: `You have received coin from ${decoded.profile.username}`,
                       Amount: req.body.Amount,
                       balace: abc1[0]?.mainWallet,
                       type: 1,
