@@ -415,7 +415,7 @@ exports.stack = {
                       Usermodal,
                       { username: ReffData1.username },
                       {
-                        leval: Number(daat.length),
+                        leval: Number(daat.length + 1),
                       }
                     ).then(async (data) => {
                       const Refflevalncome = await findOneRecord(Usermodal, {
@@ -1219,7 +1219,6 @@ exports.stack = {
                           userId: Refflevalncomex16._id,
                         });
                         if (StakingData.length > 0) {
-
                           let data16 = {
                             userId: Refflevalncomex16._id,
                             Note: `You Got Level ${16} Income`,
@@ -1249,7 +1248,6 @@ exports.stack = {
                             Refflevalncome16,
                             data16,
                           });
-
 
                         } else {
                           await HoldCBB({
@@ -1696,7 +1694,7 @@ exports.stack = {
                             Usermodal,
                             { username: ReffData1.username },
                             {
-                              leval: Number(daat.length),
+                              leval: Number(daat.length + 1),
                             }
                           ).then(async (data) => {
                             const Refflevalncome = await findOneRecord(Usermodal, {
