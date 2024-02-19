@@ -338,7 +338,7 @@ schedule.scheduleJob("*/5 * * * *", async () => {
             );
             let data2 = {
               userId: element.userId,
-              Note: `You Got Level ${element.leval} Income`,
+              Note: `Received CBB holding coins ( ${element.leval} )`,
               Usernameby: element.Usernameby,
               Amount: element.Amount,
             };

@@ -3476,11 +3476,30 @@ exports.stack = {
               }
               , holdincome: {
                 $reduce: {
-                  input: "$amountupcoming1",
+                  input: "$amount13",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value",
-                      "$$this.TotalRewordRecived"],
+                    $add: [
+                      "$$value",
+                      {
+                        $cond: {
+                          if: {
+                            $eq: [
+                              {
+                                $substr: [
+                                  "$$this.Note",
+                                  0,
+                                  28,
+                                ],
+                              },
+                              "You have received your level",
+                            ],
+                          },
+                          then: "$$this.Amount",
+                          else: 0,
+                        },
+                      },
+                    ],
                   },
                 },
               },
