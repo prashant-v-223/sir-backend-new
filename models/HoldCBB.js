@@ -11,6 +11,9 @@ const HoldCBB = new Schema(
     leval: {
       type: Number,
       default: 0,
+    }, Usernameby: {
+      type: String,
+      default: "",
     },
     Amount: {
       type: Number,

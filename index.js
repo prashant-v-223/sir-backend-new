@@ -336,11 +336,18 @@ schedule.scheduleJob("*/5 * * * *", async () => {
               { _id: element._id },
               { Active: true }
             );
+            let data2 = {
+              userId: element.userId,
+              Note: `You Got Level ${element.leval} Income`,
+              Usernameby: element.Usernameby,
+              Amount: element.Amount,
+            };
+            await Communitymodal(data2).save();
             await Ewallateesc({
               userId: element.userId,
               Note: `You have received your level ${element.leval} CBB holding coins`,
               Amount: element.Amount,
-              balace: res.incomeWallet,
+              balace: element.incomeWallet + element.Amount,
               type: 1,
               Active: true,
             }).save();
