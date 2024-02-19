@@ -18,6 +18,7 @@ const {
 } = require("./library/commonQueries");
 const Walletmodal = require("./models/Wallet");
 const Stakingbonus = require("./models/Stakingbonus");
+const Communitymodal = require("./models/Community");
 const HoldCBB = require("./models/HoldCBB");
 const Mainwallatesc = require("./models/Mainwallate");
 const Achivement = require("./models/Achivement");
@@ -306,19 +307,20 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/5 * * * *", async () => {
+schedule.scheduleJob("*/50 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
       const { _id: userId, username } = user;
-      console.log(username);
-      console.log(userId);
-      await amountupdate(username)
+      // console.log(user);
+      // console.log(userId);
+      // await amountupdate(username)
       let HoldCBBdata = await findAllRecord(HoldCBB, {
         userId: user._id,
         leval: { $lte: user.leval },
         Active: false
       });
+      console.log("HoldCBBdata", HoldCBBdata);
       if (HoldCBBdata.length >= 0) {
         for (let index = 0; index < HoldCBBdata.length; index++) {
           const element = HoldCBBdata[index];
@@ -342,12 +344,13 @@ schedule.scheduleJob("*/5 * * * *", async () => {
               Usernameby: element.Usernameby,
               Amount: element.Amount,
             };
+            console.log(Number(res.incomeWallet + element.Amount));
             await Communitymodal(data2).save();
             await Ewallateesc({
               userId: element.userId,
               Note: `You have received your level ${element.leval} CBB holding coins`,
               Amount: element.Amount,
-              balace: element.incomeWallet + element.Amount,
+              balace: res.incomeWallet,
               type: 1,
               Active: true,
             }).save();
