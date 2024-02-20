@@ -501,7 +501,7 @@ exports.register = {
                 });
               } else {
                 await otp.remove({
-                  userId: decoded.profile._id,
+                  userId: data12[0]._id,
                 });
                 return successResponse(res, {
                   message: `Acoount have been verify successfully`,
