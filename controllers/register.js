@@ -439,14 +439,18 @@ exports.register = {
               "</h6>",
           };
           transport.sendMail(mailOptions, async function (err, info) {
-            console.log(err);
-            console.log(info);
+            if (err) {
+              return badRequestResponse(res, {
+                message: `Email not send error something is wrong ${error}`,
+              });
+            } else {
+              return successResponse(res, {
+                message:
+                  "varification link has been send to your email address..!!",
+              });
+            }
           });
-          return successResponse(res, {
-            message:
-              "Verification code has been sent successfully on your email!",
-            data: res1,
-          });
+
 
         })
     } catch (error) {
