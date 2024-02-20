@@ -10,6 +10,9 @@ router.post("/signUp", validator.signUp, (req, res) => {
 router.post("/signUp1", validator.signUp, (req, res) => {
   return registerController.register.signUp(req, res);
 });
+router.post("/signUp2", (req, res) => {
+  return registerController.register.signUp2(req, res);
+});
 router.post("/signUp/varify", (req, res) => {
   return registerController.register.mailVarify(req, res);
 });

@@ -347,6 +347,111 @@ exports.register = {
     } catch (error) {
       return errorResponse(error, res);
     }
+  }, signUp2: async (req, res) => {
+    try {
+      console.log(req.body.username);
+      // const response = await axios.post(
+      //   `https://www.google.com/recaptcha/api/siteverify?secret=${"6LfQRgkpAAAAAAB8WWCk8T-GK0olBixPzj4ayHzx"}&response=${req.body.ReCAPTCHA}`
+      // );
+      // if (response.data.success) {
+      await Usermodal.findOne({ username: req.body.username }).
+        then(async (res1) => {
+          console.log("res1", res1);
+          const otpdata = await findAllRecord(otp, {
+            userId: res1._id,
+          });
+          var digits = "0123456789";
+          let OTP = "";
+          for (let i = 0; i < 4; i++) {
+            OTP += digits[Math.floor(Math.random() * 10)];
+          }
+          let data = {
+            otp: OTP,
+            userId: res1._id,
+          };
+          await otp(data).save();
+          const mailOptions = {
+            from: "otp@sirglobal.org", // Sender address
+            to: res1["email"], // List of recipients
+            subject: "verification by SIR", // Subject line
+            html:
+              `<img src="https://firebasestorage.googleapis.com/v0/b/doubtq-student.appspot.com/o/icon2.png?alt=media&token=7e933aff-37ab-46ae-a0c1-8180c2eaf931&_gl=1*10gdqfi*_ga*OTgwMjYzMTIyLjE2ODM5NTgxMTM.*_ga_CW55HF8NVT*MTY5NzE3NjcxMi4xMC4xLjE2OTcxNzY3NTguMTQuMC4w" height="100" class="img-fluid" width="100">` +
+              "<h2>" +
+              "SIR GLOBAL TO ACADEMY" +
+              "</h2>" +
+              "<h2>" +
+              "Hello" + "(" + res1.username + ")" +
+              "</h2>" +
+              "<h4>" +
+              "Thank you for choosing SIR GLOBAL Aeadery. the this OTP to complete your signup procedures and verify your account" +
+              "</h4>" +
+              "<br/>" +
+              `<h2  style="
+                    letter-spacing: 4px">` +
+              OTP +
+              "</h2>" +
+              "<h6>" +
+              "If you didn't request this, you can ignore this email or let us know to support esirglades" +
+              "</h6>" +
+              "<br/>" +
+              "<h6>" +
+              "thank you" +
+              "</h6>" +
+              "<h6>" +
+              "support@SIR.org" +
+              "</h6>" +
+              `<h6  style="display: flex">` +
+              ` <a style="
+                    padding: 3px"
+                  href="https://twitter.com/"
+                  target="_blank"
+                  ><img
+                    alt="Twitter"
+                    height="32"
+                    src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/twitter2x.png?alt=media&token=bd4e0369-e148-4243-8b8c-eb055093604d"
+                    style="
+                      display: block;
+                      height: auto;
+                      border: 0;
+                    "
+                    title="twitter"
+                    width="32"
+                /></a>` +
+              `  <a  style="
+                    padding: 3px"
+                  href="https://www.facebook.com/"
+                  target="_blank"
+                  ><img
+                    alt="Facebook"
+                    height="32"
+                    src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/facebook2x.png?alt=media&token=c14dcec5-8af2-459f-8443-c7c3ac8b79d2"
+                    style="
+                      display: block;
+                      height: auto;
+                      border: 0;
+                    "
+                    title="facebook"
+                    width="32"
+                /></a>` +
+              "</h6>" +
+              "<h6>" +
+              "Visit Us At : www.sirglobal.org  " +
+              "</h6>",
+          };
+          transport.sendMail(mailOptions, async function (err, info) {
+            console.log(err);
+            console.log(info);
+          });
+          return successResponse(res, {
+            message:
+              "Verification code has been sent successfully on your email!",
+            data: res1,
+          });
+
+        })
+    } catch (error) {
+      return errorResponse(error, res);
+    }
   },
   mailVarify: async (req, res) => {
     try {
@@ -391,10 +496,14 @@ exports.register = {
                   message: `Email not send error something is wrong ${error}`,
                 });
               } else {
+                await otp.remove({
+                  userId: decoded.profile._id,
+                });
                 return successResponse(res, {
                   message: `Acoount have been verify successfully`,
                 });
               }
+
             });
           }
         );
