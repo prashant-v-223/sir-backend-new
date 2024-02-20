@@ -151,105 +151,105 @@ let transport2 = nodemailer.createTransport({
 exports.register = {
   signUp: async (req, res) => {
     try {
-      // const response = await axios.post(
-      //   `https://www.google.com/recaptcha/api/siteverify?secret=${"6LfQRgkpAAAAAAB8WWCk8T-GK0olBixPzj4ayHzx"}&response=${req.body.ReCAPTCHA}`
-      // );
-      // if (response.data.success) {
+      const response = await axios.post(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${"6LfQRgkpAAAAAAB8WWCk8T-GK0olBixPzj4ayHzx"}&response=${req.body.ReCAPTCHA}`
+      );
+      if (response.data.success) {
 
-      let uniqueRefid = await Date.now().toString(16).slice(2);
-      req.body.refferalId = uniqueRefid;
-      req.body = decodeUris(req.body);
-      var digits = "0123456789";
-      let OTP = "";
-      for (let i = 0; i < 5; i++) {
-        OTP += digits[Math.floor(Math.random() * 10)];
-      }
-      let usernumber = OTP;
-      let finalusename = "SIR" + usernumber;
-      const refId = req.body.refferalBy;
-      const id = finalusename;
-      if (!id) return res.send('Invalid id');
-      const idAlreadyExists = await Usermodal.findOne({ refId: id });
-      if (idAlreadyExists) return res.send('Invalid id, already exists');
+        let uniqueRefid = await Date.now().toString(16).slice(2);
+        req.body.refferalId = uniqueRefid;
+        req.body = decodeUris(req.body);
+        var digits = "0123456789";
+        let OTP = "";
+        for (let i = 0; i < 5; i++) {
+          OTP += digits[Math.floor(Math.random() * 10)];
+        }
+        let usernumber = OTP;
+        let finalusename = "SIR" + usernumber;
+        const refId = req.body.refferalBy;
+        const id = finalusename;
+        if (!id) return res.send('Invalid id');
+        const idAlreadyExists = await Usermodal.findOne({ refId: id });
+        if (idAlreadyExists) return res.send('Invalid id, already exists');
 
-      const isFirstRef = await Usermodal.countDocuments();
-      if (!isFirstRef) {
-        const newRef = await Usermodal.create({
-          ...req.body,
-          refId: id,
-          mainId: null,
-          supporterId: null,
-          referred: [],
-        });
-      } else {
-        if (!refId) return res.send('Invalid refId');
-        const refExists = await Usermodal.findOne({ refId });
-        console.log(refExists);
-        const StakingData = await findAllRecord(Stakingmodal, {
-          userId: refExists._id,
-        });
-        if (!StakingData.length > 0) return res.send('Invalid referral link');
-        if (!refExists) return successResponse(res, {
-          message:
-            "Invalid referral link!",
-        });
-        await Usermodal.create({
-          ...req.body,
-          username: id,
-          refId: id,
-          mainId: refId,
-          supporterId: null,
-          referred: [],
-        }).then(async (res1) => {
-          console.log(res1._id);
-
-          const otpdata = await findAllRecord(otp, {
-            userId: res1._id,
+        const isFirstRef = await Usermodal.countDocuments();
+        if (!isFirstRef) {
+          const newRef = await Usermodal.create({
+            ...req.body,
+            refId: id,
+            mainId: null,
+            supporterId: null,
+            referred: [],
           });
-          console.log(otpdata.length === 0);
-          if (otpdata.length === 0) {
-            var digits = "0123456789";
-            let OTP = "";
-            for (let i = 0; i < 4; i++) {
-              OTP += digits[Math.floor(Math.random() * 10)];
-            }
-            let data = {
-              otp: OTP,
+        } else {
+          if (!refId) return res.send('Invalid refId');
+          const refExists = await Usermodal.findOne({ refId });
+          console.log(refExists);
+          const StakingData = await findAllRecord(Stakingmodal, {
+            userId: refExists._id,
+          });
+          if (!StakingData.length > 0) return res.send('Invalid referral link');
+          if (!refExists) return successResponse(res, {
+            message:
+              "Invalid referral link!",
+          });
+          await Usermodal.create({
+            ...req.body,
+            username: id,
+            refId: id,
+            mainId: refId,
+            supporterId: null,
+            referred: [],
+          }).then(async (res1) => {
+            console.log(res1._id);
+
+            const otpdata = await findAllRecord(otp, {
               userId: res1._id,
-            };
-            await otp(data).save();
-            const mailOptions = {
-              from: "otp@sirglobal.org", // Sender address
-              to: res1["email"], // List of recipients
-              subject: "verification by SIR", // Subject line
-              html:
-                `<img src="https://firebasestorage.googleapis.com/v0/b/doubtq-student.appspot.com/o/icon2.png?alt=media&token=7e933aff-37ab-46ae-a0c1-8180c2eaf931&_gl=1*10gdqfi*_ga*OTgwMjYzMTIyLjE2ODM5NTgxMTM.*_ga_CW55HF8NVT*MTY5NzE3NjcxMi4xMC4xLjE2OTcxNzY3NTguMTQuMC4w" height="100" class="img-fluid" width="100">` +
-                "<h2>" +
-                "SIR GLOBAL TO ACADEMY" +
-                "</h2>" +
-                "<h2>" +
-                "Hello" + "(" + res1.username + ")" +
-                "</h2>" +
-                "<h4>" +
-                "Thank you for choosing SIR GLOBAL Aeadery. the this OTP to complete your signup procedures and verify your account" +
-                "</h4>" +
-                "<br/>" +
-                `<h2  style="
+            });
+            console.log(otpdata.length === 0);
+            if (otpdata.length === 0) {
+              var digits = "0123456789";
+              let OTP = "";
+              for (let i = 0; i < 4; i++) {
+                OTP += digits[Math.floor(Math.random() * 10)];
+              }
+              let data = {
+                otp: OTP,
+                userId: res1._id,
+              };
+              await otp(data).save();
+              const mailOptions = {
+                from: "otp@sirglobal.org", // Sender address
+                to: res1["email"], // List of recipients
+                subject: "verification by SIR", // Subject line
+                html:
+                  `<img src="https://firebasestorage.googleapis.com/v0/b/doubtq-student.appspot.com/o/icon2.png?alt=media&token=7e933aff-37ab-46ae-a0c1-8180c2eaf931&_gl=1*10gdqfi*_ga*OTgwMjYzMTIyLjE2ODM5NTgxMTM.*_ga_CW55HF8NVT*MTY5NzE3NjcxMi4xMC4xLjE2OTcxNzY3NTguMTQuMC4w" height="100" class="img-fluid" width="100">` +
+                  "<h2>" +
+                  "SIR GLOBAL TO ACADEMY" +
+                  "</h2>" +
+                  "<h2>" +
+                  "Hello" + "(" + res1.username + ")" +
+                  "</h2>" +
+                  "<h4>" +
+                  "Thank you for choosing SIR GLOBAL Aeadery. the this OTP to complete your signup procedures and verify your account" +
+                  "</h4>" +
+                  "<br/>" +
+                  `<h2  style="
                     letter-spacing: 4px">` +
-                OTP +
-                "</h2>" +
-                "<h6>" +
-                "If you didn't request this, you can ignore this email or let us know to support esirglades" +
-                "</h6>" +
-                "<br/>" +
-                "<h6>" +
-                "thank you" +
-                "</h6>" +
-                "<h6>" +
-                "support@SIR.org" +
-                "</h6>" +
-                `<h6  style="display: flex">` +
-                ` <a style="
+                  OTP +
+                  "</h2>" +
+                  "<h6>" +
+                  "If you didn't request this, you can ignore this email or let us know to support esirglades" +
+                  "</h6>" +
+                  "<br/>" +
+                  "<h6>" +
+                  "thank you" +
+                  "</h6>" +
+                  "<h6>" +
+                  "support@SIR.org" +
+                  "</h6>" +
+                  `<h6  style="display: flex">` +
+                  ` <a style="
                     padding: 3px"
                   href="https://twitter.com/"
                   target="_blank"
@@ -265,7 +265,7 @@ exports.register = {
                     title="twitter"
                     width="32"
                 /></a>` +
-                `  <a  style="
+                  `  <a  style="
                     padding: 3px"
                   href="https://www.facebook.com/"
                   target="_blank"
@@ -281,69 +281,69 @@ exports.register = {
                     title="facebook"
                     width="32"
                 /></a>` +
-                "</h6>" +
-                "<h6>" +
-                "Visit Us At : www.sirglobal.org  " +
-                "</h6>",
-            };
-            transport.sendMail(mailOptions, async function (err, info) {
-            });
-            return successResponse(res, {
-              message:
-                "Verification code has been sent successfully on your email!",
-              data: res1,
-            });
-          } else {
-            return successResponse(res, {
-              message: "otp already and in your mail plase check your email",
-            });
-          }
+                  "</h6>" +
+                  "<h6>" +
+                  "Visit Us At : www.sirglobal.org  " +
+                  "</h6>",
+              };
+              transport.sendMail(mailOptions, async function (err, info) {
+              });
+              return successResponse(res, {
+                message:
+                  "Verification code has been sent successfully on your email!",
+                data: res1,
+              });
+            } else {
+              return successResponse(res, {
+                message: "otp already and in your mail plase check your email",
+              });
+            }
 
-          // const profile = await Usermodal.findById(res._id).select({
-          //   password: 0,
-          // });
-          // const accessToken = jwt.sign(
-          //   { profile },
-          //   "3700 0000 0000 002",
-          //   {
-          //     expiresIn: "1hr",
-          //   }
-          // );
-          // ejs.renderFile(
-          //   __dirname + "/mail.ejs",
-          //   {
-          //     name: "noreply@sirglobal.or",
-          //     username: finalusename,
-          //     action_url: `http://api.sirglobal.org/api/registration/signUp/varify:${accessToken}`,
-          //   },
-          //   async function (err, data) {
-          //     const mailOptions = {
-          //       from: "infinityai549@gmail.com", // Sender address
-          //       to: req.body.email, // List of recipients
-          //       subject: "verification by SIR", // Subject line
-          //       html: data,
-          //     };
-          //     console.log(data);
-          //     transport.sendMail(mailOptions, async function (err, info) {
-          //       if (err) {
-          //         console.log(err);
-          //         // return badRequestResponse(res, {
-          //         //   message: `Email not send error something is wrong ${err}`,
-          //         // });
-          //       } else {
-          //         console.log("done");
-          //       }
-          //     });
-          //   }
-          // );
-        })
+            // const profile = await Usermodal.findById(res._id).select({
+            //   password: 0,
+            // });
+            // const accessToken = jwt.sign(
+            //   { profile },
+            //   "3700 0000 0000 002",
+            //   {
+            //     expiresIn: "1hr",
+            //   }
+            // );
+            // ejs.renderFile(
+            //   __dirname + "/mail.ejs",
+            //   {
+            //     name: "noreply@sirglobal.or",
+            //     username: finalusename,
+            //     action_url: `http://api.sirglobal.org/api/registration/signUp/varify:${accessToken}`,
+            //   },
+            //   async function (err, data) {
+            //     const mailOptions = {
+            //       from: "infinityai549@gmail.com", // Sender address
+            //       to: req.body.email, // List of recipients
+            //       subject: "verification by SIR", // Subject line
+            //       html: data,
+            //     };
+            //     console.log(data);
+            //     transport.sendMail(mailOptions, async function (err, info) {
+            //       if (err) {
+            //         console.log(err);
+            //         // return badRequestResponse(res, {
+            //         //   message: `Email not send error something is wrong ${err}`,
+            //         // });
+            //       } else {
+            //         console.log("done");
+            //       }
+            //     });
+            //   }
+            // );
+          })
+        }
+      } else {
+        return notFoundResponse(res, {
+          message:
+            "invalid recaptcha",
+        });
       }
-      // } else {
-      //   return notFoundResponse(res, {
-      //     message:
-      //       "invalid recaptcha",
-      //   });
-      // }
     } catch (error) {
       return errorResponse(error, res);
     }
