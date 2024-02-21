@@ -122,10 +122,10 @@ const nowIST = new Date();
 nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
 
 const todayIST = new Date(nowIST);
-todayIST.setHours(0, 0, 0, 0); 
+todayIST.setHours(0, 0, 0, 0);
 
 const nextDayIST = new Date(todayIST);
-nextDayIST.setDate(nextDayIST.getDate() + 1); 
+nextDayIST.setDate(nextDayIST.getDate() + 1);
 nextDayIST.setHours(0, 0, 0, 0);
 
 // Get the current date
@@ -1886,7 +1886,7 @@ exports.stack = {
                               await HoldCBB({
                                 Usernameby: decoded.profile.username,
                                 userId: Refflevalncomex3._id,
-                                Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) *  1.5) / 100,
+                                Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
                                 leval: 3,
                                 Active: false
                               }).save()
@@ -3603,12 +3603,28 @@ exports.stack = {
               //     },
               //   },
               // },
+
               TodaStakingBonusIncome: {
                 $reduce: {
-                  input: "$amount13123456",
+                  input: {
+                    $filter: {
+                      input: "$amount3",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $gte: ["$$item.createdAt", todayIST],
+                          },
+                          {
+                            $lt: ["$$item.createdAt", nextDayIST],
+                          },
+                        ],
+                      },
+                    },
+                  },
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.DailyReword"],
+                    $add: ["$$value", "$$this.Amount"],
                   },
                 },
               },
