@@ -3608,7 +3608,7 @@ exports.stack = {
                 $reduce: {
                   input: {
                     $filter: {
-                      input: "$amount3",
+                      input: "$amount13123456",
                       as: "item",
                       cond: {
                         $and: [
