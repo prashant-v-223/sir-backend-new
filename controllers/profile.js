@@ -24,6 +24,14 @@ exports.profile = {
     try {
 
       let username = req.body.username;
+      let data1 = await Usermodal.aggregate([
+        {
+          $match: {
+            username: username,
+          },
+        },
+
+      ]);
       let data = await Usermodal.aggregate([
         {
           $match: {
@@ -57,7 +65,8 @@ exports.profile = {
       return successResponse(res, {
         message: "My Supporters Are here",
         data: data,
-        usernama: username
+        usernama: usernama
+        usernama1: data1
       });
 
     } catch (error) {
@@ -72,6 +81,14 @@ exports.profile = {
 
       if (!username) return res.send('username');
 
+      let data1 = await Usermodal.aggregate([
+        {
+          $match: {
+            username: username,
+          },
+        },
+
+      ]);
       let data = await Usermodal.aggregate([
         {
           $match: {
@@ -105,7 +122,8 @@ exports.profile = {
       return successResponse(res, {
         message: "My Supporters Are here",
         data: data,
-        usernama: username
+        usernama: username,
+        usernama1: data1
       });
 
     } catch (error) {
