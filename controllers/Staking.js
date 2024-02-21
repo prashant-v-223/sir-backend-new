@@ -122,7 +122,7 @@ const nowIST = new Date();
 nowIST.setUTCHours(nowIST.getUTCHours(), nowIST.getUTCMinutes(), 0, 0); // Convert to IST
 
 const todayIST = new Date(nowIST);
-todayIST.setHours(18, 40, 0, 0);
+todayIST.setHours(18, 30, 0, 0);
 
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1);
