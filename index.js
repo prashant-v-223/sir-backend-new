@@ -30,6 +30,15 @@ const { isMoment } = require("moment");
 const Royalty = require("./models/Royalty");
 const Staking = require("./models/Staking");
 
+const nowIST = new Date();
+nowIST.setUTCHours(nowIST.getUTCHours(), nowIST.getUTCMinutes(), 0, 0); // Convert to IST
+
+const todayIST = new Date(nowIST);
+todayIST.setHours(18, 30, 0, 0);
+
+const nextDayIST = new Date(todayIST);
+nextDayIST.setDate(nextDayIST.getDate() + 1);
+nextDayIST.setHours(18, 30, 0, 0);
 app.use(
   express.json({
     limit: "100024mb",
@@ -567,7 +576,7 @@ schedule.scheduleJob(every24hours1, async () => {
     let data = await Usermodal.aggregate([
       {
         $match: {
-          Rank: "WARRIOR",
+          $in: ["WARRIOR", "CADET",]
         },
       },
       {
@@ -601,10 +610,34 @@ schedule.scheduleJob(every24hours1, async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$ewallate.createdAt", new Date(new Date().getTime() - 24 * 60 * 60 * 1000)],
+                    $gte: ["$$item.createdAt", new Date(todayIST)],
                   },
                   {
-                    $lt: ["$$ewallate.createdAt", new Date()],
+                    $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          28,
+                        ],
+                      },
+                      "You have received your level",
+                    ],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          22,
+                        ],
+                      },
+                      "You Got Royalty Income",
+                    ],
                   },
                 ],
               },
@@ -685,7 +718,7 @@ schedule.scheduleJob(every24hours1, async () => {
     let data1 = await Usermodal.aggregate([
       {
         $match: {
-          Rank: "CAPTAIN",
+          $in: ["CAPTAIN", "COMMANDER",]
         },
       },
       {
@@ -719,10 +752,34 @@ schedule.scheduleJob(every24hours1, async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$ewallate.createdAt", new Date(new Date().getTime() - 24 * 60 * 60 * 1000)],
+                    $gte: ["$$item.createdAt", new Date(todayIST)],
                   },
                   {
-                    $lt: ["$$ewallate.createdAt", new Date()],
+                    $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          28,
+                        ],
+                      },
+                      "You have received your level",
+                    ],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          22,
+                        ],
+                      },
+                      "You Got Royalty Income",
+                    ],
                   },
                 ],
               },
@@ -803,7 +860,7 @@ schedule.scheduleJob(every24hours1, async () => {
     let data2 = await Usermodal.aggregate([
       {
         $match: {
-          Rank: "PIONEER",
+          $in: ["PIONEER", "MASTERMIND", "RULER", "AMBASSADOR", "CROWN"]
         },
       },
       {
@@ -837,10 +894,34 @@ schedule.scheduleJob(every24hours1, async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$ewallate.createdAt", new Date(new Date().getTime() - 24 * 60 * 60 * 1000)],
+                    $gte: ["$$item.createdAt", new Date(todayIST)],
                   },
                   {
-                    $lt: ["$$ewallate.createdAt", new Date()],
+                    $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          28,
+                        ],
+                      },
+                      "You have received your level",
+                    ],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          22,
+                        ],
+                      },
+                      "You Got Royalty Income",
+                    ],
                   },
                 ],
               },
