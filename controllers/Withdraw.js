@@ -4,6 +4,7 @@ const Usermodal = require("../models/user");
 var ejs = require("ejs");
 const jwt = require("jsonwebtoken");
 const Stakingmodal = require("../models/Staking");
+const V4XpriceSchemaDetails = require("../models/V4XLiveRate");
 const {
   decodeUris,
   cloneDeep,
@@ -36,7 +37,7 @@ const ContractAddress = env.globalAccess.V4XContract;
 
 const ContractAbiForBUSD = env.contract.busdAbi.abi;
 
-const ContractAddressForBUSD = env.globalAccess.busdContract; 
+const ContractAddressForBUSD = env.globalAccess.busdContract;
 
 const PrivateKey = env.privateKey;
 
