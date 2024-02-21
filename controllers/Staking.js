@@ -556,20 +556,20 @@ exports.stack = {
                             userId: Refflevalncomex3._id,
                             Note: `You Got Level ${3} Income`,
                             Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) *  1.5) / 100),
+                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100),
                           };
                           await updateRecord(
                             Walletmodal,
                             {
                               userId: Refflevalncomex3._id,
                             },
-                            { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) *  1.5) / 100 } }
+                            { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100 } }
                           ).then(async (res) => {
                             await Ewallateesc({
                               userId: Refflevalncomex3._id,
                               Note: `You Got Level ${3} Income`,
                               Usernameby: decoded.profile.username,
-                              Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) *  1.5) / 100,
+                              Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
                               balace: res.incomeWallet,
                               type: 1,
                               Active: true,
@@ -1851,14 +1851,14 @@ exports.stack = {
                                   userId: Refflevalncomex3._id,
                                   Note: `You Got Level ${3} Income`,
                                   Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) *  1.5) / 100),
+                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100),
                                 };
                                 await updateRecord(
                                   Walletmodal,
                                   {
                                     userId: Refflevalncomex3._id,
                                   },
-                                  { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) *  1.5) / 100 } }
+                                  { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100 } }
                                 ).then(async (res) => {
                                   await Ewallateesc({
                                     userId: Refflevalncomex3._id,
@@ -1880,7 +1880,7 @@ exports.stack = {
                             }
                             else {
                               await HoldCBB({
-                          Usernameby: decoded.profile.username,
+                                Usernameby: decoded.profile.username,
                                 userId: Refflevalncomex3._id,
                                 Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100,
                                 leval: 3,
@@ -3099,6 +3099,21 @@ exports.stack = {
                   },
                 },
               },
+              todaytotal1: {
+                $match: {
+                  dateField: {
+                    $gte: ISODate(todayIST), // Replace with today's date
+                    $lt: ISODate(nextDayIST)  // Replace with tomorrow's date
+                  }
+                },
+                $reduce: {
+                  input: "$amount2",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
+              },
               total2: {
                 $reduce: {
                   input: "$amount",
@@ -3661,6 +3676,7 @@ exports.stack = {
         profile: userData,
         lockeddate: 0,
         mystack: aggregatedUserData[0].total,
+        todaytotal1: aggregatedUserData[0].todaytotal1,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
