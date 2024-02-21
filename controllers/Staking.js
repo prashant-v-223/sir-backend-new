@@ -3509,7 +3509,17 @@ exports.stack = {
                   },
                 },
               }
-              , holdincome: {
+              , holdincomeSCB: {
+                $reduce: {
+                  input: "$amountupcoming1",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value",
+                      "$$this.TotalRewordRecived"],
+                  },
+                },
+              },
+              holdincome: {
                 $reduce: {
                   input: "$amount13",
                   initialValue: 0,
