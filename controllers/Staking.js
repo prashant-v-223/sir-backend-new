@@ -3102,8 +3102,8 @@ exports.stack = {
               todaytotal1: {
                 $match: {
                   dateField: {
-                    $gte: (todayIST), // Replace with today's date
-                    $lt: (nextDayIST)  // Replace with tomorrow's date
+                    $gte: todayIST, // Replace with today's date
+                    $lt: nextDayIST  // Replace with tomorrow's date
                   }
                 },
                 $reduce: {
