@@ -571,12 +571,12 @@ const amountupdate = async (username) => {
     });
   }
 }
-schedule.scheduleJob("*/5 * * * *", async () => {
+schedule.scheduleJob("*/30 * * * * *", async () => {
   try {
     let data = await Usermodal.aggregate([
       {
         $match: {
-          $in: ["WARRIOR", "CADET",]
+          Rank: { $in: ["WARRIOR", "CADET",] }
         },
       },
       {
@@ -675,12 +675,13 @@ schedule.scheduleJob("*/5 * * * *", async () => {
       },
     ]
     )
+    console.log("data",data);
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
       for (let index = 0; index < element.referBY.length; index++) {
         const element1 = element.referBY[index];
-        console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1.totalAmountSum * 10 / 100,
+        console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1,
           Userdata1[0].username);
         await updateRecord(
           Walletmodal,
@@ -715,292 +716,294 @@ schedule.scheduleJob("*/5 * * * *", async () => {
         });
       }
     }
-    let data1 = await Usermodal.aggregate([
-      {
-        $match: {
-          $in: ["CAPTAIN", "COMMANDER",]
-        },
-      },
-      {
-        $graphLookup: {
-          from: "users",
-          startWith: "$username",
-          connectFromField: "username",
-          maxDepth: 1,
-          depthField: "depthlevel",
-          connectToField: "mainId",
-          as: "referBY",
-        },
-      },
-      {
-        $unwind: "$referBY",
-      },
-      {
-        $lookup: {
-          from: "ewallates",
-          localField: "referBY._id",
-          foreignField: "userId",
-          as: "ewallatesData",
-        },
-      },
-      {
-        $addFields: {
-          ewallatesData: {
-            $filter: {
-              input: "$ewallatesData",
-              as: "ewallate",
-              cond: {
-                $and: [
-                  {
-                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
-                  },
-                  {
-                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
-                  },
-                  {
-                    $ne: [
-                      {
-                        $substr: [
-                          "$$ewallate.Note",
-                          0,
-                          28,
-                        ],
-                      },
-                      "You have received your level",
-                    ],
-                  },
-                  {
-                    $ne: [
-                      {
-                        $substr: [
-                          "$$ewallate.Note",
-                          0,
-                          22,
-                        ],
-                      },
-                      "You Got Royalty Income",
-                    ],
-                  },
-                ],
-              },
-            },
-          },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          // referBY: {
-          //   $push: {
-          //     $mergeObjects: [
-          //       "$referBY",
-          //       { ewallatesData: "$ewallatesData" },
-          //     ],
-          //   },
-          // },
-          referBY: {
-            $push: {
-              $mergeObjects: [
-                "$referBY",
-                {
-                  totalAmountSum: {
-                    $sum: {
-                      $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
-                    },
-                  },
-                },
-              ],
-            },
-          },
+    // let data1 = await Usermodal.aggregate([
+    //   {
+    //     $match: {
+    //       Rank: { $in: ["CAPTAIN", "COMMANDER",] }
+    //     },
+    //   },
+    //   {
+    //     $graphLookup: {
+    //       from: "users",
+    //       startWith: "$username",
+    //       connectFromField: "username",
+    //       maxDepth: 1,
+    //       depthField: "depthlevel",
+    //       connectToField: "mainId",
+    //       as: "referBY",
+    //     },
+    //   },
+    //   {
+    //     $unwind: "$referBY",
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "ewallates",
+    //       localField: "referBY._id",
+    //       foreignField: "userId",
+    //       as: "ewallatesData",
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       ewallatesData: {
+    //         $filter: {
+    //           input: "$ewallatesData",
+    //           as: "ewallate",
+    //           cond: {
+    //             $and: [
+    //               {
+    //                 $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+    //               },
+    //               {
+    //                 $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+    //               },
+    //               {
+    //                 $ne: [
+    //                   {
+    //                     $substr: [
+    //                       "$$ewallate.Note",
+    //                       0,
+    //                       28,
+    //                     ],
+    //                   },
+    //                   "You have received your level",
+    //                 ],
+    //               },
+    //               {
+    //                 $ne: [
+    //                   {
+    //                     $substr: [
+    //                       "$$ewallate.Note",
+    //                       0,
+    //                       22,
+    //                     ],
+    //                   },
+    //                   "You Got Royalty Income",
+    //                 ],
+    //               },
+    //             ],
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: "$_id",
+    //       // referBY: {
+    //       //   $push: {
+    //       //     $mergeObjects: [
+    //       //       "$referBY",
+    //       //       { ewallatesData: "$ewallatesData" },
+    //       //     ],
+    //       //   },
+    //       // },
+    //       referBY: {
+    //         $push: {
+    //           $mergeObjects: [
+    //             "$referBY",
+    //             {
+    //               totalAmountSum: {
+    //                 $sum: {
+    //                   $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
+    //                 },
+    //               },
+    //             },
+    //           ],
+    //         },
+    //       },
 
-        },
-      },
-    ]
-    )
-    for (let index = 0; index < data1.length; index++) {
-      const element = data1[index];
-      console.log("element", element);
-      const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
-      for (let index = 0; index < element.referBY.length; index++) {
-        const element1 = element.referBY[index];
-        await updateRecord(
-          Walletmodal,
-          {
-            userId: Userdata1[0]?._id,
-          },
-          {
-            $inc: {
-              incomeWallet:
-                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-            },
-          }
-        ).then(async (res) => {
-          if (element1.totalAmountSum > 0) {
-            await Royalty({
-              userId: Userdata1[0]?._id,
-              Note: `You Got Royalty Income From ${element1.username}`,
-              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-              type: 1,
-              balace: res.incomeWallet,
-              Active: true,
-            }).save();
-            await Ewallateesc({
-              userId: Userdata1[0]?._id,
-              Note: `You Got Royalty Income From ${element1.username}`,
-              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-              type: 1,
-              balace: res.incomeWallet,
-              Active: true,
-            }).save();
-          }
-        });
-      }
+    //     },
+    //   },
+    // ]
+    // )
+    // console.log("data1",data1);
+    // for (let index = 0; index < data1.length; index++) {
+    //   const element = data1[index];
+    //   console.log("element", element);
+    //   const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
+    //   for (let index = 0; index < element.referBY.length; index++) {
+    //     const element1 = element.referBY[index];
+    //     await updateRecord(
+    //       Walletmodal,
+    //       {
+    //         userId: Userdata1[0]?._id,
+    //       },
+    //       {
+    //         $inc: {
+    //           incomeWallet:
+    //             element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+    //         },
+    //       }
+    //     ).then(async (res) => {
+    //       if (element1.totalAmountSum > 0) {
+    //         await Royalty({
+    //           userId: Userdata1[0]?._id,
+    //           Note: `You Got Royalty Income From ${element1.username}`,
+    //           Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+    //           type: 1,
+    //           balace: res.incomeWallet,
+    //           Active: true,
+    //         }).save();
+    //         await Ewallateesc({
+    //           userId: Userdata1[0]?._id,
+    //           Note: `You Got Royalty Income From ${element1.username}`,
+    //           Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+    //           type: 1,
+    //           balace: res.incomeWallet,
+    //           Active: true,
+    //         }).save();
+    //       }
+    //     });
+    //   }
 
-    }
-    let data2 = await Usermodal.aggregate([
-      {
-        $match: {
-          $in: ["PIONEER", "MASTERMIND", "RULER", "AMBASSADOR", "CROWN"]
-        },
-      },
-      {
-        $graphLookup: {
-          from: "users",
-          startWith: "$username",
-          connectFromField: "username",
-          maxDepth: 2,
-          depthField: "depthlevel",
-          connectToField: "mainId",
-          as: "referBY",
-        },
-      },
-      {
-        $unwind: "$referBY",
-      },
-      {
-        $lookup: {
-          from: "ewallates",
-          localField: "referBY._id",
-          foreignField: "userId",
-          as: "ewallatesData",
-        },
-      },
-      {
-        $addFields: {
-          ewallatesData: {
-            $filter: {
-              input: "$ewallatesData",
-              as: "ewallate",
-              cond: {
-                $and: [
-                  {
-                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
-                  },
-                  {
-                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
-                  },
-                  {
-                    $ne: [
-                      {
-                        $substr: [
-                          "$$ewallate.Note",
-                          0,
-                          28,
-                        ],
-                      },
-                      "You have received your level",
-                    ],
-                  },
-                  {
-                    $ne: [
-                      {
-                        $substr: [
-                          "$$ewallate.Note",
-                          0,
-                          22,
-                        ],
-                      },
-                      "You Got Royalty Income",
-                    ],
-                  },
-                ],
-              },
-            },
-          },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          // referBY: {
-          //   $push: {
-          //     $mergeObjects: [
-          //       "$referBY",
-          //       { ewallatesData: "$ewallatesData" },
-          //     ],
-          //   },
-          // },
-          referBY: {
-            $push: {
-              $mergeObjects: [
-                "$referBY",
-                {
-                  totalAmountSum: {
-                    $sum: {
-                      $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
-                    },
-                  },
-                },
-              ],
-            },
-          },
+    // }
+    // let data2 = await Usermodal.aggregate([
+    //   {
+    //     $match: {
+    //    Rank: {    $in: ["PIONEER", "MASTERMIND", "RULER", "AMBASSADOR", "CROWN"] }
+    //     },
+    //   },
+    //   {
+    //     $graphLookup: {
+    //       from: "users",
+    //       startWith: "$username",
+    //       connectFromField: "username",
+    //       maxDepth: 2,
+    //       depthField: "depthlevel",
+    //       connectToField: "mainId",
+    //       as: "referBY",
+    //     },
+    //   },
+    //   {
+    //     $unwind: "$referBY",
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "ewallates",
+    //       localField: "referBY._id",
+    //       foreignField: "userId",
+    //       as: "ewallatesData",
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       ewallatesData: {
+    //         $filter: {
+    //           input: "$ewallatesData",
+    //           as: "ewallate",
+    //           cond: {
+    //             $and: [
+    //               {
+    //                 $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+    //               },
+    //               {
+    //                 $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+    //               },
+    //               {
+    //                 $ne: [
+    //                   {
+    //                     $substr: [
+    //                       "$$ewallate.Note",
+    //                       0,
+    //                       28,
+    //                     ],
+    //                   },
+    //                   "You have received your level",
+    //                 ],
+    //               },
+    //               {
+    //                 $ne: [
+    //                   {
+    //                     $substr: [
+    //                       "$$ewallate.Note",
+    //                       0,
+    //                       22,
+    //                     ],
+    //                   },
+    //                   "You Got Royalty Income",
+    //                 ],
+    //               },
+    //             ],
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: "$_id",
+    //       // referBY: {
+    //       //   $push: {
+    //       //     $mergeObjects: [
+    //       //       "$referBY",
+    //       //       { ewallatesData: "$ewallatesData" },
+    //       //     ],
+    //       //   },
+    //       // },
+    //       referBY: {
+    //         $push: {
+    //           $mergeObjects: [
+    //             "$referBY",
+    //             {
+    //               totalAmountSum: {
+    //                 $sum: {
+    //                   $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
+    //                 },
+    //               },
+    //             },
+    //           ],
+    //         },
+    //       },
 
-        },
-      },
-    ]
-    )
-    for (let index = 0; index < data2.length; index++) {
-      const element = data2[index];
-      const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
-      for (let index = 0; index < element.referBY.length; index++) {
-        const element1 = element.referBY[index];
-        console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1.totalAmountSum * 5 / 100,
-          Userdata1[0].username);
-        await updateRecord(
-          Walletmodal,
-          {
-            userId: Userdata1[0]?._id,
-          },
-          {
-            $inc: {
-              incomeWallet:
+    //     },
+    //   },
+    // ]
+    // )
+    // console.log("data2",data2);
+    // for (let index = 0; index < data2.length; index++) {
+    //   const element = data2[index];
+    //   const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
+    //   for (let index = 0; index < element.referBY.length; index++) {
+    //     const element1 = element.referBY[index];
+    //     console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1.totalAmountSum * 5 / 100,
+    //       Userdata1[0].username);
+    //     await updateRecord(
+    //       Walletmodal,
+    //       {
+    //         userId: Userdata1[0]?._id,
+    //       },
+    //       {
+    //         $inc: {
+    //           incomeWallet:
 
-                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-            },
-          }
-        ).then(async (res) => {
-          if (element1.totalAmountSum > 0) {
-            await Royalty({
-              userId: Userdata1[0]?._id,
-              Note: `You Got Royalty Income From ${element1.username}`,
-              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-              type: 1,
-              balace: res.incomeWallet,
-              Active: true,
-            }).save();
-            await Ewallateesc({
-              userId: Userdata1[0]?._id,
-              Note: `You Got Royalty Income From ${element1.username}`,
-              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-              type: 1,
-              balace: res.incomeWallet,
-              Active: true,
-            }).save();
-          }
-        });
-      }
+    //             element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+    //         },
+    //       }
+    //     ).then(async (res) => {
+    //       if (element1.totalAmountSum > 0) {
+    //         await Royalty({
+    //           userId: Userdata1[0]?._id,
+    //           Note: `You Got Royalty Income From ${element1.username}`,
+    //           Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+    //           type: 1,
+    //           balace: res.incomeWallet,
+    //           Active: true,
+    //         }).save();
+    //         await Ewallateesc({
+    //           userId: Userdata1[0]?._id,
+    //           Note: `You Got Royalty Income From ${element1.username}`,
+    //           Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+    //           type: 1,
+    //           balace: res.incomeWallet,
+    //           Active: true,
+    //         }).save();
+    //       }
+    //     });
+    //   }
 
-    }
+    // }
   } catch (error) {
     console.log(error);
   }
