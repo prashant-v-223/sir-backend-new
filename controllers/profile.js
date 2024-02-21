@@ -42,6 +42,7 @@ exports.profile = {
         {
           $project: {
             Fullname: 1,
+            refId: 1,
             username: 1,
             leval: 1,
             createdAt: 1,
@@ -90,6 +91,7 @@ exports.profile = {
           $project: {
             Fullname: 1,
             username: 1,
+            refId: 1,
             leval: 1,
             createdAt: 1,
             mystack: 1,
