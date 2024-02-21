@@ -2991,8 +2991,6 @@ exports.stack = {
   },
   gelUserWallate: async (req, res) => {
     try {
-      const todayIST = startOfDay; // Start of the user's day
-      const nextDayIST = endOfDay; // End of the user's day
       if (!req.headers.authorization) {
         return badRequestResponse(res, {
           message: "No token provided.",
