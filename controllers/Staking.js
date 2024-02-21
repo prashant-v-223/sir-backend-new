@@ -3613,10 +3613,10 @@ exports.stack = {
                       cond: {
                         $and: [
                           {
-                            $gte: ["$$item.createdAt", todayIST],
+                            $gte: ["$$item.createdAt", new Date(todayIST)],
                           },
                           {
-                            $lt: ["$$item.createdAt", nextDayIST],
+                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
                           },
                         ],
                       },
