@@ -119,7 +119,7 @@ const cronHandler = async (user) => {
   }
 }
 const nowIST = new Date();
-nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
+nowIST.setUTCHours(nowIST.getUTCHours(), nowIST.getUTCMinutes(), 0, 0); // Convert to IST
 
 const todayIST = new Date(nowIST);
 todayIST.setHours(0, 0, 0, 0);
