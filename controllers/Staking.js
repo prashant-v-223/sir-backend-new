@@ -118,15 +118,15 @@ const cronHandler = async (user) => {
 
   }
 }
-const nowIST = new Date("2023-11-01T16:19:08.981+00:00");
+const nowIST = new Date();
 nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
 
 const todayIST = new Date(nowIST);
-todayIST.setHours(0, 5, 30, 0); // Set the time to 00:00:00.000 for today
+todayIST.setHours(0, 0, 0, 0); 
 
 const nextDayIST = new Date(todayIST);
-nextDayIST.setDate(nextDayIST.getDate() + 1); // Add one day to get the next day
-nextDayIST.setHours(0, 5, 30, 0); // Set the time to 00:00:00.000 for the next day
+nextDayIST.setDate(nextDayIST.getDate() + 1); 
+nextDayIST.setHours(0, 5, 30, 0);
 
 // Get the current date
 const currentDate = moment();
@@ -294,6 +294,7 @@ const amountupdate = async (username) => {
   }
 }
 console.log({ todayIST, nextDayIST });
+console.log(todayIST);
 exports.stack = {
   Buystack: async (req, res) => {
     try {
