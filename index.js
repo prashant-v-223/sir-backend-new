@@ -610,10 +610,10 @@ schedule.scheduleJob("*/5 * * * *", async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$item.createdAt", new Date(todayIST)],
+                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
                   },
                   {
-                    $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
                   },
                   {
                     $ne: [
@@ -752,10 +752,10 @@ schedule.scheduleJob("*/5 * * * *", async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$item.createdAt", new Date(todayIST)],
+                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
                   },
                   {
-                    $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
                   },
                   {
                     $ne: [
@@ -894,10 +894,10 @@ schedule.scheduleJob("*/5 * * * *", async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$item.createdAt", new Date(todayIST)],
+                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
                   },
                   {
-                    $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
                   },
                   {
                     $ne: [
