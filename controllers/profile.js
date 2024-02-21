@@ -65,7 +65,7 @@ exports.profile = {
       return successResponse(res, {
         message: "My Supporters Are here",
         data: data,
-        usernama: usernamea,
+        usernama: username,
         usernama1: data1
       });
 
