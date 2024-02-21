@@ -59,7 +59,7 @@ schedule.scheduleJob(every24hours, async () => {
     for (let index = 0; index < Userdata.length; index++) {
       const element = Userdata[index];
 
-      const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, userId: ObjectId(element._id) });
+      const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, Removed: false, userId: ObjectId(element._id) });
       console.log("stakingRecordsstakingRecordsstakingRecords", stakingRecords);
       for (const record of stakingRecords) {
         if (record) {
