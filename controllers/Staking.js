@@ -126,7 +126,7 @@ todayIST.setHours(0, 0, 0, 0);
 
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1); 
-nextDayIST.setHours(0, 2, 40, 0);
+nextDayIST.setHours(0, 5, 40, 0);
 
 // Get the current date
 const currentDate = moment();
