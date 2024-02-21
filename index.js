@@ -571,7 +571,7 @@ const amountupdate = async (username) => {
     });
   }
 }
-schedule.scheduleJob("*/30 * * * * *", async () => {
+schedule.scheduleJob(every24hours1, async () => {
   try {
     let data = await Usermodal.aggregate([
       {
@@ -675,7 +675,7 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
       },
     ]
     )
-    console.log("data",data);
+    console.log("data", data);
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
@@ -818,7 +818,7 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
       },
     ]
     )
-    console.log("data1",data1);
+    console.log("data1", data1);
     for (let index = 0; index < data1.length; index++) {
       const element = data1[index];
       console.log("element", element);
@@ -862,7 +862,7 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
     let data2 = await Usermodal.aggregate([
       {
         $match: {
-       Rank: {    $in: ["PIONEER", "MASTERMIND", "RULER", "AMBASSADOR", "CROWN"] }
+          Rank: { $in: ["PIONEER", "MASTERMIND", "RULER", "AMBASSADOR", "CROWN"] }
         },
       },
       {
@@ -961,7 +961,7 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
       },
     ]
     )
-    console.log("data2",data2);
+    console.log("data2", data2);
     for (let index = 0; index < data2.length; index++) {
       const element = data2[index];
       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
