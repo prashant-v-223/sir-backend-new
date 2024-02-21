@@ -280,10 +280,10 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
                     STAKINGBOOSTER: true,
                   }
                 );
-                let data = await Stakingmodal.find({ userId: user._id });
+                let data = await Stakingmodal.find({ userId: user._id, leval: 0 });
                 for (let index = 0; index < data.length; index++) {
                   const element = data[index];
-                  let d = await Stakingmodal.find({ userId: element.userId });
+                  let d = await Stakingmodal.find({ userId: element.userId, leval: 0 });
                   for (let index = 0; index < d.length; index++) {
                     const element123 = d[index];
                     let a = 500 - element123.Totalsend;
