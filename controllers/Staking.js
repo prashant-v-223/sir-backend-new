@@ -120,10 +120,13 @@ const cronHandler = async (user) => {
 }
 const nowIST = new Date("2023-11-01T16:19:08.981+00:00");
 nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
+
 const todayIST = new Date(nowIST);
+todayIST.setHours(0, 5, 30, 0); // Set the time to 00:00:00.000 for today
+
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1); // Add one day to get the next day
-nextDayIST.setHours(0, 0, 0, 0); // Set the time to 00:00:00.000 for the next daymoment.tz.setDefault('Asia/Kolkata');
+nextDayIST.setHours(0, 5, 30, 0); // Set the time to 00:00:00.000 for the next day
 
 // Get the current date
 const currentDate = moment();
@@ -3099,21 +3102,39 @@ exports.stack = {
                   },
                 },
               },
-              todaytotal1: {
-                $match: {
-                  dateField: {
-                    $gte: todayIST, // Replace with today's date
-                    $lt: nextDayIST  // Replace with tomorrow's date
-                  }
-                },
+              todaymyteam: {
                 $reduce: {
-                  input: "$amount2",
+                  input: {
+                    $filter: {
+                      input: "$amount2",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                          },
+                          {
+                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                          },
+                        ],
+                      },
+                    },
+                  },
                   initialValue: 0,
                   in: {
                     $add: ["$$value", "$$this.Amount"],
                   },
                 },
               },
+              // todaytotal1: {
+              //   $reduce: {
+              //     input: "$amount2",
+              //     initialValue: 0,
+              //     in: {
+              //       $add: ["$$value", "$$this.Amount"],
+              //     },
+              //   },
+              // },
               total2: {
                 $reduce: {
                   input: "$amount",
@@ -3676,7 +3697,7 @@ exports.stack = {
         profile: userData,
         lockeddate: 0,
         mystack: aggregatedUserData[0].total,
-        todaytotal1: aggregatedUserData[0].todaytotal1,
+        todaytotal1: aggregatedUserData[0].todaymyteam,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
