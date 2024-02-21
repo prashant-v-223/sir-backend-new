@@ -591,7 +591,7 @@ exports.stack = {
                         await HoldCBB({
                           userId: Refflevalncomex3._id,
                           Usernameby: decoded.profile.username,
-                          Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100,
+                          Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
                           leval: 3,
                           Active: false
                         }).save()
@@ -1886,7 +1886,7 @@ exports.stack = {
                               await HoldCBB({
                                 Usernameby: decoded.profile.username,
                                 userId: Refflevalncomex3._id,
-                                Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100,
+                                Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) *  1.5) / 100,
                                 leval: 3,
                                 Active: false
                               }).save()
