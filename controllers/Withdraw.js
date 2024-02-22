@@ -37,7 +37,7 @@ const ContractAddress = env.globalAccess.V4XContract;
 
 const ContractAbiForBUSD = env.contract.busdAbi.abi;
 
-const ContractAddressForBUSD = env.globalAccess.busdContract; 
+const ContractAddressForBUSD = env.globalAccess.busdContract;
 
 const PrivateKey = env.privateKey;
 
@@ -361,11 +361,11 @@ exports.Withdraw = {
             totalstaking += StakingData[i].Amount;
           }
           for (let i = 0; i < withdrawalmodal1.length; i++) {
-            if (withdrawalmodal1[i].Remark === "Sir Wallate") {
+            if (withdrawalmodal1[i].Remark === "Sir Income Wallate") {
               totalwithdrawalmodal += withdrawalmodal1[i].withdrawalAmount;
             }
           }
-          console.log({ "Remark": req.body.Remark, "totalwithdrawalmodal": withdrawalmodal1 });
+          console.log({ "totalstaking": totalstaking * SIRprice.price / 90 * 3, "totalwithdrawalmodal": totalwithdrawalmodal });
           console.log("StakingData", StakingData);
           if (StakingData.length > 0) {
             if (req.body.Remark === "Sir Income Wallate") {
@@ -374,7 +374,7 @@ exports.Withdraw = {
               let cout = totalwithdrawalmodal + req.body.Amount;
               console.log(((totalstaking * 3) / 90) * SIRprice.price - cout);
               if (((totalstaking * 3) / 90) * SIRprice.price - cout > 0) {
-                if (req.body.Amount > 25) {
+                if (req.body.Amount >= 25) {
                   if (decoded.profile.iswalletActive) {
                     let data1 = await otp.find({
                       userId: decoded.profile._id,
@@ -500,14 +500,15 @@ exports.Withdraw = {
             } else {
               let totalwithdrawalmodal2 = 0
               for (let i = 0; i < withdrawalmodal1.length; i++) {
-                if (withdrawalmodal1[i].Remark === "main wallate") {
+                if (withdrawalmodal1[i].Remark === "Sir Wallate") {
                   totalwithdrawalmodal2 += withdrawalmodal1[i].withdrawalAmount;
                 }
               }
               let cout = totalwithdrawalmodal2 + req.body.Amount;
-              let data = ((totalstaking * 2) / 90) * SIRprice.price
+              let data = totalstaking * 2
+              console.log({ "totalstaking": data, "totalwithdrawalmodal2": cout });
               if (data - cout > 0) {
-                if (req.body.Amount * 90 / SIRprice.price > 25) {
+                if (req.body.Amount * 90 / SIRprice.price >= 25) {
                   if (decoded.profile.iswalletActive) {
                     let data1 = await otp.find({
                       userId: decoded.profile._id,
