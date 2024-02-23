@@ -3124,6 +3124,29 @@ exports.stack = {
                     $add: ["$$value", "$$this.Amount"],
                   },
                 },
+              }, todaymy: {
+                $reduce: {
+                  input: {
+                    $filter: {
+                      input: "$amount",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                          },
+                          {
+                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
               },
               // todaytotal1: {
               //   $reduce: {
@@ -3723,6 +3746,7 @@ exports.stack = {
         lockeddate: 0,
         mystack: aggregatedUserData[0].total,
         todaytotal1: aggregatedUserData[0].todaymyteam,
+        todaytotal1: aggregatedUserData[0].todaymy,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
