@@ -683,19 +683,19 @@ schedule.scheduleJob(every24hours1, async () => {
         const element1 = element.referBY[index];
         console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1,
           Userdata1[0].username);
-        await updateRecord(
-          Walletmodal,
-          {
-            userId: Userdata1[0]?._id,
-          },
-          {
-            $inc: {
-              incomeWallet:
-                element1.totalAmountSum * 10 / 100,
+        if (element1.totalAmountSum > 0) {
+          await updateRecord(
+            Walletmodal,
+            {
+              userId: Userdata1[0]?._id,
             },
-          }
-        ).then(async (res) => {
-          if (element1.totalAmountSum > 0) {
+            {
+              $inc: {
+                incomeWallet:
+                  element1.totalAmountSum * 10 / 100,
+              },
+            }
+          ).then(async (res) => {
             await Royalty({
               userId: Userdata1[0]?._id,
               Note: `You Got Royalty Income From ${element1.username}`,
@@ -712,8 +712,8 @@ schedule.scheduleJob(every24hours1, async () => {
               balace: res.incomeWallet,
               Active: true,
             }).save();
-          }
-        });
+          });
+        }
       }
     }
     let data1 = await Usermodal.aggregate([
