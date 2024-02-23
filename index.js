@@ -571,7 +571,7 @@ const amountupdate = async (username) => {
     });
   }
 }
-schedule.scheduleJob(every24hours1, async () => {
+schedule.scheduleJob("*/5 * * * *", async () => {
   try {
     let data = await Usermodal.aggregate([
       {
