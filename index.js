@@ -62,109 +62,109 @@ app.get('/show-image', (req, res) => {
 
 const every24hours = "35 18 * * *";
 const every24hours1 = "30 19 * * *";
-// schedule.scheduleJob(every24hours, async () => {
-//   try {
-//     const Userdata = await findAllRecord(Usermodal, {});
-//     for (let index = 0; index < Userdata.length; index++) {
-//       const element = Userdata[index];
+schedule.scheduleJob(every24hours, async () => {
+  try {
+    const Userdata = await findAllRecord(Usermodal, {});
+    for (let index = 0; index < Userdata.length; index++) {
+      const element = Userdata[index];
 
-//       const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, Removed: false, userId: ObjectId(element._id) });
-//       console.log("stakingRecordsstakingRecordsstakingRecords", stakingRecords);
-//       for (const record of stakingRecords) {
-//         if (record) {
-//           const StakingData = await findAllRecord(Stakingmodal, {
-//             userId: record.userId,
-//           });
-//           console.log(record);
-//           if (StakingData.length > 0) {
-//             // const StakingData9 = await Stakingmodal.find({
-//             //   userId: record.userId,
-//             //   leval: 0,
-//             // });
-//             // let totalstaking = 0;
-//             // for (let i = 0; i < StakingData9.length; i++) {
-//             //   totalstaking += StakingData9[i].Amount;
-//             // }
-//             // let totalgetrewords = await Mainwallatesc.aggregate([
-//             //   {
-//             //     $match: {
-//             //       userId: record.userId,
-//             //       type: 1,
-//             //     },
-//             //   },
-//             //   {
-//             //     $group: {
-//             //       _id: "$userId",
-//             //       totalAmount: { $sum: "$Amount" },
-//             //     },
-//             //   },
-//             // ]);
-//             // console.log(totalstaking * 2);
-//             // console.log(totalgetrewords[0].totalAmount);
-//             // if (totalstaking * 2 >= totalAmount[0].totalAmount) {
-//             if (record.TotalRewordRecived >= 0) {
-//               const updatedWallet = await updateRecord(
-//                 Walletmodal,
-//                 { userId: record.userId },
-//                 { $inc: { mainWallet: record.DailyReword } }
-//               );
-//               if (updatedWallet) {
-//                 await Promise.all([
-//                   Mainwallatesc({
-//                     userId: record.userId,
-//                     Note: "You Got Staking Bonus Income.",
-//                     Amount: record.DailyReword,
-//                     type: 1,
-//                     balace: updatedWallet.mainWallet,
-//                     Active: true,
-//                   }).save(),
-//                   Stakingbonus({
-//                     userId: record.userId,
-//                     rewordId: record._id,
-//                     Amount: record.DailyReword,
-//                     Note: "You Got Staking Bonus Income.",
-//                     Active: true,
-//                   }).save(),
-//                   updateRecord(
-//                     Stakingmodal,
-//                     { _id: record._id },
-//                     {
-//                       TotalRewordRecived:
-//                         record.TotalRewordRecived - record.DailyReword,
-//                       TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
-//                       $inc: { Totalsend: 1 },
-//                     }
-//                   ),
-//                 ]);
-//               }
-//             } else {
-//               await Promise.all([
-//                 Stakingbonus({
-//                   userId: record.userId,
-//                   rewordId: record._id,
-//                   Amount: 0,
-//                   Note: "Your staking plan period is completed. You have received your bonus as per the return.",
-//                   Active: false,
-//                 }).save(),
-//                 updateRecord(
-//                   Stakingmodal,
-//                   { userId: record.userId },
-//                   {
-//                     Active: false,
-//                   }
-//                 ),
-//               ]);
-//             }
-//             // }s
-//           }
-//         }
-//       }
-//     }
-//   }
-//   catch (error) {
-//     console.log(error);
-//   }
-// });
+      const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, Removed: false, userId: ObjectId(element._id) });
+      console.log("stakingRecordsstakingRecordsstakingRecords", stakingRecords);
+      for (const record of stakingRecords) {
+        if (record) {
+          const StakingData = await findAllRecord(Stakingmodal, {
+            userId: record.userId,
+          });
+          console.log(record);
+          if (StakingData.length > 0) {
+            // const StakingData9 = await Stakingmodal.find({
+            //   userId: record.userId,
+            //   leval: 0,
+            // });
+            // let totalstaking = 0;
+            // for (let i = 0; i < StakingData9.length; i++) {
+            //   totalstaking += StakingData9[i].Amount;
+            // }
+            // let totalgetrewords = await Mainwallatesc.aggregate([
+            //   {
+            //     $match: {
+            //       userId: record.userId,
+            //       type: 1,
+            //     },
+            //   },
+            //   {
+            //     $group: {
+            //       _id: "$userId",
+            //       totalAmount: { $sum: "$Amount" },
+            //     },
+            //   },
+            // ]);
+            // console.log(totalstaking * 2);
+            // console.log(totalgetrewords[0].totalAmount);
+            // if (totalstaking * 2 >= totalAmount[0].totalAmount) {
+            if (record.TotalRewordRecived >= 0) {
+              const updatedWallet = await updateRecord(
+                Walletmodal,
+                { userId: record.userId },
+                { $inc: { mainWallet: record.DailyReword } }
+              );
+              if (updatedWallet) {
+                await Promise.all([
+                  Mainwallatesc({
+                    userId: record.userId,
+                    Note: "You Got Staking Bonus Income.",
+                    Amount: record.DailyReword,
+                    type: 1,
+                    balace: updatedWallet.mainWallet,
+                    Active: true,
+                  }).save(),
+                  Stakingbonus({
+                    userId: record.userId,
+                    rewordId: record._id,
+                    Amount: record.DailyReword,
+                    Note: "You Got Staking Bonus Income.",
+                    Active: true,
+                  }).save(),
+                  updateRecord(
+                    Stakingmodal,
+                    { _id: record._id },
+                    {
+                      TotalRewordRecived:
+                        record.TotalRewordRecived - record.DailyReword,
+                      TotaldaysTosendReword: record.TotaldaysTosendReword - 1,
+                      $inc: { Totalsend: 1 },
+                    }
+                  ),
+                ]);
+              }
+            } else {
+              await Promise.all([
+                Stakingbonus({
+                  userId: record.userId,
+                  rewordId: record._id,
+                  Amount: 0,
+                  Note: "Your staking plan period is completed. You have received your bonus as per the return.",
+                  Active: false,
+                }).save(),
+                updateRecord(
+                  Stakingmodal,
+                  { userId: record.userId },
+                  {
+                    Active: false,
+                  }
+                ),
+              ]);
+            }
+            // }s
+          }
+        }
+      }
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
+});
 schedule.scheduleJob("0 0 1 * *", async () => {
   try {
     // Find all documents where Active is true
@@ -571,443 +571,443 @@ const amountupdate = async (username) => {
     });
   }
 }
-// schedule.scheduleJob(every24hours1, async () => {
-//   try {
-//     let data = await Usermodal.aggregate([
-//       {
-//         $match: {
-//           Rank: { $in: ["WARRIOR", "CADET",] }
-//         },
-//       },
-//       {
-//         $graphLookup: {
-//           from: "users",
-//           startWith: "$username",
-//           connectFromField: "username",
-//           maxDepth: 0,
-//           depthField: "depthlevel",
-//           connectToField: "mainId",
-//           as: "referBY",
-//         },
-//       },
-//       {
-//         $unwind: "$referBY",
-//       },
-//       {
-//         $lookup: {
-//           from: "ewallates",
-//           localField: "referBY._id",
-//           foreignField: "userId",
-//           as: "ewallatesData",
-//         },
-//       },
-//       {
-//         $addFields: {
-//           ewallatesData: {
-//             $filter: {
-//               input: "$ewallatesData",
-//               as: "ewallate",
-//               cond: {
-//                 $and: [
-//                   {
-//                     $gte: ["$$ewallate.createdAt", new Date(todayIST)],
-//                   },
-//                   {
-//                     $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
-//                   },
-//                   {
-//                     $ne: [
-//                       {
-//                         $substr: [
-//                           "$$ewallate.Note",
-//                           0,
-//                           28,
-//                         ],
-//                       },
-//                       "You have received your level",
-//                     ],
-//                   },
-//                   {
-//                     $ne: [
-//                       {
-//                         $substr: [
-//                           "$$ewallate.Note",
-//                           0,
-//                           22,
-//                         ],
-//                       },
-//                       "You Got Royalty Income",
-//                     ],
-//                   },
-//                 ],
-//               },
-//             },
-//           },
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: "$_id",
-//           // referBY: {
-//           //   $push: {
-//           //     $mergeObjects: [
-//           //       "$referBY",
-//           //       { ewallatesData: "$ewallatesData" },
-//           //     ],
-//           //   },
-//           // },
-//           referBY: {
-//             $push: {
-//               $mergeObjects: [
-//                 "$referBY",
-//                 {
-//                   totalAmountSum: {
-//                     $sum: {
-//                       $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
-//                     },
-//                   },
-//                 },
-//               ],
-//             },
-//           },
+schedule.scheduleJob(every24hours1, async () => {
+  try {
+    let data = await Usermodal.aggregate([
+      {
+        $match: {
+          Rank: { $in: ["WARRIOR", "CADET",] }
+        },
+      },
+      {
+        $graphLookup: {
+          from: "users",
+          startWith: "$username",
+          connectFromField: "username",
+          maxDepth: 0,
+          depthField: "depthlevel",
+          connectToField: "mainId",
+          as: "referBY",
+        },
+      },
+      {
+        $unwind: "$referBY",
+      },
+      {
+        $lookup: {
+          from: "ewallates",
+          localField: "referBY._id",
+          foreignField: "userId",
+          as: "ewallatesData",
+        },
+      },
+      {
+        $addFields: {
+          ewallatesData: {
+            $filter: {
+              input: "$ewallatesData",
+              as: "ewallate",
+              cond: {
+                $and: [
+                  {
+                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+                  },
+                  {
+                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          28,
+                        ],
+                      },
+                      "You have received your level",
+                    ],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          22,
+                        ],
+                      },
+                      "You Got Royalty Income",
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          // referBY: {
+          //   $push: {
+          //     $mergeObjects: [
+          //       "$referBY",
+          //       { ewallatesData: "$ewallatesData" },
+          //     ],
+          //   },
+          // },
+          referBY: {
+            $push: {
+              $mergeObjects: [
+                "$referBY",
+                {
+                  totalAmountSum: {
+                    $sum: {
+                      $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
+                    },
+                  },
+                },
+              ],
+            },
+          },
 
-//         },
-//       },
-//     ]
-//     )
-//     console.log("data", data);
-//     for (let index = 0; index < data.length; index++) {
-//       const element = data[index];
-//       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
-//       for (let index = 0; index < element.referBY.length; index++) {
-//         const element1 = element.referBY[index];
-//         console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1,
-//           Userdata1[0].username);
-//         if (element1.totalAmountSum > 0) {
-//           await updateRecord(
-//             Walletmodal,
-//             {
-//               userId: Userdata1[0]?._id,
-//             },
-//             {
-//               $inc: {
-//                 incomeWallet:
-//                   element1.totalAmountSum * 10 / 100,
-//               },
-//             }
-//           ).then(async (res) => {
-//             await Royalty({
-//               userId: Userdata1[0]?._id,
-//               Note: `You Got Royalty Income From ${element1.username}`,
-//               Amount: element1.totalAmountSum * 10 / 100,
-//               type: 1,
-//               balace: res.incomeWallet,
-//               Active: true,
-//             }).save();
-//             await Ewallateesc({
-//               userId: Userdata1[0]?._id,
-//               Note: `You Got Royalty Income From ${element1.username}`,
-//               Amount: element1.totalAmountSum * 10 / 100,
-//               type: 1,
-//               balace: res.incomeWallet,
-//               Active: true,
-//             }).save();
-//           });
-//         }
-//       }
-//     }
-//     let data1 = await Usermodal.aggregate([
-//       {
-//         $match: {
-//           Rank: { $in: ["CAPTAIN", "COMMANDER",] }
-//         },
-//       },
-//       {
-//         $graphLookup: {
-//           from: "users",
-//           startWith: "$username",
-//           connectFromField: "username",
-//           maxDepth: 1,
-//           depthField: "depthlevel",
-//           connectToField: "mainId",
-//           as: "referBY",
-//         },
-//       },
-//       {
-//         $unwind: "$referBY",
-//       },
-//       {
-//         $lookup: {
-//           from: "ewallates",
-//           localField: "referBY._id",
-//           foreignField: "userId",
-//           as: "ewallatesData",
-//         },
-//       },
-//       {
-//         $addFields: {
-//           ewallatesData: {
-//             $filter: {
-//               input: "$ewallatesData",
-//               as: "ewallate",
-//               cond: {
-//                 $and: [
-//                   {
-//                     $gte: ["$$ewallate.createdAt", new Date(todayIST)],
-//                   },
-//                   {
-//                     $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
-//                   },
-//                   {
-//                     $ne: [
-//                       {
-//                         $substr: [
-//                           "$$ewallate.Note",
-//                           0,
-//                           28,
-//                         ],
-//                       },
-//                       "You have received your level",
-//                     ],
-//                   },
-//                   {
-//                     $ne: [
-//                       {
-//                         $substr: [
-//                           "$$ewallate.Note",
-//                           0,
-//                           22,
-//                         ],
-//                       },
-//                       "You Got Royalty Income",
-//                     ],
-//                   },
-//                 ],
-//               },
-//             },
-//           },
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: "$_id",
-//           // referBY: {
-//           //   $push: {
-//           //     $mergeObjects: [
-//           //       "$referBY",
-//           //       { ewallatesData: "$ewallatesData" },
-//           //     ],
-//           //   },
-//           // },
-//           referBY: {
-//             $push: {
-//               $mergeObjects: [
-//                 "$referBY",
-//                 {
-//                   totalAmountSum: {
-//                     $sum: {
-//                       $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
-//                     },
-//                   },
-//                 },
-//               ],
-//             },
-//           },
+        },
+      },
+    ]
+    )
+    console.log("data", data);
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
+      for (let index = 0; index < element.referBY.length; index++) {
+        const element1 = element.referBY[index];
+        console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1,
+          Userdata1[0].username);
+        if (element1.totalAmountSum > 0) {
+          await updateRecord(
+            Walletmodal,
+            {
+              userId: Userdata1[0]?._id,
+            },
+            {
+              $inc: {
+                incomeWallet:
+                  element1.totalAmountSum * 10 / 100,
+              },
+            }
+          ).then(async (res) => {
+            await Royalty({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.totalAmountSum * 10 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+            await Ewallateesc({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.totalAmountSum * 10 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+          });
+        }
+      }
+    }
+    let data1 = await Usermodal.aggregate([
+      {
+        $match: {
+          Rank: { $in: ["CAPTAIN", "COMMANDER",] }
+        },
+      },
+      {
+        $graphLookup: {
+          from: "users",
+          startWith: "$username",
+          connectFromField: "username",
+          maxDepth: 1,
+          depthField: "depthlevel",
+          connectToField: "mainId",
+          as: "referBY",
+        },
+      },
+      {
+        $unwind: "$referBY",
+      },
+      {
+        $lookup: {
+          from: "ewallates",
+          localField: "referBY._id",
+          foreignField: "userId",
+          as: "ewallatesData",
+        },
+      },
+      {
+        $addFields: {
+          ewallatesData: {
+            $filter: {
+              input: "$ewallatesData",
+              as: "ewallate",
+              cond: {
+                $and: [
+                  {
+                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+                  },
+                  {
+                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          28,
+                        ],
+                      },
+                      "You have received your level",
+                    ],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          22,
+                        ],
+                      },
+                      "You Got Royalty Income",
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          // referBY: {
+          //   $push: {
+          //     $mergeObjects: [
+          //       "$referBY",
+          //       { ewallatesData: "$ewallatesData" },
+          //     ],
+          //   },
+          // },
+          referBY: {
+            $push: {
+              $mergeObjects: [
+                "$referBY",
+                {
+                  totalAmountSum: {
+                    $sum: {
+                      $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
+                    },
+                  },
+                },
+              ],
+            },
+          },
 
-//         },
-//       },
-//     ]
-//     )
-//     console.log("data1", data1);
-//     for (let index = 0; index < data1.length; index++) {
-//       const element = data1[index];
-//       console.log("element", element);
-//       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
-//       for (let index = 0; index < element.referBY.length; index++) {
-//         const element1 = element.referBY[index];
-//         await updateRecord(
-//           Walletmodal,
-//           {
-//             userId: Userdata1[0]?._id,
-//           },
-//           {
-//             $inc: {
-//               incomeWallet:
-//                 element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-//             },
-//           }
-//         ).then(async (res) => {
-//           if (element1.totalAmountSum > 0) {
-//             await Royalty({
-//               userId: Userdata1[0]?._id,
-//               Note: `You Got Royalty Income From ${element1.username}`,
-//               Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-//               type: 1,
-//               balace: res.incomeWallet,
-//               Active: true,
-//             }).save();
-//             await Ewallateesc({
-//               userId: Userdata1[0]?._id,
-//               Note: `You Got Royalty Income From ${element1.username}`,
-//               Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-//               type: 1,
-//               balace: res.incomeWallet,
-//               Active: true,
-//             }).save();
-//           }
-//         });
-//       }
+        },
+      },
+    ]
+    )
+    console.log("data1", data1);
+    for (let index = 0; index < data1.length; index++) {
+      const element = data1[index];
+      console.log("element", element);
+      const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
+      for (let index = 0; index < element.referBY.length; index++) {
+        const element1 = element.referBY[index];
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Userdata1[0]?._id,
+          },
+          {
+            $inc: {
+              incomeWallet:
+                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+            },
+          }
+        ).then(async (res) => {
+          if (element1.totalAmountSum > 0) {
+            await Royalty({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+            await Ewallateesc({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+          }
+        });
+      }
 
-//     }
-//     let data2 = await Usermodal.aggregate([
-//       {
-//         $match: {
-//           Rank: { $in: ["PIONEER", "MASTERMIND", "RULER", "AMBASSADOR", "CROWN"] }
-//         },
-//       },
-//       {
-//         $graphLookup: {
-//           from: "users",
-//           startWith: "$username",
-//           connectFromField: "username",
-//           maxDepth: 2,
-//           depthField: "depthlevel",
-//           connectToField: "mainId",
-//           as: "referBY",
-//         },
-//       },
-//       {
-//         $unwind: "$referBY",
-//       },
-//       {
-//         $lookup: {
-//           from: "ewallates",
-//           localField: "referBY._id",
-//           foreignField: "userId",
-//           as: "ewallatesData",
-//         },
-//       },
-//       {
-//         $addFields: {
-//           ewallatesData: {
-//             $filter: {
-//               input: "$ewallatesData",
-//               as: "ewallate",
-//               cond: {
-//                 $and: [
-//                   {
-//                     $gte: ["$$ewallate.createdAt", new Date(todayIST)],
-//                   },
-//                   {
-//                     $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
-//                   },
-//                   {
-//                     $ne: [
-//                       {
-//                         $substr: [
-//                           "$$ewallate.Note",
-//                           0,
-//                           28,
-//                         ],
-//                       },
-//                       "You have received your level",
-//                     ],
-//                   },
-//                   {
-//                     $ne: [
-//                       {
-//                         $substr: [
-//                           "$$ewallate.Note",
-//                           0,
-//                           22,
-//                         ],
-//                       },
-//                       "You Got Royalty Income",
-//                     ],
-//                   },
-//                 ],
-//               },
-//             },
-//           },
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: "$_id",
-//           // referBY: {
-//           //   $push: {
-//           //     $mergeObjects: [
-//           //       "$referBY",
-//           //       { ewallatesData: "$ewallatesData" },
-//           //     ],
-//           //   },
-//           // },
-//           referBY: {
-//             $push: {
-//               $mergeObjects: [
-//                 "$referBY",
-//                 {
-//                   totalAmountSum: {
-//                     $sum: {
-//                       $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
-//                     },
-//                   },
-//                 },
-//               ],
-//             },
-//           },
+    }
+    let data2 = await Usermodal.aggregate([
+      {
+        $match: {
+          Rank: { $in: ["PIONEER", "MASTERMIND", "RULER", "AMBASSADOR", "CROWN"] }
+        },
+      },
+      {
+        $graphLookup: {
+          from: "users",
+          startWith: "$username",
+          connectFromField: "username",
+          maxDepth: 2,
+          depthField: "depthlevel",
+          connectToField: "mainId",
+          as: "referBY",
+        },
+      },
+      {
+        $unwind: "$referBY",
+      },
+      {
+        $lookup: {
+          from: "ewallates",
+          localField: "referBY._id",
+          foreignField: "userId",
+          as: "ewallatesData",
+        },
+      },
+      {
+        $addFields: {
+          ewallatesData: {
+            $filter: {
+              input: "$ewallatesData",
+              as: "ewallate",
+              cond: {
+                $and: [
+                  {
+                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+                  },
+                  {
+                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          28,
+                        ],
+                      },
+                      "You have received your level",
+                    ],
+                  },
+                  {
+                    $ne: [
+                      {
+                        $substr: [
+                          "$$ewallate.Note",
+                          0,
+                          22,
+                        ],
+                      },
+                      "You Got Royalty Income",
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          // referBY: {
+          //   $push: {
+          //     $mergeObjects: [
+          //       "$referBY",
+          //       { ewallatesData: "$ewallatesData" },
+          //     ],
+          //   },
+          // },
+          referBY: {
+            $push: {
+              $mergeObjects: [
+                "$referBY",
+                {
+                  totalAmountSum: {
+                    $sum: {
+                      $sum: "$ewallatesData.Amount", // Calculate the sum of amounts within ewallatesData array
+                    },
+                  },
+                },
+              ],
+            },
+          },
 
-//         },
-//       },
-//     ]
-//     )
-//     console.log("data2", data2);
-//     for (let index = 0; index < data2.length; index++) {
-//       const element = data2[index];
-//       const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
-//       for (let index = 0; index < element.referBY.length; index++) {
-//         const element1 = element.referBY[index];
-//         console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1.totalAmountSum * 5 / 100,
-//           Userdata1[0].username);
-//         await updateRecord(
-//           Walletmodal,
-//           {
-//             userId: Userdata1[0]?._id,
-//           },
-//           {
-//             $inc: {
-//               incomeWallet:
+        },
+      },
+    ]
+    )
+    console.log("data2", data2);
+    for (let index = 0; index < data2.length; index++) {
+      const element = data2[index];
+      const Userdata1 = await findAllRecord(Usermodal, { _id: element._id });
+      for (let index = 0; index < element.referBY.length; index++) {
+        const element1 = element.referBY[index];
+        console.log("datadatadatadatadatadatadatadatadatadatadatadatadatadata", element1.totalAmountSum * 5 / 100,
+          Userdata1[0].username);
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Userdata1[0]?._id,
+          },
+          {
+            $inc: {
+              incomeWallet:
 
-//                 element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-//             },
-//           }
-//         ).then(async (res) => {
-//           if (element1.totalAmountSum > 0) {
-//             await Royalty({
-//               userId: Userdata1[0]?._id,
-//               Note: `You Got Royalty Income From ${element1.username}`,
-//               Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-//               type: 1,
-//               balace: res.incomeWallet,
-//               Active: true,
-//             }).save();
-//             await Ewallateesc({
-//               userId: Userdata1[0]?._id,
-//               Note: `You Got Royalty Income From ${element1.username}`,
-//               Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
-//               type: 1,
-//               balace: res.incomeWallet,
-//               Active: true,
-//             }).save();
-//           }
-//         });
-//       }
+                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+            },
+          }
+        ).then(async (res) => {
+          if (element1.totalAmountSum > 0) {
+            await Royalty({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+            await Ewallateesc({
+              userId: Userdata1[0]?._id,
+              Note: `You Got Royalty Income From ${element1.username}`,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.totalAmountSum * 5 / 100,
+              type: 1,
+              balace: res.incomeWallet,
+              Active: true,
+            }).save();
+          }
+        });
+      }
 
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 schedule.scheduleJob(every24hours, async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
