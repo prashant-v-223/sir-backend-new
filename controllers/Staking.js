@@ -3772,7 +3772,7 @@ exports.stack = {
         lockeddate: 0,
         mystack: aggregatedUserData[0].total,
         todaytotal1: aggregatedUserData[0].todaymyteam,
-        todaymy: aggregatedUserData[0].total3,
+        todaymy: aggregatedUserData[0].todaymy,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
