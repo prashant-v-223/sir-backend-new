@@ -142,9 +142,6 @@ let todayday = new Date().getDate()
 const startOfDay = currentDate.clone().date(todayday - 1).set({ hour: 0, minute: 35, second: 0, millisecond: 0 }).toDate();
 const endOfDay = currentDate.clone().date(todayday).set({ hour: 24, minute: 30, second: 0, millisecond: 0 }).toDate();
 
-console.log('Start Time (15th):', new Date().getDate());
-console.log('Start Time (15th):', startOfDay);
-console.log('End Time (16th):', endOfDay);
 const amountupdate = async (username) => {
   const Userdata = await findAllRecord(Usermodal, { username: username });
   for (const user of Userdata) {
