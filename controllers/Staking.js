@@ -4227,7 +4227,7 @@ exports.stack = {
         }
         if (decoded) {
           let data = await findAllRecord(holdcbbs, {
-            userId: decoded.profile._id,
+            userId: decoded.profile._id, Active: false
           });
           return successResponse(res, {
             message: "Royalty Income get successfully",
