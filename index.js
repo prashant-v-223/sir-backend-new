@@ -35,11 +35,11 @@ nowIST.setUTCHours(nowIST.getUTCHours(), nowIST.getUTCMinutes(), 0, 0); // Conve
 
 const todayIST = new Date(nowIST);
 todayIST.setDate(todayIST.getDate() - 1);
-todayIST.setHours(18, 30, 0, 0);
+todayIST.setHours(0, 30, 0, 0);
 
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() - 1);
-nextDayIST.setHours(18, 30, 0, 0);
+nextDayIST.setHours(0, 30, 0, 0);
 app.use(
   express.json({
     limit: "100024mb",
