@@ -3078,12 +3078,40 @@ exports.stack = {
               ],
               as: "amount",
             },
+          },{
+            $lookup: {
+              from: "stakings",
+              localField: "_id",
+              foreignField: "userId",
+              as: "amount21",
+              pipeline: [
+                {
+                  $match: {
+                    leval: 0,
+                    createdAt: {
+                      $gte: new Date(todayIST),
+                      $lt: new Date(nextDayIST)
+                    }
+                  }
+                }
+              ]
+            }
           },
+          
           {
             $project: {
               total: {
                 $reduce: {
                   input: "$amount",
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
+              },
+              total3: {
+                $reduce: {
+                  input: "$amount21",
                   initialValue: 0,
                   in: {
                     $add: ["$$value", "$$this.Amount"],
@@ -3126,7 +3154,7 @@ exports.stack = {
                 $reduce: {
                   input: {
                     $filter: {
-                      input: "$amount",
+                      input: "$amount2",
                       as: "item",
                       cond: {
                         $and: [
@@ -3744,7 +3772,7 @@ exports.stack = {
         lockeddate: 0,
         mystack: aggregatedUserData[0].total,
         todaytotal1: aggregatedUserData[0].todaymyteam,
-        todaymy: aggregatedUserData[0].todaymy,
+        todaymy: aggregatedUserData[0].total3,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
