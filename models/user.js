@@ -10,27 +10,27 @@ const user = new mongoose.Schema(
       trim: true,
       required: true,
       match: /^\S+@\S+\.\S+$/, // Regular expression for a basic email format
-      validate: {
-        validator: async function (value) {
-          // Custom validation logic to check the number of occurrences
-          const count = await mongoose.model('user').countDocuments({ email: value });
-          return count <= 6; // Allow the email to be used at most 7 times
-        },
-        message: props => `Email ${props.value} has already been used 7 times.`,
-      },
+      // validate: {
+      //   validator: async function (value) {
+      //     // Custom validation logic to check the number of occurrences
+      //     const count = await mongoose.model('user').countDocuments({ email: value });
+      //     return count <= 6; // Allow the email to be used at most 7 times
+      //   },
+      //   message: props => `Email ${props.value} has already been used 7 times.`,
+      // },
     },
     PhoneNumber: {
       type: String,
       trim: true,
       required: true,
-      validate: {
-        validator: async function (value) {
-          // Custom validation logic to check the number of occurrences
-          const count = await mongoose.model('user').countDocuments({ PhoneNumber: value });
-          return count <= 6; // Allow the phone number to be used at most 7 times
-        },
-        message: props => `Phone number ${props.value} has already been used 7 times.`,
-      },
+      // validate: {
+      //   validator: async function (value) {
+      //     // Custom validation logic to check the number of occurrences
+      //     const count = await mongoose.model('user').countDocuments({ PhoneNumber: value });
+      //     return count <= 6; // Allow the phone number to be used at most 7 times
+      //   },
+      //   message: props => `Phone number ${props.value} has already been used 7 times.`,
+      // },
     },
     walletaddress: { type: String, trim: true },
     Nominee: { type: String, trim: true },
