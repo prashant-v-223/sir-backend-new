@@ -15,6 +15,9 @@ router.get("/allicome", (req, res) => {
 router.get("/allicome1", (req, res) => {
   return stackController.stack.userallincome(req, res);
 });
+router.get("/holdcbbs", (req, res) => {
+  return stackController.stack.holdcbbs(req, res);
+});
 
 // router.get("/signUp/varify:Token", (req, res) => {
 //   return registerController.register.mailVarify(req, res);
