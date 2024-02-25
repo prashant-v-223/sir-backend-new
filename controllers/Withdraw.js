@@ -494,7 +494,7 @@ exports.Withdraw = {
                 }
               } else {
                 return notFoundResponse(res, {
-                  message: "something went wrong please try again",
+                  message: "Your withdrawal limit has been exceeded",
                 });
               }
             } else {
@@ -626,7 +626,7 @@ exports.Withdraw = {
                 }
               } else {
                 return notFoundResponse(res, {
-                  message: "something went wrong please try again",
+                  message: "Your withdrawal limit has been exceeded",
                 });
               }
             }
