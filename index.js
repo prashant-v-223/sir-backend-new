@@ -215,10 +215,10 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   let data123 = resultArray.sort(
     (e, s) => s.totalInvestment - e.totalInvestment
   );
-  // const lastThreeObjects = data123.slice(-3);
-  const startIndex = 2;
-  const endIndex = -1;
-  const lastThreeObjects = data123.slice(startIndex, endIndex);
+  const lastThreeObjects = data123.slice(2).map((item) => ({
+    totalInvestment: item.totalInvestment,
+    username: item.username,
+  }));
   for (let index = 0; index < lastThreeObjects.length; index++) {
     lastteamtotalstack += lastThreeObjects[index].totalInvestment;
   }
