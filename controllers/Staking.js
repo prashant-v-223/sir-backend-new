@@ -3676,6 +3676,9 @@ exports.stack = {
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
                           },
+                          {
+                            $eq: ["$$item.Note", "You Got Staking Bonus Income."],
+                          }
                         ],
                       },
                     },
