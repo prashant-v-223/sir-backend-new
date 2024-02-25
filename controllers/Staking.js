@@ -807,11 +807,11 @@ exports.stack = {
                       const Refflevalncomex8 = await findOneRecord(Usermodal, {
                         username: Refflevalncomex7.mainId,
                       });
-                      if (!Refflevalncome8) {
+                      if (!Refflevalncomex8) {
                         return;
                       }
                       if (Refflevalncomex8.leval >= 8) {
-                        let id = await Refflevalncomex8._id
+                        let id = await Refflevalncomex8._id;
                         const StakingData = await findAllRecord(Stakingmodal, {
                           userId: id,
                         });
@@ -824,11 +824,13 @@ exports.stack = {
                             Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
                           };
                           await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+                            Walletmodal, {
+                            userId: id,
+                          }, {
+                            $inc: {
+                              incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100)
+                            }
+                          }
                           ).then(async (res) => {
                             await Ewallateesc({
                               userId: id,
@@ -3094,7 +3096,7 @@ exports.stack = {
               ],
               as: "amount",
             },
-          },{
+          }, {
             $lookup: {
               from: "stakings",
               localField: "_id",
@@ -3113,7 +3115,7 @@ exports.stack = {
               ]
             }
           },
-          
+
           {
             $project: {
               total: {
