@@ -34,7 +34,6 @@ const nowIST = new Date();
 nowIST.setUTCHours(nowIST.getUTCHours(), nowIST.getUTCMinutes(), 0, 0); // Convert to IST
 
 const todayIST = new Date(nowIST);
-todayIST.setDate(todayIST.getDate() - 1);
 todayIST.setHours(0, 0, 0, 0);
 
 const nextDayIST = new Date(todayIST);
@@ -63,7 +62,7 @@ app.get('/show-image', (req, res) => {
 });
 
 const every24hours = "30 0 * * *";
-const every24hours1 = "40 1 * * *";
+const every24hours1 = "50 23 * * *";
 schedule.scheduleJob(every24hours, async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
