@@ -1290,6 +1290,14 @@ exports.stack = {
                             Active: false
                           }).save()
                         }
+                      } else {
+                        await HoldCBB({
+                          userId: Refflevalncomex16._id,
+                          Usernameby: decoded.profile.username,
+                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+                          leval: 15,
+                          Active: false
+                        }).save()
                       }
                     })
                     const Refflevalncome1 = await findOneRecord(Usermodal, {
