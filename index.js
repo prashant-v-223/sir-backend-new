@@ -104,6 +104,8 @@ schedule.scheduleJob(every24hours, async () => {
             // console.log(totalgetrewords[0].totalAmount);
             // if (totalstaking * 2 >= totalAmount[0].totalAmount) {
             if (record.TotalRewordRecived >= 0) {
+
+              const Userdata = await findAllRecord(Usermodal, { _id: record.userId });
               const updatedWallet = await updateRecord(
                 Walletmodal,
                 { userId: record.userId },
@@ -113,17 +115,11 @@ schedule.scheduleJob(every24hours, async () => {
                 await Promise.all([
                   Mainwallatesc({
                     userId: record.userId,
-                    Note: "You Got Staking Bonus Income.",
+                    Note: record.WalletType.split("(")[1]?.split(")") ? "You Got Staking Bonus Income From " + record.WalletType.split("(")[1]?.split(")")
+                      : "You Got Staking Bonus Income.",
                     Amount: record.DailyReword,
                     type: 1,
                     balace: updatedWallet.mainWallet,
-                    Active: true,
-                  }).save(),
-                  Stakingbonus({
-                    userId: record.userId,
-                    rewordId: record._id,
-                    Amount: record.DailyReword,
-                    Note: "You Got Staking Bonus Income.",
                     Active: true,
                   }).save(),
                   updateRecord(
