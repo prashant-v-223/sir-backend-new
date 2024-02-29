@@ -3689,7 +3689,7 @@ exports.stack = {
                 $reduce: {
                   input: {
                     $filter: {
-                      input: "$amount3",
+                      input: "$amount131",
                       as: "item",
                       cond: {
                         $and: [
@@ -3698,9 +3698,6 @@ exports.stack = {
                           },
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          },
-                          {
-                            $eq: ["$$item.Note", "You Got Staking Bonus Income."],
                           }
                         ],
                       },
