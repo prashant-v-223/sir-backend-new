@@ -165,7 +165,7 @@ schedule.scheduleJob(every24hours, async () => {
 schedule.scheduleJob("0 0 1 * *", async () => {
   try {
     // Find all documents where Active is true
-    const activeStakings = await Staking.find({ Active: true });
+    const activeStakings = await Staking.find({ Active: true, TotaldaysTosendReword: 1000 });
 
     // Update documents and set Active to false, Removed to true, and reset Totalsend to 0
     await Promise.all(activeStakings.map(async (staking) => {
@@ -313,7 +313,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/5 * * * *", async () => {
+schedule.scheduleJob("*/30 * * * * *", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
