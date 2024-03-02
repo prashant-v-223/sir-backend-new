@@ -776,7 +776,7 @@ exports.Withdraw = {
         if (decoded) {
           let data = await Mainwallatesc.find({
             userId: decoded.profile._id,
-          }).sort({ timestampField: -1 }).limit(100);
+          }).limit(100);
           return successResponse(res, {
             message: "Mainwallatesc get successfully",
             data: data,

@@ -2993,12 +2993,52 @@ exports.stack = {
             },
           ])
           // console.log(StakingData1);
-          console.log(StakingData);
+          const StakingDataqq = await Stakingmodal.find({})
+          const withdrawalmodalqq = await withdrawalmodal.find({})
+
+          const last15DaysData = StakingDataqq.filter(doc => moment(doc.createdAt).isAfter(moment().subtract(15, 'days')));
+
+          // Create an object to hold daily totals
+          const dailyTotals = {};
+
+          // Aggregate total amount day by day
+          last15DaysData.forEach(entry => {
+            const dateKey = moment(entry.createdAt).format('DD/MM/YYYY'); // Format date as 'DD/MM/YYYY'
+            console.log("dailyTotals[dateKey]", dailyTotals[dateKey] || 0);
+            dailyTotals[dateKey] = (dailyTotals[dateKey] || 0) + entry.Amount;
+          });
+
+          // Create an array of formatted data for the last 15 days
+          const formattedData = Object.entries(dailyTotals).map(([date, total, total2]) => ({
+            date,
+            total2, total
+          }));
+
+
+          // Ensure all dates in the last 15 days are represented, even if the amount is 0
+          const today = moment();
+          for (let i = 14; i >= 0; i--) {
+            const date = today.subtract(i, 'days').format('DD/MM/YYYY');
+            if (!dailyTotals[date]) {
+              formattedData.push({ date, total: 0, total2: 0 });
+            }
+          }
+          withdrawalmodalqq.forEach(entry => {
+            const dateKey = moment(entry.createdAt).format('DD/MM/YYYY'); // Format date as 'DD/MM/YYYY'
+            console.log("dailyTotalssss[dateKey]", dailyTotals);
+            dailyTotals[dateKey] = (dailyTotals[dateKey] || 0) + entry.Amount; // Assuming 'amount2' is the field containing withdrawal amounts
+          });
+
+
+
+          // Sort formatted data by date in ascending order
+          formattedData.sort((a, b) => moment(a.date, 'DD/MM/YYYY') - moment(b.date, 'DD/MM/YYYY'));
+
           const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
           return successResponse(res, {
             message: "staking data get successfully",
             data: StakingData,
-            SIRprice: SIRprice.price
+            SIRprice: SIRprice.price, formattedData: formattedData
           });
         }
       } else {
