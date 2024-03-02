@@ -63,7 +63,7 @@ app.get('/show-image', (req, res) => {
 
 const every24hours = "30 0 * * *";
 const every24hours1 = "50 23 * * *";
-schedule.scheduleJob("*/30 * * * *", async () => {
+schedule.scheduleJob(every24hours, async () => {
   try {
     const stakingRecords = await findAllRecord(Stakingmodal, { Active: true, Removed: false });
     for (const record of stakingRecords) {
