@@ -1509,6 +1509,32 @@ exports.stack = {
         ]),
         findAllRecord(V4Xpricemodal, {}),
       ]);
+      const today = new Date();
+      const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+      
+      const todayReff = await Stakingbonus.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: startOfToday,
+              $lt: endOfToday
+            },
+            $expr: {
+              $eq: [
+                { $substrCP: ["$Note", 0, 29] },
+                "You Got Refer and Earn Income"
+              ]
+            }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalAmount: { $sum: "$Amount" } // Assuming "Amount" is the field you want to sum
+          }
+        }
+      ])
       return successResponse(res, {
         message: "Wallet data retrieved successfully",
         data: WalletData,
@@ -1519,6 +1545,7 @@ exports.stack = {
         todaymy: aggregatedUserData[0].todaymy,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
+        TodaStakingBonusIncome: todayReff[0],
         ReffData: data[0].referBYCount,
         ReffData1: data1,
         ReffData2: data22,
