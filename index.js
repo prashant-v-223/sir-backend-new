@@ -203,9 +203,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   let fastlag = data123[0]?.totalInvestment
   let seclag = data123[1]?.totalInvestment
   let lastlag = lastteamtotalstack
-  console.log("lastlag", teamtotalstack * 0.5, fastlag);
-  console.log("lastlag", teamtotalstack * 0.25, seclag);
-  console.log("lastlag", teamtotalstack * 0.25, lastlag);
+  console.log("data123", data123);
   if (teamtotalstack * 0.5 <= fastlag) {
     if (teamtotalstack * 0.25 <= seclag) {
       if (teamtotalstack * 0.25 <= lastlag) {
@@ -252,7 +250,6 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
 
 
   if (filteredData.length >= 5) {
-    console.log("data1", filteredData);
 
     let filteredDatasort = filteredData.sort(
       (e, s) => s.totalInvestment - e.totalInvestment
@@ -296,9 +293,9 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/30 * * * * *", async () => {
+schedule.scheduleJob("*/5 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, {});
+    const Userdata = await findAllRecord(Usermodal, { username: "SIR90417" });
     for (const user of Userdata) {
       const { _id: userId, username } = user;
       // console.log(user);
@@ -309,7 +306,6 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
         leval: { $lte: user.leval },
         Active: false
       });
-      console.log("HoldCBBdata", HoldCBBdata);
       if (HoldCBBdata.length >= 0) {
         for (let index = 0; index < HoldCBBdata.length; index++) {
           const element = HoldCBBdata[index];
@@ -347,7 +343,6 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
         }
       }
       if (user) {
-        console.log(user);
         switch (user?.Rank) {
           case "Trainee":
             await updateRank(user, "ACE", "SMART WATCH", 1000);
@@ -368,30 +363,21 @@ schedule.scheduleJob("*/30 * * * * *", async () => {
             await updateRank(user, "PIONEER", "BREEZA/$12500", 528000);
             break;
           case "PIONEER":
-            await updateRank(user, "MASTERMIND", "2BHK FLAT/$30000", 12528000);
+            await updateRank(user, "MASTERMIND", "2BHK FLAT/$30000", 1228000);
             break;
           case "MASTERMIND":
-            await updateRank(user, "RULER", "MERCEDEZ/$48000", 14028000);
+            await updateRank(user, "RULER", "MERCEDEZ/$48000", 2728000);
             break;
           case "RULER":
             await updateRank(
               user,
               "AMBASSADOR",
               "3/4 BHK APARTMENT/$100000",
-              17428000
+              6128000
             );
             break;
           case "AMBASSADOR":
-            await updateRank(user, "CROWN", "VILLA/ $300000", 24428000);
-            break;
-          case "CROWN":
-            await updateRank(
-              user,
-              "CROWN AMBASSADOR",
-              "ROLLS ROYCE/ $400000",
-              39428000
-            );
-            break;
+            await updateRank(user, "CROWN AMBASSADOR", "VILLA/ $300000", 13128000);
             break;
           default:
             break;
