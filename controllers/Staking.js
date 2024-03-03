@@ -515,17 +515,16 @@ exports.stack = {
                     ])
                     await SCBupdate({ decoded, data, ReffData1, req })
                     await CCBupdate({ data, decoded, req })
-
+                    await Stakingmodal({
+                      userId: decoded.profile._id,
+                      WalletType: "main-Wallet",
+                      DailyReword: Number(req.body.Amount / 1000) * 2,
+                      bonusAmount: 200,
+                      Amount: req.body.Amount,
+                      TotalRewordRecived: req.body.Amount * 2,
+                      transactionHash: "",
+                    }).save();
                   }
-                  await Stakingmodal({
-                    userId: decoded.profile._id,
-                    WalletType: "main-Wallet",
-                    DailyReword: Number(req.body.Amount / 1000) * 2,
-                    bonusAmount: 200,
-                    Amount: req.body.Amount,
-                    TotalRewordRecived: req.body.Amount * 2,
-                    transactionHash: "",
-                  }).save();
                   await updateRecord(
                     Walletmodal,
                     { userId: decoded.profile._id },
@@ -658,16 +657,16 @@ exports.stack = {
                           await SCBupdate({ decoded, data, ReffData1, req })
                           await CCBupdate({ data, decoded, req })
 
+                          await Stakingmodal({
+                            userId: decoded.profile._id,
+                            WalletType: "DAPP-Wallet",
+                            DailyReword: Number(req.body.Amount / 1000) * 2,
+                            bonusAmount: 200,
+                            Amount: req.body.Amount,
+                            TotalRewordRecived: req.body.Amount * 2,
+                            transactionHash: "",
+                          }).save();
                         }
-                        await Stakingmodal({
-                          userId: decoded.profile._id,
-                          WalletType: "DAPP-Wallet",
-                          DailyReword: Number(req.body.Amount / 1000) * 2,
-                          bonusAmount: 200,
-                          Amount: req.body.Amount,
-                          TotalRewordRecived: req.body.Amount * 2,
-                          transactionHash: "",
-                        }).save();
                       })
                       await amountupdate(decoded.profile.username)
                       return successResponse(res, {
