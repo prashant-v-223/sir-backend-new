@@ -287,6 +287,934 @@ const amountupdate = async (username) => {
     });
   }
 }
+
+const SCBupdate = async ({ decoded, daat, ReffData1 }) => {
+  await updateRecord(
+    Usermodal,
+    { username: ReffData1.username },
+    {
+      leval: Number(decoded.profile.mystack === 0 ? daat.length + 1 : daat.length),
+    }
+  ).then(async (data) => {
+    const Refflevalncome = await findOneRecord(Usermodal, {
+      username: decoded.profile.username,
+      isValid: true,
+    });
+
+    console.log("==========================================================>daatdaat", daat);
+    // if (!Refflevalncome) {
+    //   return;
+    // }
+    const Refflevalncomex1 = await findOneRecord(Usermodal, {
+      username: Refflevalncome.mainId,
+      isValid: true,
+    });
+    await amountupdate(Refflevalncomex1.username)
+    // if (!Refflevalncomex1) {
+    //   return;
+    // }
+    console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Math.ceil(req.body.Amount / 90 * SIRprice.price));
+    if (Refflevalncomex1.leval >= 1) {
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: Refflevalncomex1._id,
+      });
+
+      if (StakingData.length > 0) {
+        const StakingData1 = await Stakingmodal.find({
+          userId: Refflevalncomex1._id,
+          leval: 0,
+        });
+        let totalstaking = 0;
+        for (let i = 0; i < StakingData1.length; i++) {
+          totalstaking += StakingData1[i].Amount;
+        }
+
+        let data1 = {
+          userId: Refflevalncomex1._id,
+          Note: `You Got Level ${1} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100,
+        };
+        const a1 = await Walletmodal.findOne({ userId: Refflevalncomex1._id })
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Refflevalncomex1._id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: Refflevalncomex1._id,
+            Note: `You Got Level ${1} Income`,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100),
+            Usernameby: decoded.profile.username,
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data1).save();
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex1._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100),
+        leval: 1,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex2 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex1.mainId,
+    });
+    if (!Refflevalncomex2) {
+      return;
+    }
+    if (Refflevalncomex2.leval >= 2) {
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: Refflevalncomex2._id,
+      });
+      if (StakingData.length > 0) {
+        let data2 = {
+          userId: Refflevalncomex2._id,
+          Note: `You Got Level ${2} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100,
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Refflevalncomex2._id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: Refflevalncomex2._id,
+            Note: `You Got Level ${2} Income`,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100),
+            Usernameby: decoded.profile.username,
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+
+        await Communitymodal(data2).save();
+        console.log("===============>22", {
+          Refflevalncomex2,
+          data2,
+        });
+
+
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex2._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100),
+        leval: 2,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex3 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex2.mainId,
+    });
+    if (!Refflevalncomex3) {
+      return;
+    }
+    if (Refflevalncomex3.leval >= 3) {
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: Refflevalncomex3._id,
+      });
+      if (StakingData.length > 0) {
+        let data3 = {
+          userId: Refflevalncomex3._id,
+          Note: `You Got Level ${3} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Refflevalncomex3._id,
+          },
+          { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100 } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: Refflevalncomex3._id,
+            Note: `You Got Level ${3} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data3).save();
+
+        console.log("===============>33", {
+          Refflevalncomex3,
+          data3,
+        });
+      }
+    }
+    else {
+      await HoldCBB({
+        userId: Refflevalncomex3._id,
+        Usernameby: decoded.profile.username,
+        Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
+        leval: 3,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex4 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex3.mainId,
+    });
+    if (!Refflevalncomex4) {
+      return;
+    }
+    if (Refflevalncomex4.leval >= 4) {
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: Refflevalncomex4._id,
+      });
+      if (StakingData.length > 0) {
+        let data4 = {
+          userId: Refflevalncomex4._id,
+          Note: `You Got Level ${4} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Refflevalncomex4._id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: Refflevalncomex4._id,
+            Note: `You Got Level ${4} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data4).save();
+
+        console.log("===============>44", {
+          Refflevalncomex4,
+          data4,
+        });
+
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex4._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        leval: 4,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex5 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex4.mainId,
+    });
+    if (!Refflevalncomex5) {
+      return;
+    }
+    if (Refflevalncomex5.leval >= 5) {
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: Refflevalncomex5._id,
+      });
+      let id = await Refflevalncomex5._id
+      console.log("Refflevalncomex5===>>",);
+      if (StakingData.length > 0) {
+        let data5 = {
+          userId: Refflevalncomex5._id,
+          Note: `You Got Level ${5} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${5} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data5).save();
+
+        console.log("===============>55", {
+          Refflevalncomex5,
+          data5,
+        });
+
+
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex5._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 5,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex6 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex5.mainId,
+    });
+    if (!Refflevalncomex6) {
+      return;
+    }
+    if (Refflevalncomex6.leval >= 6) {
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: Refflevalncomex6._id,
+      });
+
+      if (StakingData.length > 0) {
+        let data6 = {
+          userId: Refflevalncomex6._id,
+          Note: `You Got Level ${6} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Refflevalncomex6._id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: Refflevalncomex6._id,
+            Note: `You Got Level ${6} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data6).save();
+
+        console.log("===============>66", {
+          Refflevalncomex6,
+          data6,
+        });
+
+
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex6._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 6,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex7 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex6.mainId,
+    });
+    if (!Refflevalncomex7) {
+      return;
+    }
+    if (Refflevalncomex7.leval >= 7) {
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: Refflevalncomex7._id,
+      });
+      if (StakingData.length > 0) {
+
+        let data7 = {
+          userId: Refflevalncomex7._id,
+          Note: `You Got Level ${7} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: Refflevalncomex7._id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: Refflevalncomex7._id,
+            Note: `You Got Level ${7} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data7).save();
+
+        console.log("===============>77", {
+          Refflevalncomex7,
+          data7,
+        });
+
+
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex7._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 7,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex8 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex7.mainId,
+    });
+    if (!Refflevalncomex8) {
+      return;
+    }
+    if (Refflevalncomex8.leval >= 8) {
+      let id = await Refflevalncomex8._id;
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+
+        let data8 = {
+          userId: id,
+          Note: `You Got Level ${8} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal, {
+          userId: id,
+        }, {
+          $inc: {
+            incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100)
+          }
+        }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${8} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data8).save();
+
+        console.log("===============>88", {
+          Refflevalncomex8,
+          data8,
+        });
+      }
+
+    }
+    else {
+      let id = await Refflevalncomex8._id
+      await HoldCBB({
+        userId: id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 8,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex9 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex8.mainId,
+    });
+    if (!Refflevalncomex9) {
+      return;
+    }
+    if (Refflevalncomex9.leval >= 9) {
+      let id = await Refflevalncomex9._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+
+
+        let data9 = {
+          userId: id,
+          Note: `You Got Level ${9} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${9} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data9).save();
+
+        console.log("===============>99", {
+          Refflevalncomex9,
+          data9,
+        });
+
+
+      }
+    } else {
+      let id = await Refflevalncomex9._id
+      await HoldCBB({
+        userId: id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 9,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex10 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex9.mainId,
+    });
+    if (!Refflevalncomex10) {
+      return;
+    }
+
+    if (Refflevalncomex10.leval >= 10) {
+      let id = await Refflevalncomex10._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+        let data10 = {
+          userId: id,
+          Note: `You Got Level ${10} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+        ).then(async (res) => {
+          let id = await Refflevalncomex10._id
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${10} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data10).save();
+
+        console.log("===============>1010", {
+          Refflevalncomex10,
+          data10,
+        });
+
+
+      }
+    } else {
+      let id = await Refflevalncomex10._id
+      await HoldCBB({
+        userId: id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 10,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex11 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex10.mainId,
+    });
+    if (!Refflevalncomex11) {
+      return;
+    }
+
+    if (Refflevalncomex11.leval >= 11) {
+      let id = await Refflevalncomex11._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+        let data11 = {
+          userId: id,
+          Note: `You Got Level ${11} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${11} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data11).save();
+
+        console.log("===============>1111", {
+          Refflevalncomex11,
+          data11,
+        });
+
+
+      }
+    } else {
+      let id = await Refflevalncomex11._id
+      await HoldCBB({
+        userId: id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 11,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex12 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex11.mainId,
+    });
+    if (!Refflevalncomex12) {
+      return;
+    }
+    if (Refflevalncomex12.leval >= 12) {
+      let id = await Refflevalncomex12._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+        let data12 = {
+          userId: id,
+          Note: `You Got Level ${12} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${12} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data12).save();
+
+        console.log("===============>1212", {
+          Refflevalncomex12,
+          data12,
+        });
+
+
+      }
+    } else {
+      let id = await Refflevalncomex12._id
+      await HoldCBB({
+        userId: id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
+        leval: 12,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex13 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex12.mainId,
+    });
+    if (!Refflevalncomex13) {
+      return;
+    }
+    if (Refflevalncomex13.leval >= 13) {
+      let id = await Refflevalncomex13._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+        let data13 = {
+          userId: id,
+          Note: `You Got Level ${13} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${13} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data13).save();
+
+        console.log("===============>1313", {
+          Refflevalncomex13,
+          data13,
+        });
+
+
+      }
+    } else {
+      let id = await Refflevalncomex13._id
+      await HoldCBB({
+        userId: id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        leval: 13,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex14 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex13.mainId,
+    });
+    if (!Refflevalncomex14) {
+      return;
+    }
+    if (Refflevalncomex14.leval >= 14) {
+      let id = await Refflevalncomex14._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+        let data14 = {
+          userId: id,
+          Note: `You Got Level ${14} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${14} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data14).save();
+
+        console.log("===============>1414", {
+          Refflevalncomex14,
+          data14,
+        });
+
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex14._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        leval: 14,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex15 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex14.mainId,
+    });
+    if (!Refflevalncomex15) {
+      return;
+    }
+    if (Refflevalncomex15.leval >= 15) {
+      let id = await Refflevalncomex15._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+
+        let data15 = {
+          userId: id,
+          Note: `You Got Level ${15} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100 } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${15} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data15).save();
+
+        console.log("===============>1515", {
+          Refflevalncomex15,
+          data15,
+        });
+
+
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex15._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        leval: 16,
+        Active: false
+      }).save()
+    }
+    const Refflevalncomex16 = await findOneRecord(Usermodal, {
+      username: Refflevalncomex15.mainId,
+    });
+    if (!Refflevalncomex16) {
+      return;
+    }
+    if (Refflevalncomex16.leval >= 16) {
+      let id = await Refflevalncomex16._id
+      const StakingData = await findAllRecord(Stakingmodal, {
+        userId: id,
+      });
+      if (StakingData.length > 0) {
+        let data16 = {
+          userId: id,
+          Note: `You Got Level ${16} Income`,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        };
+        await updateRecord(
+          Walletmodal,
+          {
+            userId: id,
+          },
+          { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
+        ).then(async (res) => {
+          await Ewallateesc({
+            userId: id,
+            Note: `You Got Level ${16} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+            balace: res.incomeWallet,
+            type: 1,
+            Active: true,
+          }).save();
+        });
+        await Communitymodal(data16).save();
+
+        console.log("===============>1616", {
+          Refflevalncome16,
+          data16,
+        });
+
+      } else {
+        let id = await Refflevalncomex16._id
+        await HoldCBB({
+          userId: id,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+          leval: 15,
+          Active: false
+        }).save()
+      }
+    } else {
+      await HoldCBB({
+        userId: Refflevalncomex16._id,
+        Usernameby: decoded.profile.username,
+        Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
+        leval: 15,
+        Active: false
+      }).save()
+    }
+  })
+}
+const CCBupdate = async ({ data }) => {
+  const supporterIds = [];
+  let supporterId = data.supporterId;
+  let dat12 = [10, 7, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5]
+  // Populate supporterIds array with supporterId for each level
+  for (let i = 1; i <= 16; i++) {
+    const Refflevalncome = await findOneRecord(Usermodal, {
+      username: supporterId,
+      isValid: true,
+    });
+
+    if (!Refflevalncome) break;
+
+    supporterIds.push(Refflevalncome._id);
+    supporterId = Refflevalncome.supporterId;
+  }
+
+  // Calculate and save staking details for each level
+  for (let i = 1; i <= supporterIds.length; i++) {
+    const Refflevalncome = await findOneRecord(Usermodal, {
+      _id: supporterIds[i - 1],
+    });
+
+    await Stakingmodal({
+      userId: Refflevalncome._id,
+      WalletType: `Level ${i} plan (${decoded.profile.username})`,
+      DailyReword: Number((req.body.Amount * (dat12[i])) / 1000) * 2,
+      bonusAmount: 200,
+      leval: i,
+      Amount: (req.body.Amount * (dat12[i])) / 100,
+      TotalRewordRecived: (req.body.Amount * (dat12[i])) / 100 * 2,
+      transactionHash: "",
+      Active: Refflevalncome.leval >= i,
+    }).save();
+  }
+};
 console.log({ todayIST, nextDayIST });
 exports.stack = {
   Buystack: async (req, res) => {
@@ -332,57 +1260,45 @@ exports.stack = {
                   const ReffData1 = await findOneRecord(Usermodal, {
                     username: data.mainId,
                   });
+
                   if (ReffData?._id !== null) {
-
-                    const StakingData = await findAllRecord(Stakingmodal, {
-                      userId: ReffData1._id,
-                    });
-                    if (StakingData.length > 0) {
-
-                      const StakingData = await Stakingmodal.find({
-                        userId: ReffData1._id,
-                        leval: 0,
-                      });
-                      const withdrawalmodal1 = await Wallet.find({
-                        userId: ReffData1._id,
-                      });
-                      let totalstaking = 0;
-                      for (let i = 0; i < StakingData.length; i++) {
-                        totalstaking += StakingData[i].Amount;
-                      }
-                      const data123 = await Stakingbonus.find({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` })
-                      if (data123.length <= 0) {
-                        await updateRecord(
-                          Walletmodal,
-                          {
-                            userId: ReffData1._id,
+                    // const StakingData = await findAllRecord(Stakingmodal, {
+                    //   userId: ReffData._id,
+                    // });
+                    // if (StakingData.length > 0) {
+                    const data123 = await Stakingbonus.find({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` })
+                    if (data123.length <= 0) {
+                      await updateRecord(
+                        Walletmodal,
+                        {
+                          userId: ReffData._id,
+                        },
+                        {
+                          $inc: {
+                            incomeWallet:
+                              ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
                           },
-                          {
-                            $inc: {
-                              incomeWallet:
-                                ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                            },
-                          }
-                        )
-                          .then(async (res) => {
-                            await Ewallateesc({
-                              userId: ReffData1?._id,
-                              Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                              type: 1,
-                              balace: res.incomeWallet,
-                              Active: true,
-                            }).save();
-                            await Stakingbonus({
-                              userId: ReffData1?._id,
-                              ReffId: decoded.profile._id,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                              Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                              Active: true,
-                            }).save();
-                          });
-                      }
+                        }
+                      )
+                        .then(async (res) => {
+                          await Ewallateesc({
+                            userId: ReffData?._id,
+                            Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
+                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
+                            type: 1,
+                            balace: res.incomeWallet,
+                            Active: true,
+                          }).save();
+                          await Stakingbonus({
+                            userId: ReffData?._id,
+                            ReffId: decoded.profile._id,
+                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
+                            Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
+                            Active: true,
+                          }).save();
+                        });
                     }
+                    // }
                     const daat = await Usermodal.aggregate([
                       {
                         '$match': {
@@ -407,1190 +1323,9 @@ exports.stack = {
                         }
                       }
                     ])
+                    await SCBupdate({ decoded, daat, ReffData1 })
+                    await CCBupdate({ daat })
 
-                    await updateRecord(
-                      Usermodal,
-                      { username: ReffData1.username },
-                      {
-                        leval: Number(decoded.profile.mystack === 0 ? daat.length + 1 : daat.length),
-                      }
-                    ).then(async (data) => {
-                      const Refflevalncome = await findOneRecord(Usermodal, {
-                        username: decoded.profile.username,
-                        isValid: true,
-                      });
-
-                      console.log("==========================================================>daatdaat", daat);
-                      // if (!Refflevalncome) {
-                      //   return;
-                      // }
-                      const Refflevalncomex1 = await findOneRecord(Usermodal, {
-                        username: Refflevalncome.mainId,
-                        isValid: true,
-                      });
-                      await amountupdate(Refflevalncomex1.username)
-                      // if (!Refflevalncomex1) {
-                      //   return;
-                      // }
-                      console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Math.ceil(req.body.Amount / 90 * SIRprice.price));
-                      if (Refflevalncomex1.leval >= 1) {
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: Refflevalncomex1._id,
-                        });
-
-                        if (StakingData.length > 0) {
-                          const StakingData1 = await Stakingmodal.find({
-                            userId: Refflevalncomex1._id,
-                            leval: 0,
-                          });
-                          const withdrawalmodal1 = await Wallet.find({
-                            userId: ReffData1._id,
-                          });
-                          let totalstaking = 0;
-                          for (let i = 0; i < StakingData1.length; i++) {
-                            totalstaking += StakingData1[i].Amount;
-                          }
-
-                          let data1 = {
-                            userId: Refflevalncomex1._id,
-                            Note: `You Got Level ${1} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100,
-                          };
-                          const a1 = await Walletmodal.findOne({ userId: Refflevalncomex1._id })
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: Refflevalncomex1._id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: Refflevalncomex1._id,
-                              Note: `You Got Level ${1} Income`,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100),
-                              Usernameby: decoded.profile.username,
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data1).save();
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex1._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100),
-                          leval: 1,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex2 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex1.mainId,
-                      });
-                      if (!Refflevalncomex2) {
-                        return;
-                      }
-                      if (Refflevalncomex2.leval >= 2) {
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: Refflevalncomex2._id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data2 = {
-                            userId: Refflevalncomex2._id,
-                            Note: `You Got Level ${2} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100,
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: Refflevalncomex2._id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: Refflevalncomex2._id,
-                              Note: `You Got Level ${2} Income`,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100),
-                              Usernameby: decoded.profile.username,
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-
-                          await Communitymodal(data2).save();
-                          console.log("===============>22", {
-                            Refflevalncomex2,
-                            data2,
-                          });
-
-
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex2._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100),
-                          leval: 2,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex3 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex2.mainId,
-                      });
-                      if (!Refflevalncomex3) {
-                        return;
-                      }
-                      if (Refflevalncomex3.leval >= 3) {
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: Refflevalncomex3._id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data3 = {
-                            userId: Refflevalncomex3._id,
-                            Note: `You Got Level ${3} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: Refflevalncomex3._id,
-                            },
-                            { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100 } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: Refflevalncomex3._id,
-                              Note: `You Got Level ${3} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data3).save();
-
-                          console.log("===============>33", {
-                            Refflevalncomex3,
-                            data3,
-                          });
-                        }
-                      }
-                      else {
-                        await HoldCBB({
-                          userId: Refflevalncomex3._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
-                          leval: 3,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex4 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex3.mainId,
-                      });
-                      if (!Refflevalncomex4) {
-                        return;
-                      }
-                      if (Refflevalncomex4.leval >= 4) {
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: Refflevalncomex4._id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data4 = {
-                            userId: Refflevalncomex4._id,
-                            Note: `You Got Level ${4} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: Refflevalncomex4._id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: Refflevalncomex4._id,
-                              Note: `You Got Level ${4} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data4).save();
-
-                          console.log("===============>44", {
-                            Refflevalncomex4,
-                            data4,
-                          });
-
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex4._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          leval: 4,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex5 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex4.mainId,
-                      });
-                      if (!Refflevalncomex5) {
-                        return;
-                      }
-                      if (Refflevalncomex5.leval >= 5) {
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: Refflevalncomex5._id,
-                        });
-                        let id = await Refflevalncomex5._id
-                        console.log("Refflevalncomex5===>>",);
-                        if (StakingData.length > 0) {
-                          let data5 = {
-                            userId: Refflevalncomex5._id,
-                            Note: `You Got Level ${5} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${5} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data5).save();
-
-                          console.log("===============>55", {
-                            Refflevalncomex5,
-                            data5,
-                          });
-
-
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex5._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 5,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex6 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex5.mainId,
-                      });
-                      if (!Refflevalncomex6) {
-                        return;
-                      }
-                      if (Refflevalncomex6.leval >= 6) {
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: Refflevalncomex6._id,
-                        });
-
-                        if (StakingData.length > 0) {
-                          let data6 = {
-                            userId: Refflevalncomex6._id,
-                            Note: `You Got Level ${6} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: Refflevalncomex6._id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: Refflevalncomex6._id,
-                              Note: `You Got Level ${6} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data6).save();
-
-                          console.log("===============>66", {
-                            Refflevalncomex6,
-                            data6,
-                          });
-
-
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex6._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 6,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex7 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex6.mainId,
-                      });
-                      if (!Refflevalncomex7) {
-                        return;
-                      }
-                      if (Refflevalncomex7.leval >= 7) {
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: Refflevalncomex7._id,
-                        });
-                        if (StakingData.length > 0) {
-
-                          let data7 = {
-                            userId: Refflevalncomex7._id,
-                            Note: `You Got Level ${7} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: Refflevalncomex7._id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: Refflevalncomex7._id,
-                              Note: `You Got Level ${7} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data7).save();
-
-                          console.log("===============>77", {
-                            Refflevalncomex7,
-                            data7,
-                          });
-
-
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex7._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 7,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex8 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex7.mainId,
-                      });
-                      if (!Refflevalncomex8) {
-                        return;
-                      }
-                      if (Refflevalncomex8.leval >= 8) {
-                        let id = await Refflevalncomex8._id;
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-
-                          let data8 = {
-                            userId: id,
-                            Note: `You Got Level ${8} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal, {
-                            userId: id,
-                          }, {
-                            $inc: {
-                              incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100)
-                            }
-                          }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${8} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data8).save();
-
-                          console.log("===============>88", {
-                            Refflevalncomex8,
-                            data8,
-                          });
-                        }
-
-                      }
-                      else {
-                        let id = await Refflevalncomex8._id
-                        await HoldCBB({
-                          userId: id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 8,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex9 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex8.mainId,
-                      });
-                      if (!Refflevalncomex9) {
-                        return;
-                      }
-                      if (Refflevalncomex9.leval >= 9) {
-                        let id = await Refflevalncomex9._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-
-
-                          let data9 = {
-                            userId: id,
-                            Note: `You Got Level ${9} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${9} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data9).save();
-
-                          console.log("===============>99", {
-                            Refflevalncomex9,
-                            data9,
-                          });
-
-
-                        }
-                      } else {
-                        let id = await Refflevalncomex9._id
-                        await HoldCBB({
-                          userId: id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 9,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex10 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex9.mainId,
-                      });
-                      if (!Refflevalncomex10) {
-                        return;
-                      }
-
-                      if (Refflevalncomex10.leval >= 10) {
-                        let id = await Refflevalncomex10._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data10 = {
-                            userId: id,
-                            Note: `You Got Level ${10} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                          ).then(async (res) => {
-                            let id = await Refflevalncomex10._id
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${10} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data10).save();
-
-                          console.log("===============>1010", {
-                            Refflevalncomex10,
-                            data10,
-                          });
-
-
-                        }
-                      } else {
-                        let id = await Refflevalncomex10._id
-                        await HoldCBB({
-                          userId: id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 10,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex11 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex10.mainId,
-                      });
-                      if (!Refflevalncomex11) {
-                        return;
-                      }
-
-                      if (Refflevalncomex11.leval >= 11) {
-                        let id = await Refflevalncomex11._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data11 = {
-                            userId: id,
-                            Note: `You Got Level ${11} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${11} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data11).save();
-
-                          console.log("===============>1111", {
-                            Refflevalncomex11,
-                            data11,
-                          });
-
-
-                        }
-                      } else {
-                        let id = await Refflevalncomex11._id
-                        await HoldCBB({
-                          userId: id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 11,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex12 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex11.mainId,
-                      });
-                      if (!Refflevalncomex12) {
-                        return;
-                      }
-                      if (Refflevalncomex12.leval >= 12) {
-                        let id = await Refflevalncomex12._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data12 = {
-                            userId: id,
-                            Note: `You Got Level ${12} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${12} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data12).save();
-
-                          console.log("===============>1212", {
-                            Refflevalncomex12,
-                            data12,
-                          });
-
-
-                        }
-                      } else {
-                        let id = await Refflevalncomex12._id
-                        await HoldCBB({
-                          userId: id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                          leval: 12,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex13 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex12.mainId,
-                      });
-                      if (!Refflevalncomex13) {
-                        return;
-                      }
-                      if (Refflevalncomex13.leval >= 13) {
-                        let id = await Refflevalncomex13._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data13 = {
-                            userId: id,
-                            Note: `You Got Level ${13} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${13} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data13).save();
-
-                          console.log("===============>1313", {
-                            Refflevalncomex13,
-                            data13,
-                          });
-
-
-                        }
-                      } else {
-                        let id = await Refflevalncomex13._id
-                        await HoldCBB({
-                          userId: id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          leval: 13,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex14 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex13.mainId,
-                      });
-                      if (!Refflevalncomex14) {
-                        return;
-                      }
-                      if (Refflevalncomex14.leval >= 14) {
-                        let id = await Refflevalncomex14._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data14 = {
-                            userId: id,
-                            Note: `You Got Level ${14} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${14} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data14).save();
-
-                          console.log("===============>1414", {
-                            Refflevalncomex14,
-                            data14,
-                          });
-
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex14._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          leval: 14,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex15 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex14.mainId,
-                      });
-                      if (!Refflevalncomex15) {
-                        return;
-                      }
-                      if (Refflevalncomex15.leval >= 15) {
-                        let id = await Refflevalncomex15._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-
-                          let data15 = {
-                            userId: id,
-                            Note: `You Got Level ${15} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100 } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${15} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data15).save();
-
-                          console.log("===============>1515", {
-                            Refflevalncomex15,
-                            data15,
-                          });
-
-
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex15._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          leval: 16,
-                          Active: false
-                        }).save()
-                      }
-                      const Refflevalncomex16 = await findOneRecord(Usermodal, {
-                        username: Refflevalncomex15.mainId,
-                      });
-                      if (!Refflevalncomex16) {
-                        return;
-                      }
-                      if (Refflevalncomex16.leval >= 16) {
-                        let id = await Refflevalncomex16._id
-                        const StakingData = await findAllRecord(Stakingmodal, {
-                          userId: id,
-                        });
-                        if (StakingData.length > 0) {
-                          let data16 = {
-                            userId: id,
-                            Note: `You Got Level ${16} Income`,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          };
-                          await updateRecord(
-                            Walletmodal,
-                            {
-                              userId: id,
-                            },
-                            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                          ).then(async (res) => {
-                            await Ewallateesc({
-                              userId: id,
-                              Note: `You Got Level ${16} Income`,
-                              Usernameby: decoded.profile.username,
-                              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                              balace: res.incomeWallet,
-                              type: 1,
-                              Active: true,
-                            }).save();
-                          });
-                          await Communitymodal(data16).save();
-
-                          console.log("===============>1616", {
-                            Refflevalncome16,
-                            data16,
-                          });
-
-                        } else {
-                          let id = await Refflevalncomex16._id
-                          await HoldCBB({
-                            userId: id,
-                            Usernameby: decoded.profile.username,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                            leval: 15,
-                            Active: false
-                          }).save()
-                        }
-                      } else {
-                        await HoldCBB({
-                          userId: Refflevalncomex16._id,
-                          Usernameby: decoded.profile.username,
-                          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                          leval: 15,
-                          Active: false
-                        }).save()
-                      }
-                    })
-                    const Refflevalncome1 = await findOneRecord(Usermodal, {
-                      username: data.supporterId,
-                    });
-                    await amountupdate(Refflevalncome1.username)
-                    console.log("Refflevalncome1============================>>>>>>>", req.body.Amount);
-                    if (Refflevalncome1) {
-                      await Stakingmodal({
-                        userId: Refflevalncome1?._id,
-                        WalletType: `Level ${1} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 10) / 100 / 1000) * 2,
-                        leval: 1,
-                        bonusAmount: 200,
-                        Amount: (req.body.Amount * 10) / 100,
-                        TotalRewordRecived: (req.body.Amount * 10) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome1.leval >= 1,
-                      }).save();
-                    }
-                    const Refflevalncome2 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome1?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome2============================>>>>>>>", Refflevalncome2);
-                    if (Refflevalncome2) {
-                      await Stakingmodal({
-                        userId: Refflevalncome2?._id,
-                        WalletType: `Level ${2} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 7) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 2,
-                        Amount: (req.body.Amount * 7) / 100,
-                        TotalRewordRecived: (req.body.Amount * 7) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome2.leval >= 2,
-                      }).save();
-                    }
-                    const Refflevalncome3 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome2?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome3============================>>>>>>>", Refflevalncome3);
-                    if (Refflevalncome3) {
-                      await Stakingmodal({
-                        userId: Refflevalncome3?._id,
-                        WalletType: `Level ${3} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 5) / 100 / 1000) * 2,
-                        leval: 3,
-                        bonusAmount: 200,
-                        Amount: (req.body.Amount * 5) / 100,
-                        TotalRewordRecived: (req.body.Amount * 5) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome3.leval >= 3,
-                      }).save();
-                    }
-                    const Refflevalncome4 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome3?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome4============================>>>>>>>", Refflevalncome4);
-                    if (Refflevalncome4) {
-                      await Stakingmodal({
-                        userId: Refflevalncome4?._id,
-                        WalletType: `Level ${4} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 4) / 100 / 1000) * 2,
-                        leval: 4,
-                        bonusAmount: 200,
-                        Amount: (req.body.Amount * 4) / 100,
-                        TotalRewordRecived: (req.body.Amount * 4) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome4.leval >= 4,
-                      }).save();
-                    }
-                    const Refflevalncome5 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome4?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome5============================>>>>>>>", Refflevalncome5);
-                    if (Refflevalncome5) {
-                      await Stakingmodal({
-                        userId: Refflevalncome5?._id,
-                        WalletType: `Level ${5} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 3) / 100 / 1000) * 2,
-                        leval: 5,
-                        bonusAmount: 200,
-                        Amount: (req.body.Amount * 3) / 100,
-                        TotalRewordRecived: (req.body.Amount * 3) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome5.leval >= 5,
-                      }).save();
-                    }
-                    const Refflevalncome6 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome5?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome6============================>>>>>>>", Refflevalncome6);
-                    if (Refflevalncome6) {
-                      await Stakingmodal({
-                        userId: Refflevalncome6?._id,
-                        WalletType: `Level ${6} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 2) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 6,
-                        Amount: (req.body.Amount * 2) / 100,
-                        TotalRewordRecived: (req.body.Amount * 2) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome6.leval >= 6,
-                      }).save();
-                    }
-                    const Refflevalncome7 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome6?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome7============================>>>>>>>", Refflevalncome7);
-                    if (Refflevalncome7) {
-                      await Stakingmodal({
-                        userId: Refflevalncome7?._id,
-                        WalletType: `Level ${7} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 7,
-                        Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome7.leval >= 7,
-                      }).save();
-                    }
-                    const Refflevalncome8 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome7?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome8============================>>>>>>>", Refflevalncome8);
-                    if (Refflevalncome8) {
-                      await Stakingmodal({
-                        userId: Refflevalncome8?._id,
-                        WalletType: `Level ${8} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 8,
-                        Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome8.leval >= 8,
-                      }).save();
-                    }
-                    const Refflevalncome9 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome8?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome9============================>>>>>>>", Refflevalncome9);
-                    if (Refflevalncome9) {
-                      await Stakingmodal({
-                        userId: Refflevalncome9?._id,
-                        WalletType: `Level ${9} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 9,
-                        Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome9.leval >= 9,
-                      }).save();
-                    }
-                    const Refflevalncome10 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome9?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome10============================>>>>>>>", Refflevalncome10);
-                    if (Refflevalncome10) {
-
-                      await Stakingmodal({
-                        userId: Refflevalncome10?._id,
-                        WalletType: `Level ${10} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 10,
-                        Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome10.leval >= 10,
-                      }).save();
-                    }
-                    const Refflevalncome11 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome10?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome11============================>>>>>>>", Refflevalncome11);
-                    if (Refflevalncome11) {
-                      await Stakingmodal({
-                        userId: Refflevalncome11?._id,
-                        WalletType: `Level ${11} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 11,
-                        Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome11.leval >= 11,
-                      }).save();
-                    }
-                    const Refflevalncome12 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome11?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome12============================>>>>>>>", Refflevalncome12);
-                    if (Refflevalncome12) {
-
-                      await Stakingmodal({
-                        userId: Refflevalncome12?._id,
-                        WalletType: `Level ${12} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 12,
-                        Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome12.leval >= 12,
-                      }).save();
-                    }
-
-                    const Refflevalncome13 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome12?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome13============================>>>>>>>", Refflevalncome13);
-                    if (Refflevalncome13) {
-                      await Stakingmodal({
-                        userId: Refflevalncome13?._id,
-                        WalletType: `Level ${13} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 13,
-                        Amount: (req.body.Amount * 1) / 100,
-                        TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome13.leval >= 13,
-                      }).save();
-                    }
-                    const Refflevalncome14 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome13?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome14============================>>>>>>>", Refflevalncome14);
-                    if (Refflevalncome14) {
-                      await Stakingmodal({
-                        userId: Refflevalncome14?._id,
-                        WalletType: `Level ${14} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 2) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 14,
-                        Amount: (req.body.Amount * 2) / 100,
-                        TotalRewordRecived: (req.body.Amount * 2) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome14.leval >= 14,
-                      }).save();
-                    }
-                    const Refflevalncome15 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome14?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome15============================>>>>>>>", Refflevalncome15);
-                    if (Refflevalncome15) {
-                      await Stakingmodal({
-                        userId: Refflevalncome15?._id,
-                        WalletType: `Level ${15} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 3) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 15,
-                        Amount: (req.body.Amount * 3) / 100,
-                        TotalRewordRecived: (req.body.Amount * 3) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome15.leval >= 15,
-                      }).save();
-                    }
-                    const Refflevalncome16 = await findOneRecord(Usermodal, {
-                      username: Refflevalncome15?.supporterId,
-                      isValid: true,
-                    });
-                    console.log("Refflevalncome16============================>>>>>>>", Refflevalncome16);
-                    if (Refflevalncome16) {
-                      await Stakingmodal({
-                        userId: Refflevalncome16?._id,
-                        WalletType: `Level ${16} plan (${decoded.profile.username})`,
-                        DailyReword: Number((req.body.Amount * 5) / 100 / 1000) * 2,
-                        bonusAmount: 200,
-                        leval: 16,
-                        Amount: (req.body.Amount * 5) / 100,
-                        TotalRewordRecived: (req.body.Amount * 5) / 100 * 2,
-                        transactionHash: "",
-                        Active: Refflevalncome16.leval >= 16,
-                      }).save();
-                    }
                   }
                   await Stakingmodal({
                     userId: decoded.profile._id,
@@ -1730,1158 +1465,9 @@ exports.stack = {
                               }
                             }
                           ])
-                          await updateRecord(
-                            Usermodal,
-                            { username: ReffData1.username },
-                            {
-                              leval: Number(decoded.profile.mystack === 0 ? daat.length + 1 : daat.length),
-                            }
-                          ).then(async (data) => {
-                            const Refflevalncome = await findOneRecord(Usermodal, {
-                              username: decoded.profile.username,
-                              isValid: true,
-                            });
+                          await SCBupdate({ decoded, daat, ReffData1 })
+                          await CCBupdate({ daat })
 
-                            console.log("==========================================================>daatdaat", daat);
-                            // if (!Refflevalncome) {
-                            //   return;
-                            // }
-                            const Refflevalncomex1 = await findOneRecord(Usermodal, {
-                              username: Refflevalncome.mainId,
-                              isValid: true,
-                            });
-                            await amountupdate(Refflevalncomex1.username)
-                            // if (!Refflevalncomex1) {
-                            //   return;
-                            // }
-                            console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Math.ceil(req.body.Amount / 90 * SIRprice.price));
-                            if (Refflevalncomex1.leval >= 1) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex1._id,
-                              });
-
-                              if (StakingData.length > 0) {
-                                const StakingData1 = await Stakingmodal.find({
-                                  userId: Refflevalncomex1._id,
-                                  leval: 0,
-                                });
-                                const withdrawalmodal1 = await Wallet.find({
-                                  userId: ReffData1._id,
-                                });
-                                let totalstaking = 0;
-                                for (let i = 0; i < StakingData1.length; i++) {
-                                  totalstaking += StakingData1[i].Amount;
-                                }
-
-                                let data1 = {
-                                  userId: Refflevalncomex1._id,
-                                  Note: `You Got Level ${1} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100,
-                                };
-                                const a1 = await Walletmodal.findOne({ userId: Refflevalncomex1._id })
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex1._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex1._id,
-                                    Note: `You Got Level ${1} Income`,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100),
-                                    Usernameby: decoded.profile.username,
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data1).save();
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex1._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 3) / 100),
-                                leval: 1,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex2 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex1.mainId,
-                            });
-                            if (!Refflevalncomex2) {
-                              return;
-                            }
-                            if (Refflevalncomex2.leval >= 2) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex2._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data2 = {
-                                  userId: Refflevalncomex2._id,
-                                  Note: `You Got Level ${2} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100,
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex2._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex2._id,
-                                    Note: `You Got Level ${2} Income`,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100),
-                                    Usernameby: decoded.profile.username,
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-
-                                await Communitymodal(data2).save();
-                                console.log("===============>22", {
-                                  Refflevalncomex2,
-                                  data2,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex2._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 2) / 100),
-                                leval: 2,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex3 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex2.mainId,
-                            });
-                            if (!Refflevalncomex3) {
-                              return;
-                            }
-                            if (Refflevalncomex3.leval >= 3) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex3._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data3 = {
-                                  userId: Refflevalncomex3._id,
-                                  Note: `You Got Level ${3} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex3._id,
-                                  },
-                                  { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100 } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex3._id,
-                                    Note: `You Got Level ${3} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data3).save();
-
-                                console.log("===============>33", {
-                                  Refflevalncomex3,
-                                  data3,
-                                });
-                              }
-                            }
-                            else {
-                              await HoldCBB({
-                                Usernameby: decoded.profile.username,
-                                userId: Refflevalncomex3._id,
-                                Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1.5) / 100,
-                                leval: 3,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex4 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex3.mainId,
-                            });
-                            if (!Refflevalncomex4) {
-                              return;
-                            }
-                            if (Refflevalncomex4.leval >= 4) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex4._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data4 = {
-                                  userId: Refflevalncomex4._id,
-                                  Note: `You Got Level ${4} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex4._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex4._id,
-                                    Note: `You Got Level ${4} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data4).save();
-
-                                console.log("===============>44", {
-                                  Refflevalncomex4,
-                                  data4,
-                                });
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex4._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                leval: 4,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex5 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex4.mainId,
-                            });
-                            if (!Refflevalncomex5) {
-                              return;
-                            }
-                            if (Refflevalncomex5.leval >= 5) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex5._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data5 = {
-                                  userId: Refflevalncomex5._id,
-                                  Note: `You Got Level ${5} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncome5?._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncome5?._id,
-                                    Note: `You Got Level ${5} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data5).save();
-
-                                console.log("===============>55", {
-                                  Refflevalncomex5,
-                                  data5,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex5._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 5,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex6 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex5.mainId,
-                            });
-                            if (!Refflevalncomex6) {
-                              return;
-                            }
-                            if (Refflevalncomex6.leval >= 6) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex6._id,
-                              });
-
-                              if (StakingData.length > 0) {
-                                let data6 = {
-                                  userId: Refflevalncomex6._id,
-                                  Note: `You Got Level ${6} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex6._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex6._id,
-                                    Note: `You Got Level ${6} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data6).save();
-
-                                console.log("===============>66", {
-                                  Refflevalncomex6,
-                                  data6,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex6._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 6,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex7 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex6.mainId,
-                            });
-                            if (!Refflevalncomex7) {
-                              return;
-                            }
-                            if (Refflevalncomex7.leval >= 7) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex7._id,
-                              });
-                              if (StakingData.length > 0) {
-
-                                let data7 = {
-                                  userId: Refflevalncomex7._id,
-                                  Note: `You Got Level ${7} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex7._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex7._id,
-                                    Note: `You Got Level ${7} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data7).save();
-
-                                console.log("===============>77", {
-                                  Refflevalncomex7,
-                                  data7,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex7._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 7,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex8 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex7.mainId,
-                            });
-                            if (!Refflevalncome8) {
-                              return;
-                            }
-                            if (Refflevalncomex8.leval >= 8) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex8._id,
-                              });
-                              if (StakingData.length > 0) {
-
-                                let data8 = {
-                                  userId: Refflevalncomex8._id,
-                                  Note: `You Got Level ${8} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex8._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex8._id,
-                                    Note: `You Got Level ${8} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data8).save();
-
-                                console.log("===============>88", {
-                                  Refflevalncomex8,
-                                  data8,
-                                });
-                              }
-
-                            }
-                            else {
-                              await HoldCBB({
-                                userId: Refflevalncomex8._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 8,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex9 = await findOneRecord(Usermodal, {
-                              username: Refflevalncome8.mainId,
-                            });
-                            if (!Refflevalncomex9) {
-                              return;
-                            }
-                            if (Refflevalncomex9.leval >= 9) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex9._id,
-                              });
-                              if (StakingData.length > 0) {
-
-
-                                let data9 = {
-                                  userId: Refflevalncomex9._id,
-                                  Note: `You Got Level ${9} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex9._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex9._id,
-                                    Note: `You Got Level ${9} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data9).save();
-
-                                console.log("===============>99", {
-                                  Refflevalncomex9,
-                                  data9,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex9._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 9,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex10 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex9.mainId,
-                            });
-                            if (!Refflevalncomex10) {
-                              return;
-                            }
-
-                            if (Refflevalncomex10.leval >= 10) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex10._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data10 = {
-                                  userId: Refflevalncomex10._id,
-                                  Note: `You Got Level ${10} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex10._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex10._id,
-                                    Note: `You Got Level ${10} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data10).save();
-
-                                console.log("===============>1010", {
-                                  Refflevalncomex10,
-                                  data10,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex10._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 10,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex11 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex10.mainId,
-                            });
-                            if (!Refflevalncomex11) {
-                              return;
-                            }
-
-                            if (Refflevalncomex11.leval >= 11) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex11._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data11 = {
-                                  userId: Refflevalncomex11._id,
-                                  Note: `You Got Level ${11} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex11._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex11._id,
-                                    Note: `You Got Level ${11} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data11).save();
-
-                                console.log("===============>1111", {
-                                  Refflevalncomex11,
-                                  data11,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex11._id,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 11,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex12 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex11.mainId,
-                            });
-                            if (!Refflevalncomex12) {
-                              return;
-                            }
-                            if (Refflevalncomex12.leval >= 12) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex12._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data12 = {
-                                  userId: Refflevalncomex12._id,
-                                  Note: `You Got Level ${12} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex12._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex12._id,
-                                    Note: `You Got Level ${12} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data12).save();
-
-                                console.log("===============>1212", {
-                                  Refflevalncomex12,
-                                  data12,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex12._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 0.5) / 100),
-                                leval: 12,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex13 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex12.mainId,
-                            });
-                            if (!Refflevalncomex13) {
-                              return;
-                            }
-                            if (Refflevalncomex13.leval >= 13) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex13._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data13 = {
-                                  userId: Refflevalncomex13._id,
-                                  Note: `You Got Level ${13} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex13._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex13._id,
-                                    Note: `You Got Level ${13} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data13).save();
-
-                                console.log("===============>1313", {
-                                  Refflevalncomex13,
-                                  data13,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex13._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                leval: 13,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex14 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex13.mainId,
-                            });
-                            if (!Refflevalncomex14) {
-                              return;
-                            }
-                            if (Refflevalncomex14.leval >= 14) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex14._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data14 = {
-                                  userId: Refflevalncomex14._id,
-                                  Note: `You Got Level ${14} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex14._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex14._id,
-                                    Note: `You Got Level ${14} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data14).save();
-
-                                console.log("===============>1414", {
-                                  Refflevalncomex14,
-                                  data14,
-                                });
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex14._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                leval: 14,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex15 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex14.mainId,
-                            });
-                            if (!Refflevalncomex15) {
-                              return;
-                            }
-                            if (Refflevalncomex15.leval >= 15) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex15._id,
-                              });
-                              if (StakingData.length > 0) {
-
-                                let data15 = {
-                                  userId: Refflevalncomex15._id,
-                                  Note: `You Got Level ${15} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex15._id,
-                                  },
-                                  { $inc: { incomeWallet: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100 } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex15._id,
-                                    Note: `You Got Level ${15} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data15).save();
-
-                                console.log("===============>1515", {
-                                  Refflevalncomex15,
-                                  data15,
-                                });
-
-
-                              }
-                            } else {
-                              await HoldCBB({
-                                userId: Refflevalncomex15._id,
-                                Usernameby: decoded.profile.username,
-                                Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                leval: 15,
-                                Active: false
-                              }).save()
-                            }
-                            const Refflevalncomex16 = await findOneRecord(Usermodal, {
-                              username: Refflevalncomex15.mainId,
-                            });
-                            if (!Refflevalncomex16) {
-                              return;
-                            }
-                            if (Refflevalncomex16.leval >= 16) {
-                              const StakingData = await findAllRecord(Stakingmodal, {
-                                userId: Refflevalncomex16._id,
-                              });
-                              if (StakingData.length > 0) {
-                                let data16 = {
-                                  userId: Refflevalncomex16._id,
-                                  Note: `You Got Level ${16} Income`,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                };
-                                await updateRecord(
-                                  Walletmodal,
-                                  {
-                                    userId: Refflevalncomex16._id,
-                                  },
-                                  { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100) } }
-                                ).then(async (res) => {
-                                  await Ewallateesc({
-                                    userId: Refflevalncomex16._id,
-                                    Note: `You Got Level ${16} Income`,
-                                    Usernameby: decoded.profile.username,
-                                    Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                    balace: res.incomeWallet,
-                                    type: 1,
-                                    Active: true,
-                                  }).save();
-                                });
-                                await Communitymodal(data16).save();
-
-                                console.log("===============>1616", {
-                                  Refflevalncome16,
-                                  data16,
-                                });
-
-                              } else {
-                                await HoldCBB({
-                                  userId: Refflevalncomex16._id,
-                                  Usernameby: decoded.profile.username,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 1) / 100),
-                                  leval: 15,
-                                  Active: false
-                                }).save()
-                              }
-                            }
-                          })
-                          const Refflevalncome1 = await findOneRecord(Usermodal, {
-                            username: data.supporterId,
-                          });
-                          await amountupdate(Refflevalncome1.username)
-                          console.log("Refflevalncome1============================>>>>>>>", req.body.Amount);
-                          if (Refflevalncome1) {
-                            await Stakingmodal({
-                              userId: Refflevalncome1?._id,
-                              WalletType: `Level ${1} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 10) / 100 / 1000) * 2,
-                              leval: 1,
-                              bonusAmount: 200,
-                              Amount: (req.body.Amount * 10) / 100,
-                              TotalRewordRecived: (req.body.Amount * 10) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome1.leval >= 1,
-                            }).save();
-                          }
-                          const Refflevalncome2 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome1?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome2============================>>>>>>>", Refflevalncome2);
-                          if (Refflevalncome2) {
-                            await Stakingmodal({
-                              userId: Refflevalncome2?._id,
-                              WalletType: `Level ${2} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 7) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 2,
-                              Amount: (req.body.Amount * 7) / 100,
-                              TotalRewordRecived: (req.body.Amount * 7) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome2.leval >= 2,
-                            }).save();
-                          }
-                          const Refflevalncome3 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome2?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome3============================>>>>>>>", Refflevalncome3);
-                          if (Refflevalncome3) {
-                            await Stakingmodal({
-                              userId: Refflevalncome3?._id,
-                              WalletType: `Level ${3} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 5) / 100 / 1000) * 2,
-                              leval: 3,
-                              bonusAmount: 200,
-                              Amount: (req.body.Amount * 5) / 100,
-                              TotalRewordRecived: (req.body.Amount * 5) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome3.leval >= 3,
-                            }).save();
-                          }
-                          const Refflevalncome4 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome3?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome4============================>>>>>>>", Refflevalncome4);
-                          if (Refflevalncome4) {
-                            await Stakingmodal({
-                              userId: Refflevalncome4?._id,
-                              WalletType: `Level ${4} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 4) / 100 / 1000) * 2,
-                              leval: 4,
-                              bonusAmount: 200,
-                              Amount: (req.body.Amount * 4) / 100,
-                              TotalRewordRecived: (req.body.Amount * 4) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome4.leval >= 4,
-                            }).save();
-                          }
-                          const Refflevalncome5 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome4?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome5============================>>>>>>>", Refflevalncome5);
-                          if (Refflevalncome5) {
-                            await Stakingmodal({
-                              userId: Refflevalncome5?._id,
-                              WalletType: `Level ${5} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 3) / 100 / 1000) * 2,
-                              leval: 5,
-                              bonusAmount: 200,
-                              Amount: (req.body.Amount * 3) / 100,
-                              TotalRewordRecived: (req.body.Amount * 3) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome5.leval >= 5,
-                            }).save();
-                          }
-                          const Refflevalncome6 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome5?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome6============================>>>>>>>", Refflevalncome6);
-                          if (Refflevalncome6) {
-                            await Stakingmodal({
-                              userId: Refflevalncome6?._id,
-                              WalletType: `Level ${6} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 2) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 6,
-                              Amount: (req.body.Amount * 2) / 100,
-                              TotalRewordRecived: (req.body.Amount * 2) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome6.leval >= 6,
-                            }).save();
-                          }
-                          const Refflevalncome7 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome6?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome7============================>>>>>>>", Refflevalncome7);
-                          if (Refflevalncome7) {
-                            await Stakingmodal({
-                              userId: Refflevalncome7?._id,
-                              WalletType: `Level ${7} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 7,
-                              Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome7.leval >= 7,
-                            }).save();
-                          }
-                          const Refflevalncome8 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome7?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome8============================>>>>>>>", Refflevalncome8);
-                          if (Refflevalncome8) {
-                            await Stakingmodal({
-                              userId: Refflevalncome8?._id,
-                              WalletType: `Level ${8} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 8,
-                              Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome8.leval >= 8,
-                            }).save();
-                          }
-                          const Refflevalncome9 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome8?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome9============================>>>>>>>", Refflevalncome9);
-                          if (Refflevalncome9) {
-                            await Stakingmodal({
-                              userId: Refflevalncome9?._id,
-                              WalletType: `Level ${9} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 9,
-                              Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome9.leval >= 9,
-                            }).save();
-                          }
-                          const Refflevalncome10 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome9?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome10============================>>>>>>>", Refflevalncome10);
-                          if (Refflevalncome10) {
-
-                            await Stakingmodal({
-                              userId: Refflevalncome10?._id,
-                              WalletType: `Level ${10} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 10,
-                              Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome10.leval >= 10,
-                            }).save();
-                          }
-                          const Refflevalncome11 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome10?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome11============================>>>>>>>", Refflevalncome11);
-                          if (Refflevalncome11) {
-                            await Stakingmodal({
-                              userId: Refflevalncome11?._id,
-                              WalletType: `Level ${11} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 11,
-                              Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome11.leval >= 11,
-                            }).save();
-                          }
-                          const Refflevalncome12 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome11?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome12============================>>>>>>>", Refflevalncome12);
-                          if (Refflevalncome12) {
-
-                            await Stakingmodal({
-                              userId: Refflevalncome12?._id,
-                              WalletType: `Level ${12} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 12,
-                              Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome12.leval >= 12,
-                            }).save();
-                          }
-
-                          const Refflevalncome13 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome12?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome13============================>>>>>>>", Refflevalncome13);
-                          if (Refflevalncome13) {
-                            await Stakingmodal({
-                              userId: Refflevalncome13?._id,
-                              WalletType: `Level ${13} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 1) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 13,
-                              Amount: (req.body.Amount * 1) / 100,
-                              TotalRewordRecived: (req.body.Amount * 1) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome13.leval >= 13,
-                            }).save();
-                          }
-                          const Refflevalncome14 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome13?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome14============================>>>>>>>", Refflevalncome14);
-                          if (Refflevalncome14) {
-                            await Stakingmodal({
-                              userId: Refflevalncome14?._id,
-                              WalletType: `Level ${14} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 2) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 14,
-                              Amount: (req.body.Amount * 2) / 100,
-                              TotalRewordRecived: (req.body.Amount * 2) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome14.leval >= 14,
-                            }).save();
-                          }
-                          const Refflevalncome15 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome14?.supporterId,
-                            isValid: true,
-                          });
-                          console.log("Refflevalncome15============================>>>>>>>", Refflevalncome15);
-                          if (Refflevalncome15) {
-                            await Stakingmodal({
-                              userId: Refflevalncome15?._id,
-                              WalletType: `Level ${15} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 3) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 15,
-                              Amount: (req.body.Amount * 3) / 100,
-                              TotalRewordRecived: (req.body.Amount * 3) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome15.leval >= 15,
-                            }).save();
-                          }
-                          const Refflevalncome16 = await findOneRecord(Usermodal, {
-                            username: Refflevalncome15?.supporterId,
-                            isValid: true,
-                          }); console.log("Refflevalncome16============================>>>>>>>", Refflevalncome16);
-                          if (Refflevalncome16) {
-                            await Stakingmodal({
-                              userId: Refflevalncome16?._id,
-                              WalletType: `Level ${16} plan (${decoded.profile.username})`,
-                              DailyReword: Number((req.body.Amount * 5) / 100 / 1000) * 2,
-                              bonusAmount: 200,
-                              leval: 16,
-                              Amount: (req.body.Amount * 5) / 100,
-                              TotalRewordRecived: (req.body.Amount * 5) / 100 * 2,
-                              transactionHash: "",
-                              Active: Refflevalncome16.leval >= 16,
-                            }).save();
-                          }
                         }
                         await Stakingmodal({
                           userId: decoded.profile._id,
@@ -3038,7 +1624,7 @@ exports.stack = {
           return successResponse(res, {
             message: "staking data get successfully",
             data: StakingData,
-            SIRprice: SIRprice.price, 
+            SIRprice: SIRprice.price,
             // formattedData: formattedData
           });
         }
