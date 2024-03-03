@@ -386,14 +386,14 @@ const CCBupdate = async ({ data, decoded, req }) => {
   }
 
   for (let i = 1; i <= supporterIds.length; i++) {
-    if (supporterIds[i - 1] != null) {
+    if (Number((req.body.Amount * (dat12[i])) / 1000) * 2 != null) {
       const Refflevalncome = await findOneRecord(Usermodal, {
         _id: supporterIds[i - 1],
       });
       console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i - 1])) / 100, "leval": i, "%": dat12[i - 1] });
       await Stakingmodal({
         userId: Refflevalncome._id,
-        WalletType: `Level ${i + 1} plan (${decoded.profile.username})`,
+        WalletType: `Level ${i} plan (${decoded.profile.username})`,
         DailyReword: Number((req.body.Amount * (dat12[i])) / 1000) * 2,
         bonusAmount: 200,
         leval: i + 1,
