@@ -314,7 +314,7 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
     const Refflevalncome = await findOneRecord(Usermodal, {
       _id: mainIds[i],
     });
-    // console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i, "%": dat12[i] });
+    console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i, "%": dat12[i] });
     console.log("Refflevalncome1==================================>>>>>>>>>>>>>", Math.ceil(req.body.Amount / 90 * SIRprice.price));
     // if (Refflevalncomex1.leval >= 1) {
     //   const StakingData = await findAllRecord(Stakingmodal, {
