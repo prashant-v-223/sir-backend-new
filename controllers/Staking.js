@@ -3630,7 +3630,7 @@ exports.stack = {
                   },
                 },
               },
-              holdincomeSCBamountupcoming122:1,
+              holdincomeSCBamountupcoming122: "$amountupcoming1",
               holdincome: {
                 $reduce: {
                   input: "$amount13",
