@@ -3454,6 +3454,7 @@ exports.stack = {
                 {
                   $match: {
                     Active: false,
+                    Removed: false
                   },
                 },
               ],
