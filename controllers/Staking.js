@@ -406,7 +406,7 @@ const CCBupdate = async ({ data, decoded, req }) => {
   }
 };
 
-const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionHash) => {
+const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionHash, req) => {
   const data = await findOneRecord(Usermodal, { username: decoded.profile.username });
   const ReffData = await findOneRecord(Usermodal, { username: data.supporterId });
   const ReffData1 = await findOneRecord(Usermodal, { username: data.mainId });
@@ -518,7 +518,7 @@ exports.stack = {
                 await cronHandler(decoded.profile.username).then(async (res) => {
                   // Concurrently execute staking updates and main wallet deduction
                   await Promise.all([
-                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, ""),
+                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, "",req),
                     deductMainWallet(decoded, WalletData, req.body.Amount)
                   ]);
                 })
@@ -570,7 +570,7 @@ exports.stack = {
                     await cronHandler(decoded.profile.username).then(async (res) => {
                       // Concurrently execute staking updates and main wallet deduction
                       await Promise.all([
-                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash),
+                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash,req),
                         deductMainWallet(decoded, WalletData, req.body.Amount)
                       ]);
                     })
