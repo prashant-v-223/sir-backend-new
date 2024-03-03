@@ -394,7 +394,7 @@ const CCBupdate = async ({ data, decoded, req }) => {
       await Stakingmodal({
         userId: Refflevalncome._id,
         WalletType: `Level ${i} plan (${decoded.profile.username})`,
-        DailyReword: Number((req.body.Amount * (dat12[i - 1])) / 1000) * 2,
+        DailyReword: (req.body.Amount * (dat12[i - 1])) / 100 * 2 / 1000,
         bonusAmount: 200,
         leval: i,
         Amount: (req.body.Amount * (dat12[i - 1])) / 100,
