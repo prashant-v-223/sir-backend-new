@@ -289,84 +289,84 @@ const amountupdate = async (username) => {
 }
 const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
 
-  // const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
+  const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
 
-  // const mainIds = [];
-  // let mainId = data.mainId;
-  // let dat12 = [3, 2, 1.5, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 1];
+  const mainIds = [];
+  let mainId = data.mainId;
+  let dat12 = [3, 2, 1.5, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 1];
 
-  // // Populate supporterIds array with supporterId for each level
-  // for (let i = 1; i <= 16; i++) {
-  //   const Refflevalncome = await findOneRecord(Usermodal, {
-  //     username: mainId,
-  //     isValid: true,
-  //   });
+  // Populate supporterIds array with supporterId for each level
+  for (let i = 1; i <= 16; i++) {
+    const Refflevalncome = await findOneRecord(Usermodal, {
+      username: mainId,
+      isValid: true,
+    });
 
-  //   if (!Refflevalncome) break;
+    if (!Refflevalncome) break;
 
-  //   mainIds.push(Refflevalncome._id);
-  //   mainId = Refflevalncome.supporterId;
-  // }
+    mainIds.push(Refflevalncome._id);
+    mainId = Refflevalncome.supporterId;
+  }
 
-  // // Calculate and save staking details for each level
-  // for (let i = 0; i < mainIds.length; i++) {
-  //   if (mainIds[i - 1] != null) {
-  //     const Refflevalncome = await findOneRecord(Usermodal, {
-  //       _id: mainIds[i],
-  //     });
-  //     console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i + 1, "%": dat12[i] });
-  //     if (Refflevalncome.leval >= i + 1) {
-  //       const StakingData = await findAllRecord(Stakingmodal, {
-  //         userId: Refflevalncome._id,
-  //       });
+  // Calculate and save staking details for each level
+  for (let i = 0; i < mainIds.length; i++) {
+    if (mainIds[i - 1] != null) {
+      const Refflevalncome = await findOneRecord(Usermodal, {
+        _id: mainIds[i],
+      });
+      console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i + 1, "%": dat12[i] });
+      if (Refflevalncome.leval >= i + 1) {
+        const StakingData = await findAllRecord(Stakingmodal, {
+          userId: Refflevalncome._id,
+        });
 
-  //       if (StakingData.length > 0) {
-  //         const StakingData1 = await Stakingmodal.find({
-  //           userId: Refflevalncome._id,
-  //           leval: 0,
-  //         });
-  //         let totalstaking = 0;
-  //         for (let i = 0; i < StakingData1.length; i++) {
-  //           totalstaking += StakingData1[i].Amount;
-  //         }
+        if (StakingData.length > 0) {
+          const StakingData1 = await Stakingmodal.find({
+            userId: Refflevalncome._id,
+            leval: 0,
+          });
+          let totalstaking = 0;
+          for (let i = 0; i < StakingData1.length; i++) {
+            totalstaking += StakingData1[i].Amount;
+          }
 
-  //         let data1 = {
-  //           userId: Refflevalncome._id,
-  //           Note: `You Got Level ${i + 1} Income`,
-  //           Usernameby: decoded.profile.username,
-  //           Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100,
-  //         };
-  //         const a1 = await Walletmodal.findOne({ userId: Refflevalncome._id })
-  //         await updateRecord(
-  //           Walletmodal,
-  //           {
-  //             userId: Refflevalncome._id,
-  //           },
-  //           { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100) } }
-  //         ).then(async (res) => {
-  //           await Ewallateesc({
-  //             userId: Refflevalncome._id,
-  //             Note: `You Got Level ${i + 1} Income`,
-  //             Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
-  //             Usernameby: decoded.profile.username,
-  //             balace: res.incomeWallet,
-  //             type: 1,
-  //             Active: true,
-  //           }).save();
-  //         });
-  //         await Communitymodal(data1).save();
-  //       }
-  //     } else {
-  //       await HoldCBB({
-  //         userId: Refflevalncome._id,
-  //         Usernameby: decoded.profile.username,
-  //         Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
-  //         leval: i + 1,
-  //         Active: false
-  //       }).save()
-  //     }
-  //   }
-  // }
+          let data1 = {
+            userId: Refflevalncome._id,
+            Note: `You Got Level ${i + 1} Income`,
+            Usernameby: decoded.profile.username,
+            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100,
+          };
+          const a1 = await Walletmodal.findOne({ userId: Refflevalncome._id })
+          await updateRecord(
+            Walletmodal,
+            {
+              userId: Refflevalncome._id,
+            },
+            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100) } }
+          ).then(async (res) => {
+            await Ewallateesc({
+              userId: Refflevalncome._id,
+              Note: `You Got Level ${i + 1} Income`,
+              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
+              Usernameby: decoded.profile.username,
+              balace: res.incomeWallet,
+              type: 1,
+              Active: true,
+            }).save();
+          });
+          await Communitymodal(data1).save();
+        }
+      } else {
+        await HoldCBB({
+          userId: Refflevalncome._id,
+          Usernameby: decoded.profile.username,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
+          leval: i + 1,
+          Active: false
+        }).save()
+      }
+    }
+  }
 }
 const CCBupdate = async ({ data, decoded, req }) => {
   const supporterIds = [];
