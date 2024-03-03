@@ -314,7 +314,7 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
       const Refflevalncome = await findOneRecord(Usermodal, {
         _id: mainIds[i - 1],
       });
-      console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i + 1, "%": dat12[i] });
+      console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i, "%": dat12[i] });
       if (Refflevalncome.leval >= i) {
         const StakingData = await findAllRecord(Stakingmodal, {
           userId: Refflevalncome._id,
@@ -334,7 +334,7 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
             userId: Refflevalncome._id,
             Note: `You Got Level ${i} Income`,
             Usernameby: decoded.profile.username,
-            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100,
+            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100,
           };
           const a1 = await Walletmodal.findOne({ userId: Refflevalncome._id })
           await updateRecord(
@@ -342,12 +342,12 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
             {
               userId: Refflevalncome._id,
             },
-            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100) } }
+            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100) } }
           ).then(async (res) => {
             await Ewallateesc({
               userId: Refflevalncome._id,
               Note: `You Got Level ${i} Income`,
-              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100),
+              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
               Usernameby: decoded.profile.username,
               balace: res.incomeWallet,
               type: 1,
@@ -360,7 +360,7 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
         await HoldCBB({
           userId: Refflevalncome._id,
           Usernameby: decoded.profile.username,
-          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100),
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
           leval: i,
           Active: false
         }).save()
@@ -386,19 +386,19 @@ const CCBupdate = async ({ data, decoded, req }) => {
   }
 
   for (let i = 1; i <= supporterIds.length; i++) {
-    if ((req.body.Amount * (dat12[i - 1])) / 100 != null) {
+    if ((req.body.Amount * (dat12[i])) / 100 != null) {
       const Refflevalncome = await findOneRecord(Usermodal, {
         _id: supporterIds[i - 1],
       });
-      console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i - 1])) / 100, "leval": i, "%": dat12[i - 1] });
+      console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i, "%": dat12[i] });
       await Stakingmodal({
         userId: Refflevalncome._id,
         WalletType: `Level ${i} plan (${decoded.profile.username})`,
-        DailyReword: (req.body.Amount * (dat12[i - 1])) / 100 * 2 / 1000,
+        DailyReword: (req.body.Amount * (dat12[i])) / 100 * 2 / 1000,
         bonusAmount: 200,
         leval: i,
-        Amount: (req.body.Amount * (dat12[i - 1])) / 100,
-        TotalRewordRecived: (req.body.Amount * (dat12[i - 1])) / 100 * 2,
+        Amount: (req.body.Amount * (dat12[i])) / 100,
+        TotalRewordRecived: (req.body.Amount * (dat12[i])) / 100 * 2,
         transactionHash: "",
         Active: Refflevalncome.leval >= i,
       }).save();
