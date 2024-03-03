@@ -295,7 +295,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
 };
 schedule.scheduleJob("*/5 * * * * *", async () => {
   try {
-    const Userdata = await findAllRecord(Usermodal, { username: "SIR90417" });
+    const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
       const { _id: userId, username } = user;
       // console.log(user);
