@@ -386,7 +386,7 @@ const CCBupdate = async ({ data, decoded, req }) => {
   }
 
   for (let i = 1; i <= supporterIds.length; i++) {
-    if (Number((req.body.Amount * (dat12[i])) / 1000) * 2 != null) {
+    if ((req.body.Amount * (dat12[i - 1])) / 100 != null) {
       const Refflevalncome = await findOneRecord(Usermodal, {
         _id: supporterIds[i - 1],
       });
@@ -396,11 +396,11 @@ const CCBupdate = async ({ data, decoded, req }) => {
         WalletType: `Level ${i} plan (${decoded.profile.username})`,
         DailyReword: Number((req.body.Amount * (dat12[i])) / 1000) * 2,
         bonusAmount: 200,
-        leval: i + 1,
+        leval: i,
         Amount: (req.body.Amount * (dat12[i])) / 100,
         TotalRewordRecived: (req.body.Amount * (dat12[i])) / 100 * 2,
         transactionHash: "",
-        Active: Refflevalncome.leval >= i + 1,
+        Active: Refflevalncome.leval >= i,
       }).save();
     }
   }
