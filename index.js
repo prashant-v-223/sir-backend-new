@@ -957,7 +957,7 @@ schedule.scheduleJob(every24hours1, async () => {
           {
             $inc: {
               incomeWallet:
-                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.depthlevel === 1 ? element1.totalAmountSum * 5 / 100 : element1.totalAmountSum * 3.5 / 100,
+                element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.depthlevel === 1 ? element1.totalAmountSum * 5 / 100 : element1.totalAmountSum * 5 / 100,
             },
           }
         ).then(async (res) => {
@@ -965,7 +965,7 @@ schedule.scheduleJob(every24hours1, async () => {
             await Royalty({
               userId: Userdata1[0]?._id,
               Note: `You Got Royalty Income From ${element1.username}`,
-              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.depthlevel === 1 ? element1.totalAmountSum * 5 / 100 : element1.totalAmountSum * 3.5 / 100,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.depthlevel === 1 ? element1.totalAmountSum * 5 / 100 : element1.totalAmountSum * 5 / 100,
               type: 1,
               balace: res.incomeWallet,
               Active: true,
@@ -973,7 +973,7 @@ schedule.scheduleJob(every24hours1, async () => {
             await Ewallateesc({
               userId: Userdata1[0]?._id,
               Note: `You Got Royalty Income From ${element1.username}`,
-              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.depthlevel === 1 ? element1.totalAmountSum * 5 / 100 : element1.totalAmountSum * 3.5 / 100,
+              Amount: element1.depthlevel === 0 ? element1.totalAmountSum * 10 / 100 : element1.depthlevel === 1 ? element1.totalAmountSum * 5 / 100 : element1.totalAmountSum * 5 / 100,
               type: 1,
               balace: res.incomeWallet,
               Active: true,
