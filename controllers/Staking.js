@@ -312,10 +312,10 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
   for (let i = 0; i < mainIds.length; i++) {
     if (mainIds[i - 1] != null) {
       const Refflevalncome = await findOneRecord(Usermodal, {
-        _id: mainIds[i],
+        _id: mainIds[i - 1],
       });
       console.log({ "data": Refflevalncome, "amount": (req.body.Amount * (dat12[i])) / 100, "leval": i + 1, "%": dat12[i] });
-      if (Refflevalncome.leval >= i + 1) {
+      if (Refflevalncome.leval >= i) {
         const StakingData = await findAllRecord(Stakingmodal, {
           userId: Refflevalncome._id,
         });
@@ -332,9 +332,9 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
 
           let data1 = {
             userId: Refflevalncome._id,
-            Note: `You Got Level ${i + 1} Income`,
+            Note: `You Got Level ${i} Income`,
             Usernameby: decoded.profile.username,
-            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100,
+            Amount: (Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100,
           };
           const a1 = await Walletmodal.findOne({ userId: Refflevalncome._id })
           await updateRecord(
@@ -342,12 +342,12 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
             {
               userId: Refflevalncome._id,
             },
-            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100) } }
+            { $inc: { incomeWallet: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100) } }
           ).then(async (res) => {
             await Ewallateesc({
               userId: Refflevalncome._id,
-              Note: `You Got Level ${i + 1} Income`,
-              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
+              Note: `You Got Level ${i} Income`,
+              Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100),
               Usernameby: decoded.profile.username,
               balace: res.incomeWallet,
               type: 1,
@@ -360,8 +360,8 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
         await HoldCBB({
           userId: Refflevalncome._id,
           Usernameby: decoded.profile.username,
-          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i])) / 100),
-          leval: i + 1,
+          Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * (dat12[i - 1])) / 100),
+          leval: i,
           Active: false
         }).save()
       }
