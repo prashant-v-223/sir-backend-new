@@ -1325,10 +1325,9 @@ exports.stack = {
                           }
                         }
                       }
-                    ]).then(async (res) => {
-                      await SCBupdate({ decoded, res, ReffData1, req })
-                      await CCBupdate({ res })
-                    })
+                    ])
+                    await SCBupdate({ decoded, data, ReffData1, req })
+                    await CCBupdate({ data })
 
                   }
                   await Stakingmodal({
@@ -1468,10 +1467,9 @@ exports.stack = {
                                 }
                               }
                             }
-                          ]).then(async (res) => {
-                            await SCBupdate({ decoded, res, ReffData1, req })
-                            await CCBupdate({ res })
-                          })
+                          ])
+                          await SCBupdate({ decoded, daat, ReffData1, req })
+                          await CCBupdate({ daat })
 
                         }
                         await Stakingmodal({
