@@ -1519,7 +1519,7 @@ exports.stack = {
             createdAt: {
               $gte: startOfToday,
               $lt: endOfToday
-            },
+            }, type: 1
           }
         },
         {
