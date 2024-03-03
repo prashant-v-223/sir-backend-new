@@ -287,7 +287,7 @@ const amountupdate = async (username) => {
     });
   }
 }
-const SCBupdate = async ({ decoded, daat, ReffData1, req }) => {
+const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
 
   const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
 
@@ -1542,8 +1542,8 @@ exports.stack = {
                               }
                             }
                           ])
-                          await SCBupdate({ decoded, daat, ReffData1, req })
-                          await CCBupdate({ daat, decoded, req })
+                          await SCBupdate({ decoded, data, ReffData1, req })
+                          await CCBupdate({ data, decoded, req })
 
                         }
                         await Stakingmodal({
