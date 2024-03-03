@@ -1539,7 +1539,7 @@ exports.stack = {
         todaymy: aggregatedUserData[0].todaymy,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
-        todayReff0: todayReff,
+        todayReff0: todayReff[0].Amount || 0,
         ReffData: data[0].referBYCount,
         ReffData1: data1,
         ReffData2: data22,
