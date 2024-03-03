@@ -3631,7 +3631,6 @@ exports.stack = {
                   },
                 },
               },
-              holdincomeSCBamountupcoming122: "$amountupcoming1",
               holdincome: {
                 $reduce: {
                   input: "$amount13",
@@ -3726,7 +3725,6 @@ exports.stack = {
               //     },
               //   },
               // },
-
               TodaStakingBonusIncome: {
                 $reduce: {
                   input: {
