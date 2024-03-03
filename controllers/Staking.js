@@ -518,7 +518,7 @@ exports.stack = {
                 await cronHandler(decoded.profile.username).then(async (res) => {
                   // Concurrently execute staking updates and main wallet deduction
                   await Promise.all([
-                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, "",req),
+                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, "", req),
                     deductMainWallet(decoded, WalletData, req.body.Amount)
                   ]);
                 })
@@ -570,7 +570,7 @@ exports.stack = {
                     await cronHandler(decoded.profile.username).then(async (res) => {
                       // Concurrently execute staking updates and main wallet deduction
                       await Promise.all([
-                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash,req),
+                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash, req),
                         deductMainWallet(decoded, WalletData, req.body.Amount)
                       ]);
                     })
@@ -1512,7 +1512,7 @@ exports.stack = {
       const today = new Date();
       const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-      
+
       const todayReff = await Mainwallatesc.aggregate([
         {
           $match: {
@@ -1520,12 +1520,6 @@ exports.stack = {
               $gte: startOfToday,
               $lt: endOfToday
             },
-            $expr: {
-              $eq: [
-                { $substrCP: ["$Note", 0, 29] },
-                "You Got Refer and Earn Income"
-              ]
-            }
           }
         },
         {
