@@ -1182,6 +1182,7 @@ const SCBupdate = async ({ decoded, daat, ReffData1, req }) => {
 //   })
 // }
 const CCBupdate = async ({ data }) => {
+  console.log("datadatadata", data);
   const supporterIds = [];
   let supporterId = data.supporterId;
   let dat12 = [10, 7, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5]
