@@ -289,6 +289,7 @@ const amountupdate = async (username) => {
 }
 
 const SCBupdate = async ({ decoded, daat, ReffData1, req }) => {
+  const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
   await updateRecord(
     Usermodal,
     { username: ReffData1.username },
@@ -1620,7 +1621,6 @@ exports.stack = {
           // // Sort formatted data by date in ascending order
           // formattedData.sort((a, b) => moment(a.date, 'DD/MM/YYYY') - moment(b.date, 'DD/MM/YYYY'));
 
-          const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
           return successResponse(res, {
             message: "staking data get successfully",
             data: StakingData,
