@@ -518,7 +518,7 @@ exports.stack = {
                 await cronHandler(decoded.profile.username).then(async (res) => {
                   // Concurrently execute staking updates and main wallet deduction
                   await Promise.all([
-                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, "",req),
+                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, "", req),
                     deductMainWallet(decoded, WalletData, req.body.Amount)
                   ]);
                 })
@@ -570,7 +570,7 @@ exports.stack = {
                     await cronHandler(decoded.profile.username).then(async (res) => {
                       // Concurrently execute staking updates and main wallet deduction
                       await Promise.all([
-                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash,req),
+                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash, req),
                         deductMainWallet(decoded, WalletData, req.body.Amount)
                       ]);
                     })
@@ -1420,7 +1420,8 @@ exports.stack = {
                           },
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          }
+                          },
+                          { $eq: [{ $substrCP: ["$$item.Note", 0, 28] }, "You Got Staking Bonus Income"] }
                         ],
                       },
                     },
@@ -1509,7 +1510,7 @@ exports.stack = {
         ]),
         findAllRecord(V4Xpricemodal, {}),
       ]);
-      
+
       return successResponse(res, {
         message: "Wallet data retrieved successfully",
         data: WalletData,
