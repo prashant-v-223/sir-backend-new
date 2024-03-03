@@ -1181,7 +1181,7 @@ const SCBupdate = async ({ decoded, daat, ReffData1, req }) => {
 //     }
 //   })
 // }
-const CCBupdate = async ({ data, decoded }) => {
+const CCBupdate = async ({ data, decoded, req }) => {
   console.log("datadatadata", data);
   const supporterIds = [];
   let supporterId = data.supporterId;
@@ -1327,7 +1327,7 @@ exports.stack = {
                       }
                     ])
                     await SCBupdate({ decoded, data, ReffData1, req })
-                    await CCBupdate({ data, decoded })
+                    await CCBupdate({ data, decoded, req })
 
                   }
                   await Stakingmodal({
@@ -1469,7 +1469,7 @@ exports.stack = {
                             }
                           ])
                           await SCBupdate({ decoded, daat, ReffData1, req })
-                          await CCBupdate({ daat, decoded })
+                          await CCBupdate({ daat, decoded, req })
 
                         }
                         await Stakingmodal({
