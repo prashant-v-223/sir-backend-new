@@ -3671,8 +3671,14 @@ exports.stack = {
                         $cond: {
                           if: {
                             $eq: [
-                              "$$this.Note",
-                              "You Got Staking Bonus Income.",
+                              {
+                                $substr: [
+                                  "$$this.Note",
+                                  0,
+                                  15,
+                                ],
+                              },
+                              "You Got Staking",
                             ],
                           },
                           then: "$$this.Amount",
