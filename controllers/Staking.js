@@ -505,7 +505,7 @@ exports.stack = {
               ) {
                 let data1 = await otp.find({ userId: decoded.profile._id, otp: Number(req.body.otp) });
 
-                if (data1.length === 0) {
+                if (data1.length !== 0) {
                   await otp.remove({ userId: decoded.profile._id });
                   return notFoundResponse(res, { message: "Transaction failed" });
                 }
@@ -515,13 +515,13 @@ exports.stack = {
                 if (WalletData.mainWallet < req.body.Amount) {
                   return validarionerrorResponse(res, { message: "Insufficient main wallet balance" });
                 }
-
-                // Concurrently execute staking updates and main wallet deduction
-                await Promise.all([
-                  handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash),
-                  deductMainWallet(decoded, WalletData, req.body.Amount)
-                ]);
-
+                await cronHandler(decoded.profile.username).then(async (res) => {
+                  // Concurrently execute staking updates and main wallet deduction
+                  await Promise.all([
+                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, ""),
+                    deductMainWallet(decoded, WalletData, req.body.Amount)
+                  ]);
+                })
                 await amountupdate(decoded.profile.username);
                 return successResponse(res, { message: "You have successfully staked SIR Tokens" });
               } else {
@@ -554,7 +554,7 @@ exports.stack = {
                   if (timeDifference <= maxTimeDifference) {
                     let data1 = await otp.find({ userId: decoded.profile._id, otp: Number(req.body.otp) });
 
-                    if (data1.length === 0) {
+                    if (data1.length !== 0) {
                       await otp.remove({ userId: decoded.profile._id });
                       return notFoundResponse(res, { message: "Transaction failed" });
                     }
@@ -567,10 +567,13 @@ exports.stack = {
                     const transactionHash = req.body.transactionHash;
 
                     // Concurrently execute staking updates and main wallet deduction
-                    await Promise.all([
-                      handleStaking(decoded, WalletData, SIRprice, req.body.Amount, ""),
-                      deductMainWallet(decoded, WalletData, req.body.Amount)
-                    ]);
+                    await cronHandler(decoded.profile.username).then(async (res) => {
+                      // Concurrently execute staking updates and main wallet deduction
+                      await Promise.all([
+                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash),
+                        deductMainWallet(decoded, WalletData, req.body.Amount)
+                      ]);
+                    })
 
                     await amountupdate(decoded.profile.username);
                     return successResponse(res, { message: "You have successfully staked SIR Tokens" });
