@@ -398,13 +398,78 @@ const CCBupdate = async ({ data, decoded, req }) => {
         bonusAmount: 200,
         leval: i,
         Amount: (req.body.Amount * (dat12[i - 1])) / 100,
-        TotalRewordRecived: (req.body.Amount * (dat12[i - 1 ])) / 100 * 2,
+        TotalRewordRecived: (req.body.Amount * (dat12[i - 1])) / 100 * 2,
         transactionHash: "",
         Active: Refflevalncome.leval >= i,
       }).save();
     }
   }
 };
+
+const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionHash) => {
+  const data = await findOneRecord(Usermodal, { username: decoded.profile.username });
+  const ReffData = await findOneRecord(Usermodal, { username: data.supporterId });
+  const ReffData1 = await findOneRecord(Usermodal, { username: data.mainId });
+
+  if (ReffData?._id !== null) {
+    const data123 = await Stakingbonus.findOne({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` });
+    if (!data123) {
+      const income = Math.ceil(amount / 90 * SIRprice.price) * 5 / 100;
+      await updateRecord(Walletmodal, { userId: ReffData._id }, { $inc: { incomeWallet: income } });
+
+      const res = await Walletmodal.findOne({ userId: ReffData._id });
+      if (res) {
+        await Promise.all([
+          Ewallateesc({
+            userId: ReffData._id,
+            Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
+            Amount: income,
+            type: 1,
+            balace: res.incomeWallet,
+            Active: true,
+          }).save(),
+          Stakingbonus({
+            userId: ReffData._id,
+            ReffId: decoded.profile._id,
+            Amount: income,
+            Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
+            Active: true,
+          }).save()
+        ]);
+      }
+    }
+
+    await Promise.all([
+      SCBupdate({ decoded, data, ReffData1, req }),
+      CCBupdate({ data, decoded, req })
+    ]);
+
+    await Stakingmodal({
+      userId: decoded.profile._id,
+      WalletType: "main-Wallet",
+      DailyReword: Number(amount / 1000) * 2,
+      bonusAmount: 200,
+      Amount: amount,
+      TotalRewordRecived: amount * 2,
+      transactionHash: transactionHash,
+    }).save();
+  }
+}
+
+// Helper function to deduct amount from main wallet and save to Mainwallatesc
+const deductMainWallet = async (decoded, WalletData, amount) => {
+  await updateRecord(Walletmodal, { userId: decoded.profile._id }, { $inc: { mainWallet: -amount } })
+    .then(async (res) => {
+      await Mainwallatesc({
+        userId: decoded.profile._id,
+        Note: `Staking Charge`,
+        Amount: amount,
+        balace: res.mainWallet,
+        type: 0,
+        Active: true,
+      }).save();
+    });
+}
 console.log({ todayIST, nextDayIST });
 exports.stack = {
   Buystack: async (req, res) => {
@@ -438,112 +503,27 @@ exports.stack = {
                 WalletData.mainWallet >=
                 req.body.Amount
               ) {
-                console.log(decoded.profile.username);
-                await cronHandler(decoded.profile.username).then(async (res) => {
-                  const data = await findOneRecord(Usermodal, {
-                    username: decoded.profile.username,
-                  });
-                  console.log("==================<<<", res);
-                  const ReffData = await findOneRecord(Usermodal, {
-                    username: data.supporterId,
-                  });
-                  const ReffData1 = await findOneRecord(Usermodal, {
-                    username: data.mainId,
-                  });
+                let data1 = await otp.find({ userId: decoded.profile._id, otp: Number(req.body.otp) });
 
-                  if (ReffData?._id !== null) {
-                    // const StakingData = await findAllRecord(Stakingmodal, {
-                    //   userId: ReffData._id,
-                    // });
-                    // if (StakingData.length > 0) {
-                    const data123 = await Stakingbonus.find({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` })
-                    if (data123.length <= 0) {
-                      await updateRecord(
-                        Walletmodal,
-                        {
-                          userId: ReffData._id,
-                        },
-                        {
-                          $inc: {
-                            incomeWallet:
-                              ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                          },
-                        }
-                      )
-                        .then(async (res) => {
-                          await Ewallateesc({
-                            userId: ReffData?._id,
-                            Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                            type: 1,
-                            balace: res.incomeWallet,
-                            Active: true,
-                          }).save();
-                          await Stakingbonus({
-                            userId: ReffData?._id,
-                            ReffId: decoded.profile._id,
-                            Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                            Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                            Active: true,
-                          }).save();
-                        });
-                    }
-                    // }
-                    const daat = await Usermodal.aggregate([
-                      {
-                        '$match': {
-                          'mainId': ReffData1.username
-                        }
-                      }, {
-                        '$lookup': {
-                          'from': 'stakings',
-                          'localField': '_id',
-                          'foreignField': 'userId',
-                          'as': 'result'
-                        }
-                      }, {
-                        '$match': {
-                          '$expr': {
-                            '$gt': [
-                              {
-                                '$size': '$result'
-                              }, 0
-                            ]
-                          }
-                        }
-                      }
-                    ])
-                    await SCBupdate({ decoded, data, ReffData1, req })
-                    await CCBupdate({ data, decoded, req })
-                    await Stakingmodal({
-                      userId: decoded.profile._id,
-                      WalletType: "main-Wallet",
-                      DailyReword: Number(req.body.Amount / 1000) * 2,
-                      bonusAmount: 200,
-                      Amount: req.body.Amount,
-                      TotalRewordRecived: req.body.Amount * 2,
-                      transactionHash: "",
-                    }).save();
-                  }
-                  await updateRecord(
-                    Walletmodal,
-                    { userId: decoded.profile._id },
-                    { mainWallet: WalletData.mainWallet - req.body.Amount }
-                  ).then(async (res) => {
-                    await Mainwallatesc({
-                      userId: decoded.profile._id,
-                      Note: `Staking Charge`,
-                      Amount: req.body.Amount,
-                      balace: res.mainWallet,
-                      type: 0,
-                      Active: true,
-                    }).save();
-                  });
-                })
-                await amountupdate(decoded.profile.username)
-                return successResponse(res, {
-                  message: "You have successfully staked SIR Tokens",
-                });
+                if (data1.length === 0) {
+                  await otp.remove({ userId: decoded.profile._id });
+                  return notFoundResponse(res, { message: "Transaction failed" });
+                }
+
+                await otp.remove({ userId: decoded.profile._id });
+
+                if (WalletData.mainWallet < req.body.Amount) {
+                  return validarionerrorResponse(res, { message: "Insufficient main wallet balance" });
+                }
+
+                // Concurrently execute staking updates and main wallet deduction
+                await Promise.all([
+                  handleStaking(decoded, WalletData, SIRprice, req.body.Amount, transactionHash),
+                  deductMainWallet(decoded, WalletData, req.body.Amount)
+                ]);
+
+                await amountupdate(decoded.profile.username);
+                return successResponse(res, { message: "You have successfully staked SIR Tokens" });
               } else {
                 return validarionerrorResponse(res, {
                   message:
@@ -572,112 +552,29 @@ exports.stack = {
                   const blockTimestamp = timestamp * 1000;
                   const timeDifference = currentTimestamp - blockTimestamp;
                   if (timeDifference <= maxTimeDifference) {
-                    let data1 = await otp.find({
-                      userId: decoded.profile._id,
-                      otp: Number(req.body.otp),
-                    });
-                    if (data1.length !== 0) {
-                      await otp.remove({
-                        userId: decoded.profile._id,
-                      });
+                    let data1 = await otp.find({ userId: decoded.profile._id, otp: Number(req.body.otp) });
 
-                      await cronHandler(decoded.profile.username).then(async (res) => {
-                        const data = await findOneRecord(Usermodal, {
-                          username: decoded.profile.username,
-                        });
-                        console.log("==================<<<", res);
-                        const ReffData = await findOneRecord(Usermodal, {
-                          username: data.supporterId,
-                        });
-                        const ReffData1 = await findOneRecord(Usermodal, {
-                          username: data.mainId,
-                        });
-                        if (ReffData?._id !== null) {
-                          // const StakingData = await findAllRecord(Stakingmodal, {
-                          //   userId: ReffData._id,
-                          // });
-                          // if (StakingData.length > 0) {
-                          const data123 = await Stakingbonus.find({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` })
-                          if (data123.length <= 0) {
-                            await updateRecord(
-                              Walletmodal,
-                              {
-                                userId: ReffData._id,
-                              },
-                              {
-                                $inc: {
-                                  incomeWallet:
-                                    ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                                },
-                              }
-                            )
-                              .then(async (res) => {
-                                await Ewallateesc({
-                                  userId: ReffData?._id,
-                                  Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                                  type: 1,
-                                  balace: res.incomeWallet,
-                                  Active: true,
-                                }).save();
-                                await Stakingbonus({
-                                  userId: ReffData?._id,
-                                  ReffId: decoded.profile._id,
-                                  Amount: ((Math.ceil(req.body.Amount / 90 * SIRprice.price) * 5) / 100),
-                                  Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
-                                  Active: true,
-                                }).save();
-                              });
-                          }
-                          // }
-                          const daat = await Usermodal.aggregate([
-                            {
-                              '$match': {
-                                'mainId': ReffData1.username
-                              }
-                            }, {
-                              '$lookup': {
-                                'from': 'stakings',
-                                'localField': '_id',
-                                'foreignField': 'userId',
-                                'as': 'result'
-                              }
-                            }, {
-                              '$match': {
-                                '$expr': {
-                                  '$gt': [
-                                    {
-                                      '$size': '$result'
-                                    }, 0
-                                  ]
-                                }
-                              }
-                            }
-                          ])
-                          await SCBupdate({ decoded, data, ReffData1, req })
-                          await CCBupdate({ data, decoded, req })
-
-                          await Stakingmodal({
-                            userId: decoded.profile._id,
-                            WalletType: "DAPP-Wallet",
-                            DailyReword: Number(req.body.Amount / 1000) * 2,
-                            bonusAmount: 200,
-                            Amount: req.body.Amount,
-                            TotalRewordRecived: req.body.Amount * 2,
-                            transactionHash: "",
-                          }).save();
-                        }
-                      })
-                      await amountupdate(decoded.profile.username)
-                      return successResponse(res, {
-                        message: "You have successfully staked SIR Tokens",
-                      });
-                    } else {
-                      return validarionerrorResponse(res, {
-                        message:
-                          "please check your mian wallet balance do not have infoe amount to stake!",
-                      });
+                    if (data1.length === 0) {
+                      await otp.remove({ userId: decoded.profile._id });
+                      return notFoundResponse(res, { message: "Transaction failed" });
                     }
+
+                    await otp.remove({ userId: decoded.profile._id });
+
+                    if (WalletData.mainWallet < req.body.Amount) {
+                      return validarionerrorResponse(res, { message: "Insufficient main wallet balance" });
+                    }
+                    const transactionHash = req.body.transactionHash;
+
+                    // Concurrently execute staking updates and main wallet deduction
+                    await Promise.all([
+                      handleStaking(decoded, WalletData, SIRprice, req.body.Amount, ""),
+                      deductMainWallet(decoded, WalletData, req.body.Amount)
+                    ]);
+
+                    await amountupdate(decoded.profile.username);
+                    return successResponse(res, { message: "You have successfully staked SIR Tokens" });
+
                   }
                 })
                 .catch((err) => {
