@@ -1420,6 +1420,14 @@ exports.stack = {
                           },
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                          },
+                          {
+                            $expr: {
+                              $eq: [
+                                { $substrCP: ["$Note", 0, 28] },
+                                "You Got Staking Bonus Income"
+                              ]
+                            }
                           }
                         ],
                       },
@@ -1513,13 +1521,19 @@ exports.stack = {
       const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
-      const todayReff = await Mainwallatesc.aggregate([
+      const todayReff = await Stakingbonus.aggregate([
         {
           $match: {
             createdAt: {
               $gte: startOfToday,
               $lt: endOfToday
-            }, type: 1
+            },
+            $expr: {
+              $eq: [
+                { $substrCP: ["$Note", 0, 29] },
+                "You Got Refer and Earn Income"
+              ]
+            }
           }
         },
         {
@@ -1539,7 +1553,7 @@ exports.stack = {
         todaymy: aggregatedUserData[0].todaymy,
         lockamount: aggregatedUserData[0].total2,
         teamtotalstack: aggregatedUserData[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
-        todayReff0: todayReff[0],
+        TodaStakingBonusIncome: todayReff[0].total1 + aggregatedUserData[0].total / 90 * SIRprice.price,
         ReffData: data[0].referBYCount,
         ReffData1: data1,
         ReffData2: data22,
