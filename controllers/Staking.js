@@ -288,7 +288,7 @@ const amountupdate = async (username) => {
   }
 }
 
-const SCBupdate = async ({ decoded, daat, ReffData1 }) => {
+const SCBupdate = async ({ decoded, daat, ReffData1, req }) => {
   await updateRecord(
     Usermodal,
     { username: ReffData1.username },
@@ -1323,7 +1323,7 @@ exports.stack = {
                         }
                       }
                     ])
-                    await SCBupdate({ decoded, daat, ReffData1 })
+                    await SCBupdate({ decoded, daat, ReffData1, req })
                     await CCBupdate({ daat })
 
                   }
@@ -1465,7 +1465,7 @@ exports.stack = {
                               }
                             }
                           ])
-                          await SCBupdate({ decoded, daat, ReffData1 })
+                          await SCBupdate({ decoded, daat, ReffData1, req })
                           await CCBupdate({ daat })
 
                         }
