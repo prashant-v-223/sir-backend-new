@@ -159,7 +159,6 @@ schedule.scheduleJob("0 0 1 * *", async () => {
         Totalsend: 0,
       });
     }));
-    const result = await HoldCBB.deleteMany({});
 
     console.log("Monthly check completed successfully.");
   } catch (error) {
