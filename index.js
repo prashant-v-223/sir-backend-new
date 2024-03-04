@@ -587,18 +587,6 @@ schedule.scheduleJob(every24hours1, async () => {
                         $substr: [
                           "$$ewallate.Note",
                           0,
-                          28,
-                        ],
-                      },
-                      "You have received your level",
-                    ],
-                  },
-                  {
-                    $ne: [
-                      {
-                        $substr: [
-                          "$$ewallate.Note",
-                          0,
                           22,
                         ],
                       },
@@ -730,18 +718,6 @@ schedule.scheduleJob(every24hours1, async () => {
                         $substr: [
                           "$$ewallate.Note",
                           0,
-                          28,
-                        ],
-                      },
-                      "You have received your level",
-                    ],
-                  },
-                  {
-                    $ne: [
-                      {
-                        $substr: [
-                          "$$ewallate.Note",
-                          0,
                           22,
                         ],
                       },
@@ -866,18 +842,6 @@ schedule.scheduleJob(every24hours1, async () => {
                   },
                   {
                     $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
-                  },
-                  {
-                    $ne: [
-                      {
-                        $substr: [
-                          "$$ewallate.Note",
-                          0,
-                          28,
-                        ],
-                      },
-                      "You have received your level",
-                    ],
                   },
                   {
                     $ne: [
