@@ -1111,13 +1111,13 @@ exports.stack = {
               localField: "refers_to._id",
               foreignField: "userId",
               as: "amountupcoming",
-              pipeline: [
-                {
-                  $match: {
-                    Active: false,
-                  },
-                },
-              ],
+              // pipeline: [
+              //   {
+              //     $match: {
+              //       Removed: true,
+              //     },
+              //   },
+              // ],
             },
           },
           {
@@ -1129,7 +1129,7 @@ exports.stack = {
               pipeline: [
                 {
                   $match: {
-                    as: true
+                    Removed: true
                   },
                 },
               ],
@@ -1295,8 +1295,8 @@ exports.stack = {
                     ]
                   },
                 },
-              }
-              , holdincomeSCB: {
+              },
+              holdincomeSCB: {
                 $reduce: {
                   input: "$amountupcoming1",
                   initialValue: 0,
@@ -1306,6 +1306,8 @@ exports.stack = {
                   },
                 },
               },
+              amountupcoming1: 1, stakingsize: { $size: "$amountupcoming1" }, // Adding the Size field
+
               holdincome: {
                 $reduce: {
                   input: "$amount13",
