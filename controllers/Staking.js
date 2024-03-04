@@ -1306,7 +1306,7 @@ exports.stack = {
                   },
                 },
               },
-              amountupcoming1: 1, stakingsize: { $size: "$amountupcoming1" }, // Adding the Size field
+            stakingsize: { $size: "$amountupcoming1" }, // Adding the Size field
 
               holdincome: {
                 $reduce: {
