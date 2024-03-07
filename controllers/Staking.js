@@ -537,21 +537,21 @@ exports.stack = {
                 if (data1.length !== 0) {
                   await otp.remove({ userId: decoded.profile._id });
                   return notFoundResponse(res, { message: "Transaction failed" });
+                } else {
+                  await otp.remove({ userId: decoded.profile._id });
+                  if (WalletData.mainWallet < req.body.Amount) {
+                    return validarionerrorResponse(res, { message: "Insufficient main wallet balance" });
+                  } else {
+                    await cronHandler(decoded.profile.username).then(async (res) => {
+                      // Concurrently execute staking updates and main wallet deduction
+                      await Promise.all([
+                        deductMainWallet(decoded, WalletData, req.body.Amount),
+                        handleStaking(decoded, WalletData, SIRprice, req.body.Amount, "", req)
+                      ]);
+                    })
+                  }
+                  await amountupdate(decoded.profile.username);
                 }
-
-                await otp.remove({ userId: decoded.profile._id });
-
-                if (WalletData.mainWallet < req.body.Amount) {
-                  return validarionerrorResponse(res, { message: "Insufficient main wallet balance" });
-                }
-                await cronHandler(decoded.profile.username).then(async (res) => {
-                  // Concurrently execute staking updates and main wallet deduction
-                  await Promise.all([
-                    handleStaking(decoded, WalletData, SIRprice, req.body.Amount, "", req),
-                    deductMainWallet(decoded, WalletData, req.body.Amount)
-                  ]);
-                })
-                await amountupdate(decoded.profile.username);
                 return successResponse(res, { message: "You have successfully staked SIR Tokens" });
               } else {
                 return validarionerrorResponse(res, {
