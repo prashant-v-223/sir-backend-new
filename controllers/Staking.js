@@ -446,7 +446,7 @@ const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionH
       const income = Math.ceil(amount / 90 * SIRprice.price) * 5 / 100;
       await updateRecord(Walletmodal, { userId: ReffData._id }, { $inc: { incomeWallet: income } });
 
-      const res = await Walletmodal.findOne({ userId: ReffData._id });
+      const res = await Walletmodal.findOne({ userId: ReffData1._id });
       if (res) {
         await Promise.all([
           Ewallateesc({
