@@ -107,7 +107,6 @@ const cronHandler = async (user) => {
       } while (isExistsInNextRefIdsToBeSkipped);
       await refExists.save();
     }
-    console.log(refId, refId, id);
     // } else {
     //   await getRef(refId, refId, id);
     //   const refIdExistsInReferred = await Usermodal.findOne({ referred: { $elemMatch: { $eq: refId } } });
@@ -308,7 +307,7 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
     mainId = Refflevalncome.supporterId;
   }
 
-  // Calculate and save staking details for each level
+  // Calculate and save stDDaking details for each level
   for (let i = 0; i < mainIds.length; i++) {
     if (mainIds[i - 1] != null) {
       const Refflevalncome = await findOneRecord(Usermodal, {
@@ -410,7 +409,37 @@ const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionH
   const data = await findOneRecord(Usermodal, { username: decoded.profile.username });
   const ReffData = await findOneRecord(Usermodal, { username: data.supporterId });
   const ReffData1 = await findOneRecord(Usermodal, { username: data.mainId });
-
+  const daat = await Usermodal.aggregate([
+    {
+      '$match': {
+        'mainId': ReffData1.username
+      }
+    }, {
+      '$lookup': {
+        'from': 'stakings',
+        'localField': '_id',
+        'foreignField': 'userId',
+        'as': 'result'
+      }
+    }, {
+      '$match': {
+        '$expr': {
+          '$gt': [
+            {
+              '$size': '$result'
+            }, 0
+          ]
+        }
+      }
+    }
+  ])
+  await updateRecord(
+    Usermodal,
+    { username: ReffData1.username },
+    {
+      leval: Number(decoded.profile.mystack === 0 ? daat.length + 1 : daat.length),
+    }
+  )
   if (ReffData?._id !== null) {
     const data123 = await Stakingbonus.findOne({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` });
     if (!data123) {
@@ -1306,7 +1335,7 @@ exports.stack = {
                   },
                 },
               },
-            stakingsize: { $size: "$amountupcoming1" }, // Adding the Size field
+              stakingsize: { $size: "$amountupcoming1" }, // Adding the Size field
 
               holdincome: {
                 $reduce: {
