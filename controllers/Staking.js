@@ -1158,7 +1158,7 @@ exports.stack = {
               pipeline: [
                 {
                   $match: {
-                    Removed: true
+                    Active: false
                   },
                 },
               ],
