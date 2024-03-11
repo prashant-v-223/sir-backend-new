@@ -75,7 +75,7 @@ const cronHandler = async (user) => {
   console.log("usersPendingRef", usersPendingRef);
   for (let i = 0; i < usersPendingRef.length; i++) {
     const user = usersPendingRef[i];
-    const refExists = await Usermodal.findOne({ refId: user.mainId });
+    const refExists = await Usermodal.findOne({ refId: user.mainId, mystack: { $gt: 0 } });
     if (!refExists) return;
     const id = user.refId;
     const refId = user.mainId;

@@ -224,12 +224,12 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
         if (da.length > 0) {
           let data = {
             userId: user._id,
-            Note: `You Have Acheicer New ${rewardAmount}`,
+            Note: `You Have Achieved  New ${rewardAmount}`,
             Amount: rewardAmount,
           };
           const da1 = await findAllRecord(Usermodal, {
             userId: user._id,
-            Note: `You Have Acheicer New ${rewardAmount}`,
+            Note: `You Have Achieved  New ${rewardAmount}`,
           });
           if (da1.length === 0) {
             await Achivement(data).save();
