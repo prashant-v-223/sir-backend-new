@@ -119,7 +119,7 @@ const cronHandler = async (user) => {
   }
 }
 const nowIST = new Date();
-nowIST.setUTCHours(nowIST.getUTCHours(), nowIST.getUTCMinutes(), 0, 0); // Convert to IST
+nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
 
 const todayIST = new Date(nowIST);
 todayIST.setHours(0, 0, 0, 0);
@@ -127,9 +127,6 @@ todayIST.setHours(0, 0, 0, 0);
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1);
 nextDayIST.setHours(0, 0, 0, 0);
-// Get the current date
-const currentDate = moment();
-
 // // Set the start time to 7:00 PM today
 // const startOfDay = currentDate.clone().set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
 
@@ -578,23 +575,10 @@ exports.stack = {
                 .then(async (block) => {
                   const timestamp = block.timestamp; // This is the Unix timestamp of the block
                   const currentTimestamp = new Date().getTime();
-                  const blockTimestamp = timestamp * 1000;
+                  const blockTimestamp = timestamp * 30000;
                   const timeDifference = currentTimestamp - blockTimestamp;
                   if (timeDifference <= maxTimeDifference) {
-                    let data1 = await otp.find({ userId: decoded.profile._id, otp: Number(req.body.otp) });
-
-                    if (data1.length !== 0) {
-                      await otp.remove({ userId: decoded.profile._id });
-                      return notFoundResponse(res, { message: "Transaction failed" });
-                    }
-
-                    await otp.remove({ userId: decoded.profile._id });
-
-                    if (WalletData.mainWallet < req.body.Amount) {
-                      return validarionerrorResponse(res, { message: "Insufficient main wallet balance" });
-                    }
                     const transactionHash = req.body.transactionHash;
-
                     // Concurrently execute staking updates and main wallet deduction
                     await cronHandler(decoded.profile.username).then(async (res) => {
                       // Concurrently execute staking updates and main wallet deduction
@@ -603,14 +587,15 @@ exports.stack = {
                         deductMainWallet(decoded, WalletData, req.body.Amount)
                       ]);
                     })
-
                     await amountupdate(decoded.profile.username);
                     return successResponse(res, { message: "You have successfully staked SIR Tokens" });
-
                   }
                 })
                 .catch((err) => {
-                  console.log(err);
+                  return badRequestResponse(res, {
+                    message: "something went to wrong please try again",
+                    err: err,
+                  });
                 });
 
             } else {
