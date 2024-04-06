@@ -451,7 +451,7 @@ const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionH
             Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
             Amount: income,
             type: 1,
-            balace: res.incomeWallet,
+            balace: res.incomeWallet - income,
             Active: true,
           }).save(),
           Stakingbonus({
@@ -466,7 +466,7 @@ const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionH
     }
 
     await Promise.all([
-      SCBupdate({ decoded, data, ReffData1, req }),
+      ({ decoded, data, ReffData1, req }),
       CCBupdate({ data, decoded, req })
     ]);
 
