@@ -44,6 +44,7 @@ exports.profile = {
             startWith: "$username",
             connectFromField: "username",
             connectToField: "mainId",
+            maxDepth: 1,
             as: "refers_to",
           },
         },

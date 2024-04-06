@@ -9,6 +9,9 @@ router.post("/addstacking", (req, res) => {
 router.get("/stackingbouns", (req, res) => {
   return stackController.stack.getstackbouns(req, res);
 });
+router.get("/deshbord", (req, res) => {
+  return stackController.stack.Admindeshbord(req, res);
+});
 router.get("/allicome", (req, res) => {
   return stackController.stack.allincome(req, res);
 });
