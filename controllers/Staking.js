@@ -437,17 +437,17 @@ const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionH
       leval: Number(decoded.profile.mystack === 0 ? daat.length + 1 : daat.length),
     }
   )
-  if (ReffData?._id !== null) {
+  if (ReffData1?._id !== null) {
     const data123 = await Stakingbonus.findOne({ Note: `You Got Refer and Earn Income From ${decoded.profile.username}` });
     if (!data123) {
       const income = Math.ceil(amount / 90 * SIRprice.price) * 5 / 100;
-      await updateRecord(Walletmodal, { userId: ReffData._id }, { $inc: { incomeWallet: income } });
+      await updateRecord(Walletmodal, { userId: ReffData1._id }, { $inc: { incomeWallet: income } });
 
       const res = await Walletmodal.findOne({ userId: ReffData1._id });
       if (res) {
         await Promise.all([
           Ewallateesc({
-            userId: ReffData._id,
+            userId: ReffData1._id,
             Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
             Amount: income,
             type: 1,
@@ -455,7 +455,7 @@ const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionH
             Active: true,
           }).save(),
           Stakingbonus({
-            userId: ReffData._id,
+            userId: ReffData1._id,
             ReffId: decoded.profile._id,
             Amount: income,
             Note: `You Got Refer and Earn Income From ${decoded.profile.username}`,
