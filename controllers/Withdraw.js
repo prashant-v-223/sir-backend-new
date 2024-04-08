@@ -358,7 +358,7 @@ exports.Withdraw = {
           let totalwithdrawalmodal = 0;
           console.log(withdrawalmodal1);
           for (let i = 0; i < StakingData.length; i++) {
-            totalstaking += StakingData[i].Amount;
+            totalstaking += StakingData[i].Amount * StakingData[i].liveprice / 90;
           }
           for (let i = 0; i < withdrawalmodal1.length; i++) {
             if (withdrawalmodal1[i].Remark === "Sir Income Wallate") {
@@ -373,7 +373,7 @@ exports.Withdraw = {
               console.log(totalwithdrawalmodal + req.body.Amount);
               let cout = totalwithdrawalmodal + req.body.Amount;
               console.log(((totalstaking * 3) / 90) * SIRprice.price - cout);
-              if (((totalstaking * 3) / 90) * SIRprice.price - cout > 0) {
+              if ((totalstaking * 3) - cout > 0) {
                 if (req.body.Amount >= 25) {
                   if (decoded.profile.iswalletActive) {
                     let data1 = await otp.find({
