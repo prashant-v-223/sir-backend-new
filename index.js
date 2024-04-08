@@ -471,7 +471,7 @@ const amountupdate = async (username) => {
               input: "$amount",
               initialValue: 0,
               in: {
-                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
               },
             },
           },
@@ -480,7 +480,7 @@ const amountupdate = async (username) => {
               input: "$amount2",
               initialValue: 0,
               in: {
-                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
 
               },
             },
@@ -490,7 +490,7 @@ const amountupdate = async (username) => {
               input: "$amountaa2",
               initialValue: 0,
               in: {
-                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: [SIRprice[0].price, 90] }] }],
+                $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
 
               },
             },
