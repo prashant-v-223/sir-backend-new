@@ -61,6 +61,11 @@ const Staking = new Schema(
       default: 200,
       required: true,
     },
+    liveprice: {
+      type: Number,
+      default: 12.85,
+      required: true,
+    },
     transactionHash: {
       type: String,
       default: "",
