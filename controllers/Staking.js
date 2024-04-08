@@ -303,8 +303,6 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
     mainIds.push(Refflevalncome._id);
     mainId = Refflevalncome.supporterId;
   }
-
-  // Calculate and save stDDaking details for each level
   for (let i = 0; i < mainIds.length; i++) {
     if (mainIds[i - 1] != null) {
       const Refflevalncome = await findOneRecord(Usermodal, {
@@ -467,6 +465,7 @@ const handleStaking = async (decoded, WalletData, SIRprice, amount, transactionH
 
     await Promise.all([
       ({ decoded, data, ReffData1, req }),
+      SCBupdate({ decoded, data, ReffData1, req }),
       CCBupdate({ data, decoded, req })
     ]);
 
