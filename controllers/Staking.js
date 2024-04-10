@@ -1080,7 +1080,12 @@ exports.stack = {
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
                           },
-                        ],
+                          {
+                            $eq: [
+                              { $substrCP: ["$Note", 0, 29] },
+                              "You Got S"
+                            ]
+                          }],
                       },
                     },
                   },
@@ -1876,7 +1881,7 @@ exports.stack = {
                       },
                       { $inc: { mainWallet: req.body.Amount } }
                     )
-                    
+
                     await otp.remove({
                       userId: decoded.profile._id,
                     });
