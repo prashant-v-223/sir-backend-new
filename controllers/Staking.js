@@ -1621,12 +1621,6 @@ exports.stack = {
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
                           },
-                          {
-                            $eq: [
-                              { $substrCP: ["$$item.Note", 0, 10] },
-                              "You Got S"
-                            ]
-                          }
                         ],
                       },
                     },
