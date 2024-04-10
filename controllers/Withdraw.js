@@ -141,7 +141,7 @@ exports.Withdraw = {
               <head>
                   <meta charset="UTF-8">
                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Transaction Verification Code</title>
+                  <title>Withdraw Verification Code</title>
               </head>
               <body>
                   <p>Dear Name (${decoded.profile.username}),</p>

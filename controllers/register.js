@@ -222,69 +222,31 @@ exports.register = {
                 from: "otp@sirglobal.org", // Sender address
                 to: res1["email"], // List of recipients
                 subject: "verification by SIR", // Subject line
-                html:
-                  `<img src="https://firebasestorage.googleapis.com/v0/b/doubtq-student.appspot.com/o/icon2.png?alt=media&token=7e933aff-37ab-46ae-a0c1-8180c2eaf931&_gl=1*10gdqfi*_ga*OTgwMjYzMTIyLjE2ODM5NTgxMTM.*_ga_CW55HF8NVT*MTY5NzE3NjcxMi4xMC4xLjE2OTcxNzY3NTguMTQuMC4w" height="100" class="img-fluid" width="100">` +
-                  "<h2>" +
-                  "SIR GLOBAL TO ACADEMY" +
-                  "</h2>" +
-                  "<h2>" +
-                  "Hello" + "(" + res1.username + ")" +
-                  "</h2>" +
-                  "<h4>" +
-                  "Thank you for choosing SIR GLOBAL Aeadery. the this OTP to complete your signup procedures and verify your account" +
-                  "</h4>" +
-                  "<br/>" +
-                  `<h2  style="
-                    letter-spacing: 4px">` +
-                  OTP +
-                  "</h2>" +
-                  "<h6>" +
-                  "If you didn't request this, you can ignore this email or let us know to support esirglades" +
-                  "</h6>" +
-                  "<br/>" +
-                  "<h6>" +
-                  "thank you" +
-                  "</h6>" +
-                  "<h6>" +
-                  "support@SIR.org" +
-                  "</h6>" +
-                  `<h6  style="display: flex">` +
-                  ` <a style="
-                    padding: 3px"
-                  href="https://twitter.com/"
-                  target="_blank"
-                  ><img
-                    alt="Twitter"
-                    height="32"
-                    src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/twitter2x.png?alt=media&token=bd4e0369-e148-4243-8b8c-eb055093604d"
-                    style="
-                      display: block;
-                      height: auto;
-                      border: 0;
-                    "
-                    title="twitter"
-                    width="32"
-                /></a>` +
-                  `  <a  style="
-                    padding: 3px"
-                  href="https://www.facebook.com/"
-                  target="_blank"
-                  ><img
-                    alt="Facebook"
-                    height="32"
-                    src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/facebook2x.png?alt=media&token=c14dcec5-8af2-459f-8443-c7c3ac8b79d2"
-                    style="
-                      display: block;
-                      height: auto;
-                      border: 0;
-                    "
-                    title="facebook"
-                    width="32"
-                /></a>` +
-                  "</h6>" +
-                  "<h6>" +
-                  "Visit Us At : www.sirglobal.org  " +
-                  "</h6>",
+                html: `<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Sign Up Verification Code</title>
+                </head>
+                <body>
+                    <p>Dear Name (${finalusename}),</p>
+                
+                    <p>Thank you for signing up with SIR Global Academy. Your one-time verification code for completing your sign-up process is:</p>
+                
+                    <h2>Verification Code: <span style="font-weight: normal;">${OTP}</span></h2>
+                
+                    <p>Please use this code to complete your registration process. Do not share this code with anyone.</p>
+                
+                    <p>Regards,</p>
+                    <p>Support Team,</p>
+                    <p>SIR Global Academy</p>
+                    <a href="https://www.sirglobal.org">www.sirglobal.org</a>
+                
+                    <p>The information shared in this mail may be confidential and/or privileged. If you are not the intended recipient, you are hereby notified that you have received this message in error; any review, dissemination, distribution, sharing, or copying of this transmittal is strictly prohibited. If you have received this transmittal and/or attachment(s) in error, please notify the sender immediately by email and immediately delete this message and all of its attachments, without retaining any copies. Thank you.</p>
+                </body>
+                </html>
+                `
               };
               transport.sendMail(mailOptions, async function (err, info) {
               });
@@ -492,7 +454,38 @@ exports.register = {
               from: "support@sirglobal.org", // Sender address
               to: data12[0].email, // List of recipients
               subject: "verification by SIR", // Subject line
-              html: data,
+
+              html: `<!DOCTYPE html>
+              <html lang="en">
+              <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <title>Welcome to SIR Global Academy</title>
+              </head>
+              <body>
+                  <p>Dear ${data12[0]['Fullname']}</p>
+              
+                  <p>Welcome to SIR Global Academy and thank you for signing up with us. All information you shared with us is safe and we will keep it strictly confidential.</p>
+              
+                  <p>Please find your login details below:</p>
+              
+                  <ul>
+                      <li>Your Username: SIR</li>
+                  </ul>
+              
+                  <p>You can login using your User Name. You can change your password anytime from your account.</p>
+              
+                  <p>We would like to share our exciting offers, special news, and tasks with you. This is an endless journey we are going to start from now.</p>
+              
+                  <p>Regards,</p>
+                  <p>Support Team,</p>
+                  <p>SIR Global Academy</p>
+                  <a href="https://www.sirglobal.org">www.sirglobal.org</a>
+              
+                  <p>The information shared in this mail may be confidential and/or privileged. If you are not the intended recipient, you are hereby notified that you have received this message in error; any review, dissemination, distribution, sharing, or copying of this transmittal is strictly prohibited. If you have received this transmittal and/or attachment(s) in error, please notify the sender immediately by email and immediately delete this message and all of its attachments, without retaining any copies. Thank you.</p>
+              </body>
+              </html>
+              `,
             };
             transport2.sendMail(mailOptions, async function (err, info) {
               if (err) {
@@ -643,7 +636,33 @@ exports.register = {
               from: "support@sirglobal.org", // Sender address
               to: decoded.email, // List of recipients
               subject: "verification by SIR", // Subject line
-              html: data,
+              html: `<!DOCTYPE html>
+              <html lang="en">
+              <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <title>Password Reset Request</title>
+              </head>
+              <body>
+                  <p>Dear Name (${decoded.username}),</p>
+              
+                  <p>We received a request to reset your SIR Global Academy password. No changes have been made to your account yet.</p>
+              
+                  <p>You can reset your password by clicking the link below:</p>
+              
+                  <p><a href="https://sirglobal.org/reset-password/${accessToken.token}"Click Here</a></p>
+              
+                  <p>If you didn't forget your password, you can safely ignore this email.</p>
+              
+                  <p>Regards,</p>
+                  <p>Support Team,</p>
+                  <p>SIR Global Academy</p>
+                  <a href="https://www.sirglobal.org">www.sirglobal.org</a>
+              
+                  <p>The information shared in this mail may be confidential and/or privileged. If you are not the intended recipient, you are hereby notified that you have received this message in error; any review, dissemination, distribution, sharing, or copying of this transmittal is strictly prohibited. If you have received this transmittal and/or attachment(s) in error, please notify the sender immediately by email and immediately delete this message and all of its attachments, without retaining any copies. Thank you.</p>
+              </body>
+              </html>
+              `,
             };
             transport2.sendMail(mailOptions, async function (err, info) {
               if (err) {
