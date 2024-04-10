@@ -1623,8 +1623,8 @@ exports.stack = {
                           },
                           {
                             $eq: [
-                              { $substrCP: ["$$item.Note", 0, 28] },
-                              "You Got Staking Bonus Income"
+                              { $substrCP: ["$$item.Note", 0, 10] },
+                              "You Got S"
                             ]
                           }
                         ],
