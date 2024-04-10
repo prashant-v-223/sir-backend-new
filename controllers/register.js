@@ -696,11 +696,11 @@ exports.register = {
             Usermodal,
             { _id: decoded.profile._id },
             {
+              walletaddress: decoded.profile.walletaddress ? req.body.walletaddress : req.body.walletaddress,
               ...req.body
-              // Nominee: req.body.Nominee,
-              // address: req.body.address,
-              // profileimg: req.body.profileimg
-            })
+              // Other fields you want to update
+            }
+          );
           return successResponse(res, {
             message: "profile update successfully",
           });
