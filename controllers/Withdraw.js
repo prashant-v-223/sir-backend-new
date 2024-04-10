@@ -131,64 +131,36 @@ exports.Withdraw = {
               userId: decoded.profile._id,
             };
             await otp(data).save();
+
             const mailOptions = {
-              from: "otp@sirglobal.org", // Sender address
+              from: "noreply@sirglobal.or", // Sender address
               to: decoded.profile["email"], // List of recipients
-              subject: `verification by SIR - (${decoded.profile["username"]})`, // Subject line
-              html:
-                "<h2>" +
-                "withdrawal OTP for SIR" +
-                "</h2>" +
-                "<h4>" +
-                "OTP To Validate Your SIR withdrawal is: " +
-                "</h4>" +
-                "<br/>" +
-                `<h2  style="
-                    letter-spacing: 4px">` +
-                OTP +
-                "</h2>" +
-                "<h6>" +
-                "If You Have Not Send This OTP Request , Kindly Contact Support" +
-                "</h6>" +
-                "<h6>" +
-                "support@SIR.org" +
-                "</h6>" +
-                `<h6  style="display: flex">` +
-                ` <a style="
-                    padding: 3px"
-                  href="https://twitter.com/V4XCOIN"
-                  target="_blank"
-                  ><img
-                    alt="Twitter"
-                    height="32"
-                    src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/twitter2x.png?alt=media&token=bd4e0369-e148-4243-8b8c-eb055093604d"
-                    style="
-                      display: block;
-                      height: auto;
-                      border: 0;
-                    "
-                    title="twitter"
-                    width="32"
-                /></a>` +
-                `  <a  style="
-                    padding: 3px"
-                  href="https://www.facebook.com/profile.php?id=100091423535722"
-                  target="_blank"
-                  ><img
-                    alt="Facebook"
-                    height="32"
-                    src="https://firebasestorage.googleapis.com/v0/b/svdxv-xcv.appspot.com/o/facebook2x.png?alt=media&token=c14dcec5-8af2-459f-8443-c7c3ac8b79d2"
-                    style="
-                      display: block;
-                      height: auto;
-                      border: 0;
-                    "
-                    title="facebook"
-                    width="32"
-                /></a>` +
-                "<h6>" +
-                "Visit Us At : www.sirglobal.org  " +
-                "</h6>",
+              subject: "verification by SIR", // Subject line
+              html: `<!DOCTYPE html>
+              <html lang="en">
+              <head>
+                  <meta charset="UTF-8">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <title>Transaction Verification Code</title>
+              </head>
+              <body>
+                  <p>Dear Name (${decoded.profile.username}),</p>
+              
+                  <p>Your one-time verification code for completing your transaction is:</p>
+              
+                  <h2>Verification Code: <span style="font-weight: normal;"> ${OTP} </span></h2>
+              
+                  <p>Please use this code to complete your transaction process. Do not share this code with anyone.</p>
+              
+                  <p>Regards,</p>
+                  <p>Support Team,</p>
+                  <p>SIR Global Academy</p>
+                  <a href="https://www.sirglobal.org">www.sirglobal.org</a>
+              
+                  <p>The information shared in this mail is may be confidential and/or privileged. If you are not the intended recipient, you are hereby notified that you have received this message in error; any review, dissemination, distribution, sharing or copying of this transmittal is strictly prohibited. If you have received this transmittal and/or attachment(s) in error, please notify the sender immediately by email and immediately delete this message and all of its attachments, without retaining any copies. Thank you.</p>
+              </body>
+              </html>
+              `
             };
             transport.sendMail(mailOptions, async function (err, info) {
               if (err) {
