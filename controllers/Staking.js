@@ -363,6 +363,8 @@ const SCBupdate = async ({ decoded, data, ReffData1, req }) => {
   }
 }
 const CCBupdate = async ({ data, decoded, req, liveprice1 }) => {
+  const SIRprice = await V4XpriceSchemaDetails.findOne().sort({ createdAt: -1 });
+
   const supporterIds = [];
   let supporterId = data.supporterId;
   let dat12 = [10, 7, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 2, 3, 5]
@@ -395,7 +397,7 @@ const CCBupdate = async ({ data, decoded, req, liveprice1 }) => {
         TotalRewordRecived: (req.body.Amount * (dat12[i - 1])) / 100 * 2,
         transactionHash: "",
         Active: Refflevalncome.leval >= i,
-        liveprice: liveprice1.price
+        liveprice: SIRprice.price
       }).save();
     }
   }
