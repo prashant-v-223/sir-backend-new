@@ -650,7 +650,8 @@ exports.register = {
               
                   <p>You can reset your password by clicking the link below:</p>
               
-                  <p><a href="https://sirglobal.org/reset-password/${accessToken.token}"Click Here</a></p>
+                  
+                  <p><a href="https://sirglobal.org/reset-password/${accessToken.token}">Click Here</a></p>
               
                   <p>If you didn't forget your password, you can safely ignore this email.</p>
               
