@@ -1866,16 +1866,7 @@ exports.stack = {
                       {
                         mainWallet: amount,
                       }
-                    ).then(async (res) => {
-                      await Mainwallatesc({
-                        userId: decoded.profile._id,
-                        Note: `You Transfer coin from ${abc[0].username}`,
-                        Amount: req.body.Amount,
-                        balace: res?.mainWallet,
-                        type: 0,
-                        Active: true,
-                      }).save();
-                    });
+                    )
                     await updateRecord(
                       Walletmodal,
                       {
@@ -1883,14 +1874,7 @@ exports.stack = {
                       },
                       { $inc: { mainWallet: req.body.Amount } }
                     )
-                    await Mainwallatesc({
-                      userId: abc[0]._id,
-                      Note: `You have received coin from ${decoded.profile.username}`,
-                      Amount: req.body.Amount,
-                      balace: abc1[0]?.mainWallet,
-                      type: 1,
-                      Active: true,
-                    }).save();
+                    
                     await otp.remove({
                       userId: decoded.profile._id,
                     });
