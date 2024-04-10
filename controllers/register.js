@@ -470,7 +470,7 @@ exports.register = {
                   <p>Please find your login details below:</p>
               
                   <ul>
-                      <li>Your Username: {data12[0]['username']}</li>
+                      <li>Your Username: ${data12[0]['username']}</li>
                   </ul>
               
                   <p>You can login using your User Name. You can change your password anytime from your account.</p>
