@@ -3,6 +3,7 @@ const withdrawalmodal = require("../models/withdrawalhistory");
 const Stakingmodal = require("../models/Staking");
 const V4XpriceSchemaDetails = require("../models/TokenDetails");
 const Usermodal = require("../models/user");
+const Achivementmodal = require("../models/Achivement");
 module.exports = function (io) {
 
   function getLast6Months() {
@@ -251,6 +252,8 @@ module.exports = function (io) {
       getUsersWithNewRanksToday(),
       getUsersStakedToday()
     ]);
+    const usdtPrice = usdtPriceDocument.price;
+    const stakingAmountsInUSDT = weeklyStakingModal.map(amount => (amount * usdtPrice) / 90);
     // Emit events to the client
     socket.emit('weeklyWithdrawals', {
       message: "staking data get successfully",
@@ -266,7 +269,6 @@ module.exports = function (io) {
       UsersStakedToday: usersStakedToday, Last10WeeksDates: getLast10WeeksDates()
     });
     // Emit other data...
-
     socket.on('disconnect', () => {
       console.log('Client disconnected');
     });
