@@ -952,3 +952,8 @@ schedule.scheduleJob(every24hours, async () => {
 app.get("/", async (req, res) => {
   console.log("Transaction is valid within 5 minutes.");
 });
+const LOCALPORT = process.env.PORT || 8080;
+
+app.listen(LOCALPORT, () => {
+  console.log(`http://localhost:${LOCALPORT} is listening...`);
+});
