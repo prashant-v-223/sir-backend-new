@@ -1112,24 +1112,10 @@ exports.stack = {
                     $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
-              }, todaymyinsir: {
+              },
+              todaymyinsir: {
                 $reduce: {
-                  input: {
-                    $filter: {
-                      input: "$amount",
-                      as: "item",
-                      cond: {
-                        $and: [
-                          {
-                            $gte: ["$$item.createdAt", new Date(todayIST)],
-                          },
-                          {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          },
-                        ],
-                      },
-                    },
-                  },
+                  input: "$amount2",
                   initialValue: 0,
                   in: {
                     $add: ["$$value", { $multiply: ["$$this.Amount"] }],
