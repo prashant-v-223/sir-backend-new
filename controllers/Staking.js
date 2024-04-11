@@ -1079,8 +1079,7 @@ exports.stack = {
                           },
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          }
-                        ],
+                          }],
                       },
                     },
                   },
@@ -1102,7 +1101,7 @@ exports.stack = {
                           },
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          }
+                          },
                         ],
                       },
                     },
@@ -1627,7 +1626,7 @@ exports.stack = {
                             $eq: [
                               {
                                 $substr: [
-                                  "$$this.Note",
+                                  "$$item.Note",
                                   0,
                                   15,
                                 ],
