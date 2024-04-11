@@ -1628,6 +1628,13 @@ exports.stack = {
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
                           },
+                          {
+                            $regexMatch: {
+                              input: "$$item.stakingType",
+                              regex: "You Got Staki",
+                              options: "i" // Case-insensitive match
+                            }
+                          }
                         ],
                       },
                     },
