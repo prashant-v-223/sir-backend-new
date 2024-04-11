@@ -1115,7 +1115,7 @@ exports.stack = {
               },
               todaymyinsir: {
                 $reduce: {
-                  input: "$amount2",
+                  input: "$amount",
                   initialValue: 0,
                   in: {
                     $add: ["$$value", { $multiply: ["$$this.Amount"] }],
