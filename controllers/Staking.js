@@ -1044,7 +1044,7 @@ exports.stack = {
                   input: "$amount",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
               },
@@ -1053,7 +1053,7 @@ exports.stack = {
                   input: "$amount21",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
               },
@@ -1062,7 +1062,7 @@ exports.stack = {
                   input: "$amount2",
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
               },
@@ -1085,7 +1085,7 @@ exports.stack = {
                   },
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
               }, todaymy: {
@@ -1108,7 +1108,7 @@ exports.stack = {
                   },
                   initialValue: 0,
                   in: {
-                    $add: ["$$value", "$$this.Amount"],
+                    $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
               },
@@ -1129,7 +1129,7 @@ exports.stack = {
                     $add: [
                       "$$value",
                       {
-                        $divide: ["$$this.Amount", "$$this.V4xTokenPrice"],
+                        $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                       },
                     ],
                   },
