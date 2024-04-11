@@ -1088,7 +1088,8 @@ exports.stack = {
                     $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
-              }, todaymy: {
+              },
+              todaymy: {
                 $reduce: {
                   input: {
                     $filter: {
@@ -1111,6 +1112,29 @@ exports.stack = {
                     $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
                   },
                 },
+              }, todaymyinsir: {
+                $reduce: {
+                  input: {
+                    $filter: {
+                      input: "$amount",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                          },
+                          {
+                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", { $multiply: ["$$this.Amount"] }],
+                  },
+                },
               },
               // todaytotal1: {
               //   $reduce: {
@@ -1126,12 +1150,7 @@ exports.stack = {
                   input: "$amount",
                   initialValue: 0,
                   in: {
-                    $add: [
-                      "$$value",
-                      {
-                        $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
-                      },
-                    ],
+                    $add: ["$$value", "$$this.Amount"],
                   },
                 },
               },
