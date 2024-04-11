@@ -1632,7 +1632,7 @@ exports.stack = {
                             $eq: [
                               {
                                 $substr: [
-                                  "$$this.Note",
+                                  "$$item.Note",
                                   0,
                                   15,
                                 ],
