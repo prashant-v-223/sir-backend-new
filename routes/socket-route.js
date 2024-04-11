@@ -196,13 +196,13 @@ module.exports = function (io) {
       const newRankAchievements = await Achivementmodal.find({
         achievedAt: { $gte: todayStart, $lte: todayEnd }
       }).populate('userId').select('userId -_id');
-      console.log(newRankAchievements);
-      return newRankAchievements.map(achievement => ({
+      console.log("newRankAchievements", newRankAchievements);
+      return newRankAchievements.length > 0 ? newRankAchievements.map(achievement => ({
         userId: achievement.userId._id,
         userName: achievement.userId.username,
         Fullname: achievement.userId.Fullname,
         newRank: achievement.userId.Rank
-      }));
+      })) : [];
     } catch (error) {
       console.error('Error fetching users with new ranks:', error);
       return [];
