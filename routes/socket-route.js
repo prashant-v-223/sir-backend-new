@@ -1,4 +1,3 @@
-
 const withdrawalmodal = require("../models/withdrawalhistory");
 const Stakingmodal = require("../models/Staking");
 const V4XpriceSchemaDetails = require("../models/TokenDetails");
