@@ -93,9 +93,7 @@ const cronHandler = async (user) => {
       //   res.send(`added`);
     } else {
       await getRef(refExists.referred[refExists.nextRefIndex], refId, id);
-
       refExists.nextRefIndex = refExists.nextRefIndex + 1 > 4 ? 0 : refExists.nextRefIndex + 1;
-
       let isExistsInNextRefIdsToBeSkipped = false;
       do {
         const index = refExists.nextRefIdsToBeSkipped.indexOf(refExists.referred[refExists.nextRefIndex]);
@@ -107,15 +105,6 @@ const cronHandler = async (user) => {
       } while (isExistsInNextRefIdsToBeSkipped);
       await refExists.save();
     }
-    // } else {
-    //   await getRef(refId, refId, id);
-    //   const refIdExistsInReferred = await Usermodal.findOne({ referred: { $elemMatch: { $eq: refId } } });
-    //   if (refIdExistsInReferred) {
-    //     refIdExistsInReferred.nextRefIdsToBeSkipped.push(refId);
-    //     await refIdExistsInReferred.save();
-    //   }
-    // }
-
   }
 }
 const nowIST = new Date();
@@ -993,6 +982,25 @@ exports.stack = {
               from: "stakings",
               localField: "refers_to._id",
               foreignField: "userId",
+              as: "amount2122",
+              pipeline: [
+                {
+                  $match: {
+                    leval: 0,
+                    createdAt: {
+                      $gte: new Date(todayIST),
+                      $lt: new Date(nextDayIST)
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $lookup: {
+              from: "stakings",
+              localField: "refers_to._id",
+              foreignField: "userId",
               pipeline: [
                 {
                   $match: {
@@ -1017,7 +1025,8 @@ exports.stack = {
               ],
               as: "amount",
             },
-          }, {
+          },
+          {
             $lookup: {
               from: "stakings",
               localField: "_id",
@@ -1036,7 +1045,6 @@ exports.stack = {
               ]
             }
           },
-
           {
             $project: {
               total: {
@@ -1068,21 +1076,7 @@ exports.stack = {
               },
               todaymyteam: {
                 $reduce: {
-                  input: {
-                    $filter: {
-                      input: "$amount2",
-                      as: "item",
-                      cond: {
-                        $and: [
-                          {
-                            $gte: ["$$item.createdAt", new Date(todayIST)],
-                          },
-                          {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          }],
-                      },
-                    },
-                  },
+                  input: "$amount2122",
                   initialValue: 0,
                   in: {
                     $add: ["$$value", { $multiply: ["$$this.Amount", { $divide: ["$$this.liveprice", 90] }] }],
