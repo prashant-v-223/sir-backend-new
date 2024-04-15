@@ -205,7 +205,7 @@ exports.Withdraw = {
             isActive: !false,
             isValid: !false,
           });
-          console.log(data1._id);
+          console.log(data1);
           const otpdata = await findAllRecord(otp, {
             userId: data1._id,
           });

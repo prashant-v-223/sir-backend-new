@@ -42,8 +42,7 @@ const web3 = new Web3(infraUrl);
 
 async function getRef(refSelectedId, refId, id) {
   const refSelected = await Usermodal.findOne({ refId: refSelectedId });
-  const refSelected12 = await Usermodal.find({ supporterId: refSelected.username });
-  if (refSelected12?.length < 5) {
+  if (refSelected.referred.length < 5) {
     const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
       $set: {
         supporterId: refSelected.refId
@@ -52,21 +51,38 @@ async function getRef(refSelectedId, refId, id) {
     refSelected.referred.push(newRef.refId);
     refSelected.save();
   } else {
-    await getRef(refSelected.referred[refSelected.nextRefIndex], refId, id);
+    // If not, send left to right and return
+    let a = []
+    for (const referredId of refSelected.referred) {
+      const refSelected = await Usermodal.findOne({ refId: referredId });
+      const ref1 = await Usermodal.aggregate([
+        {
+          $match: {
+            refId: referredId,
+          },
+        },
+        {
+          $graphLookup: {
+            from: "users",
+            startWith: "$refId",
+            connectFromField: "refId",
+            connectToField: "supporterId",
+            as: "refers_to",
+          },
+        },
+      ]);
 
-    refSelected.nextRefIndex = refSelected.nextRefIndex + 1 > 4 ? 0 : refSelected.nextRefIndex + 1;
-    let isExistsInNextRefIdsToBeSkipped = false;
-    do {
-      const index = refSelected.nextRefIdsToBeSkipped.indexOf(refSelected.referred[refSelected.nextRefIndex]);
-      isExistsInNextRefIdsToBeSkipped = index !== -1;
-      if (isExistsInNextRefIdsToBeSkipped) {
-        refSelected.nextRefIdsToBeSkipped.splice(index, 1);
-        refSelected.nextRefIndex = refSelected.nextRefIndex + 1 > 4 ? 0 : refSelected.nextRefIndex + 1;
-      }
-    } while (isExistsInNextRefIdsToBeSkipped);
-    await refSelected.save();
+      a.push({ referred: referredId, referredlegth: refSelected.referred?.length || 0, team: ref1[0].refers_to?.length || 0, refId: refId });
+    }
+    a.sort((a, b) => a.team - b.team);
+    console.log("aaaaa", a);
+    const index = refSelected.referred.indexOf(a[0].referred);
+    console.log("aaaaa", index);
+    refSelected.nextRefIndex = index;
+    await getRef(refSelected.referred[index], refId, id);
   }
 }
+
 const cronHandler = async (user) => {
   const usersPendingRef = await Usermodal.find({
     username: user,
@@ -75,38 +91,64 @@ const cronHandler = async (user) => {
   console.log("usersPendingRef", usersPendingRef);
   for (let i = 0; i < usersPendingRef.length; i++) {
     const user = usersPendingRef[i];
-    const refExists = await Usermodal.findOne({ refId: user.mainId, mystack: { $gt: 0 } });
-    if (!refExists) return;
     const id = user.refId;
     const refId = user.mainId;
-    console.log(refExists);
-    // if (refExists.mainId === null) {
-    if (refExists.referred.length < 5) {
-      const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
-        $set: {
-          supporterId: refExists.refId || refExists.supporterId,
+    const refExists = await Usermodal.findOne({ refId: user.mainId, mystack: { $gt: 0 } });
+    console.log("refExists", refExists);
+    if (!refExists) return res.send('Invalid referral link');
+    if (refExists.mainId === null) {
+      if (refExists.referred.length < 5) {
+        const newRef = await Usermodal.findOneAndUpdate({ refId: id }, {
+          $set: {
+            supporterId: refExists.supporterId || refExists.refId
+          }
+        });
+        refExists.referred.push(newRef.refId);
+        await refExists.save();
+        //   res.send(added);
+      } else {
+        // If not, send left to right and return
+        let a = []
+        for (const referredId of refSelected.referred) {
+          const refSelected = await Usermodal.findOne({ refId: referredId });
+          const ref1 = await Usermodal.aggregate([
+            {
+              $match: {
+                refId: referredId,
+              },
+            },
+            {
+              $graphLookup: {
+                from: "refs",
+                startWith: "$refId",
+                connectFromField: "refId",
+                connectToField: "supporterId",
+                as: "refers_to",
+              },
+            },
+          ]);
+
+          a.push({ referred: referredId, referredlegth: refSelected.referred?.length || 0, team: ref1[0].refers_to?.length || 0, refId: refId });
         }
-      });
-      refExists.referred.push(newRef.refId);
-      await refExists.save();
-      // console.log("refIdExistsInReferred2", refIdExistsInReferred);
-      //   res.send(`added`);
+        a.sort((a, b) => a.team - b.team);
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", a);
+        const index = refSelected.referred.indexOf(a[0].referred);
+        console.log("aaaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaa", index);
+        refSelected.nextRefIndex = index;
+        await getRef(refSelected.referred[index], refId, id);
+      }
     } else {
-      await getRef(refExists.referred[refExists.nextRefIndex], refId, id);
-      refExists.nextRefIndex = refExists.nextRefIndex + 1 > 4 ? 0 : refExists.nextRefIndex + 1;
-      let isExistsInNextRefIdsToBeSkipped = false;
-      do {
-        const index = refExists.nextRefIdsToBeSkipped.indexOf(refExists.referred[refExists.nextRefIndex]);
-        isExistsInNextRefIdsToBeSkipped = index !== -1;
-        if (isExistsInNextRefIdsToBeSkipped) {
-          refExists.nextRefIdsToBeSkipped.splice(index, 1);
-          refExists.nextRefIndex = refExists.nextRefIndex + 1 > 4 ? 0 : refExists.nextRefIndex + 1;
-        }
-      } while (isExistsInNextRefIdsToBeSkipped);
-      await refExists.save();
+      await getRef(refId, refId, id);
+      const refIdExistsInReferred = await Usermodal.findOne({ referred: { $elemMatch: { $eq: refId } } });
+      if (refIdExistsInReferred) {
+        refIdExistsInReferred.nextRefIdsToBeSkipped.push(refId);
+        await refIdExistsInReferred.save();
+      }
+      // res.send(added);
     }
   }
 }
+
 const nowIST = new Date();
 nowIST.setUTCHours(nowIST.getUTCHours() + 5, nowIST.getUTCMinutes() + 30, 0, 0); // Convert to IST
 
