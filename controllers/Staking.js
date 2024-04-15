@@ -1636,43 +1636,43 @@ exports.stack = {
                   },
                 },
               },
-              TodaStakingBonusIncome: {
-                $reduce: {
-                  input: {
-                    $reduce: {
-                      input: "$amount13123456",
-                      as: "item",
-                    },
-                  },
-                  in: {
-                    $add: ["$$value", "$$this.Amount"],
-                  },
-                },
-              },
               // TodaStakingBonusIncome: {
               //   $reduce: {
               //     input: {
-              //       $filter: {
-              //         input: "$amount131",
+              //       $reduce: {
+              //         input: "$amount13123456",
               //         as: "item",
-              //         cond: {
-              //           $and: [
-              //             {
-              //               $gte: ["$$item.createdAt", new Date(todayIST)],
-              //             },
-              //             {
-              //               $lt: ["$$item.createdAt", new Date(nextDayIST)],
-              //             }
-              //           ],
-              //         },
               //       },
               //     },
-              //     initialValue: 0,
               //     in: {
               //       $add: ["$$value", "$$this.Amount"],
               //     },
               //   },
               // },
+              TodaStakingBonusIncome: {
+                $reduce: {
+                  input: {
+                    $filter: {
+                      input: "$amount131",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                          },
+                          {
+                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                          }
+                        ],
+                      },
+                    },
+                  },
+                  initialValue: 0,
+                  in: {
+                    $add: ["$$value", "$$this.Amount"],
+                  },
+                },
+              },
               communities: {
                 $reduce: {
                   input: "$amount32",
