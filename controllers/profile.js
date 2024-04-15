@@ -106,7 +106,6 @@ exports.profile = {
             from: "users",
             startWith: "$username",
             connectFromField: "username",
-            maxDepth: 0,
             connectToField: "supporterId",
             as: "refers_to",
           },
