@@ -1662,18 +1662,6 @@ exports.stack = {
                           },
                           {
                             $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          },
-                          {
-                            $eq: [
-                              {
-                                $substr: [
-                                  "$$item.Note",
-                                  0,
-                                  15,
-                                ],
-                              },
-                              "You Got Staking",
-                            ],
                           }
                         ],
                       },
