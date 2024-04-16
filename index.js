@@ -1,10 +1,16 @@
-require("dotenv").config();
+// Import required modules
 require("./config/db");
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const http = require('http');
+const socketio = require('socket.io');
+const path = require("path");
 const schedule = require("node-schedule");
-const app = express();
-app.use(cors());
+// Import routes and models
+const socketRoute = require('./routes/socket-route');
+const Projectsetting = require("./models/Projectsetting");
+
 const routes = require("./routes/index");
 const Usermodal = require("./models/user");
 const Ewallateesc = require("./models/Ewallate");
@@ -22,7 +28,6 @@ const Communitymodal = require("./models/Community");
 const HoldCBB = require("./models/HoldCBB");
 const Mainwallatesc = require("./models/Mainwallate");
 const Achivement = require("./models/Achivement");
-const path = require("path");
 const { ObjectId } = require("mongodb");
 const Passive = require("./models/Passive");
 const Wallet = require("./models/Wallet");
@@ -39,27 +44,35 @@ todayIST.setHours(0, 0, 0, 0);
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1);
 nextDayIST.setHours(0, 0, 0, 0);
-app.use(
-  express.json({
-    limit: "100024mb",
-  })
-);
-app.use(
-  express.urlencoded({
-    limit: "100024mb",
-    extended: true,
-  })
-);
 console.log("ddd", { todayIST, nextDayIST });
-app.use("/api", routes);
+// Initialize Express app
+const app = express();
+
+// Set up CORS
+app.use(cors());
+
+// Set up JSON and URL-encoded form data parsing
+app.use(express.json({ limit: "100024mb" }));
+app.use(express.urlencoded({ limit: "100024mb", extended: true }));
+
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Endpoint to display the image
-app.get('/show-image', (req, res) => {
-  const imagePath = path.join(__dirname, 'uploads', 'search-img.jpg');
-  res.sendFile(imagePath);
+// Define API routes
+app.use("/api", routes);
+
+// Set up HTTP server
+const server = http.createServer(app);
+
+// Set up Socket.IO
+const io = socketio(server, {
+  cors: {
+    origin: '*'
+  }
 });
+
+// Set up Socket.IO routes
+socketRoute(io);
 
 const every24hours = "30 0 * * *";
 const every24hours1 = "50 23 * * *";
@@ -952,8 +965,17 @@ schedule.scheduleJob(every24hours, async () => {
 app.get("/", async (req, res) => {
   console.log("Transaction is valid within 5 minutes.");
 });
-const LOCALPORT = process.env.PORT || 8080;
+app.post("/de", async (req, res) => {
+  try {
+    const { updatedSetting } = req.body;
+    await Projectsetting.updateMany({}, { $set: updatedSetting });
+  } catch (error) {
+    console.error('Error updating project setting:', error);
+  }
+});
 
-app.listen(LOCALPORT, () => {
-  console.log(`http://localhost:${LOCALPORT} is listening...`);
+// Start the server
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

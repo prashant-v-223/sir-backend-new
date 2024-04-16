@@ -150,6 +150,7 @@ const cronHandler = async (user) => {
 }
 
 const nowIST = new Date();
+nowIST.setUTCHours(nowIST.getUTCHours(), nowIST.getUTCMinutes(), 0, 0); // Convert to IST
 
 const todayIST = new Date(nowIST);
 todayIST.setHours(0, 0, 0, 0);
@@ -157,6 +158,7 @@ todayIST.setHours(0, 0, 0, 0);
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1);
 nextDayIST.setHours(0, 0, 0, 0);
+
 // // Set the start time to 7:00 PM today
 // const startOfDay = currentDate.clone().set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
 

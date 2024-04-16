@@ -6,31 +6,17 @@
 
 var app = require('../index');
 var debug = require('debug')('backend:server');
-var http = require('http');
-var socketio = require('socket.io');
 
 /**
  * Get port from environment and store in Express.
  */
 
-// var port = normalizePort('80');
+var port = normalizePort('80');
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
-
-/**
- * Create Socket server.
- */
-
-var io = socketio(server, {
-  cors: {
-    origin: '*'
-  }
-});
-require('../routes/socket-route')(io);
 
 /**
  * Listen on provided port, on all network interfaces.
