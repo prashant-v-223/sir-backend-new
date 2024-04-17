@@ -287,9 +287,6 @@ module.exports = function (io) {
         usdtPrice: usdtPrice / 90,
         UsersStakedToday: usersStakedToday,
       });
-      socket.on("FromAPI", (userId) => {
-        console.log("userId", userId);
-      });
       socket.on('getSettings', async (data) => {
         const { updatedSetting } = data;
         console.log("updatedSettingupdatedSettingupdatedSetting", updatedSetting);
@@ -299,8 +296,16 @@ module.exports = function (io) {
         //   console.error('Error updating project setting:', error);
         // }
       });
-
-      socket.emit('getSettings', { data: settings });
+      // Emit other data...
+      socket.on('disconnect', () => {
+        console.log('Client disconnected');
+      });
+      socket.on("FromAPI", (userId) => {
+        socket.emit('FromAPI', {
+          message: userId
+        });
+        // You can do something with the userId here
+      });
 
     } catch (error) {
       console.error('Error handling client connection:', error);
