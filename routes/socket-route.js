@@ -296,17 +296,13 @@ module.exports = function (io) {
         //   console.error('Error updating project setting:', error);
         // }
       });
+
+      socket.emit('getSettings', { data: settings });
+
       // Emit other data...
       socket.on('disconnect', () => {
         console.log('Client disconnected');
       });
-      socket.on("FromAPI", (userId) => {
-        socket.emit('FromAPI', {
-          message: userId
-        });
-        // You can do something with the userId here
-      });
-
     } catch (error) {
       console.error('Error handling client connection:', error);
     }
