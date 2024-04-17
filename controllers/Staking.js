@@ -1682,7 +1682,7 @@ exports.stack = {
                                   13,
                                 ],
                               },
-                              "You Got Level",
+                              "You Got Staki",
                             ],
                           },
                           {
