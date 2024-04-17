@@ -1667,7 +1667,7 @@ exports.stack = {
               // },
               StakingBonusIncome12: {
                 $reduce: {
-                  input: "$amount131",
+                  input: "$amount13123456",
                   initialValue: 0,
                   in: {
                     $add: [
