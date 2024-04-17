@@ -1665,47 +1665,60 @@ exports.stack = {
               //     },
               //   },
               // },
-              TodaStakingBonusIncome: {
-                $cond: {
-                  if: {
-                    $eq: [
+
+              StakingBonusIncome12: {
+                $reduce: {
+                  input: "$amount131",
+                  initialValue: 0,
+                  in: {
+                    $add: [
+                      "$$value",
                       {
-                        $substr: [
-                          "$$this.Note",
-                          0,
-                          28
-                        ]
-                      },
-                      "You have received your level"
-                    ]
-                  },
-                  then: {
-                    $reduce: {
-                      input: {
-                        $filter: {
-                          input: "$amount13123456",
-                          as: "item",
-                          cond: {
-                            $and: [
+                        $cond: {
+                          if: {
+                            $eq: [
                               {
-                                $gte: ["$$item.createdAt", new Date(todayIST)]
+                                $substr: [
+                                  "$$this.Note",
+                                  0,
+                                  15,
+                                ],
                               },
-                              {
-                                $lt: ["$$item.createdAt", new Date(nextDayIST)]
+                              "You Got Staking",
+                            ],
+                          },
+                          then: {
+                            $reduce: {
+                              input: {
+                                $filter: {
+                                  input: "$amount13123456",
+                                  as: "item",
+                                  cond: {
+                                    $and: [
+                                      {
+                                        $gte: ["$$item.createdAt", new Date(todayIST)]
+                                      },
+                                      {
+                                        $lt: ["$$item.createdAt", new Date(nextDayIST)]
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              initialValue: 0,
+                              in: {
+                                $add: ["$$value", "$$this.Amount"]
                               }
-                            ]
-                          }
-                        }
+                            }
+                          },
+                          else: 0,
+                        },
                       },
-                      initialValue: 0,
-                      in: {
-                        $add: ["$$value", "$$this.Amount"]
-                      }
-                    }
+                    ],
                   },
-                  else: 0 // Or whatever default value you want to assign if the condition is not met
-                }
+                },
               },
+              TodaStakingBonusIncome: 0,
               communities: {
                 $reduce: {
                   input: "$amount32",
