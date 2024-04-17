@@ -1666,28 +1666,45 @@ exports.stack = {
               //   },
               // },
               TodaStakingBonusIncome: {
-                $reduce: {
-                  input: {
-                    $filter: {
-                      input: "$amount131",
-                      as: "item",
-                      cond: {
-                        $and: [
-                          {
-                            $gte: ["$$item.createdAt", new Date(todayIST)],
-                          },
-                          {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          }
-                        ],
+                $cond: {
+                  if: {
+                    $eq: [
+                      {
+                        $substr: [
+                          "$$this.Note",
+                          0,
+                          28
+                        ]
                       },
-                    },
+                      "You have received your level"
+                    ]
                   },
-                  initialValue: 0,
-                  in: {
-                    $add: ["$$value", "$$this.Amount"],
+                  then: {
+                    $reduce: {
+                      input: {
+                        $filter: {
+                          input: "$amount13123456",
+                          as: "item",
+                          cond: {
+                            $and: [
+                              {
+                                $gte: ["$$item.createdAt", new Date(todayIST)]
+                              },
+                              {
+                                $lt: ["$$item.createdAt", new Date(nextDayIST)]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      initialValue: 0,
+                      in: {
+                        $add: ["$$value", "$$this.Amount"]
+                      }
+                    }
                   },
-                },
+                  else: 0 // Or whatever default value you want to assign if the condition is not met
+                }
               },
               communities: {
                 $reduce: {
