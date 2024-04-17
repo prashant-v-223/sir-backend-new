@@ -1665,60 +1665,30 @@ exports.stack = {
               //     },
               //   },
               // },
-
-              StakingBonusIncome12: {
+              TodaStakingBonusIncome: {
                 $reduce: {
-                  input: "$amount131",
+                  input: {
+                    $filter: {
+                      input: "$amount13123456",
+                      as: "item",
+                      cond: {
+                        $and: [
+                          {
+                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                          },
+                          {
+                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                          }
+                        ],
+                      },
+                    },
+                  },
                   initialValue: 0,
                   in: {
-                    $add: [
-                      "$$value",
-                      {
-                        $cond: {
-                          if: {
-                            $eq: [
-                              {
-                                $substr: [
-                                  "$$this.Note",
-                                  0,
-                                  15,
-                                ],
-                              },
-                              "You Got Staking",
-                            ],
-                          },
-                          then: {
-                            $reduce: {
-                              input: {
-                                $filter: {
-                                  input: "$amount13123456",
-                                  as: "item",
-                                  cond: {
-                                    $and: [
-                                      {
-                                        $gte: ["$$item.createdAt", new Date(todayIST)]
-                                      },
-                                      {
-                                        $lt: ["$$item.createdAt", new Date(nextDayIST)]
-                                      }
-                                    ]
-                                  }
-                                }
-                              },
-                              initialValue: 0,
-                              in: {
-                                $add: ["$$value", "$$this.Amount"]
-                              }
-                            }
-                          },
-                          else: 0,
-                        },
-                      },
-                    ],
+                    $add: ["$$value", "$$this.Amount"],
                   },
                 },
               },
-              TodaStakingBonusIncome: 0,
               communities: {
                 $reduce: {
                   input: "$amount32",
