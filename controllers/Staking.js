@@ -1665,58 +1665,6 @@ exports.stack = {
               //     },
               //   },
               // },
-              StakingBonusIncome12: {
-                $reduce: {
-                  input: "$amount13123456",
-                  initialValue: 0,
-                  in: {
-                    $add: [
-                      "$$value",
-                      {
-                        $cond: {
-                          if: {
-                            $eq: [
-                              {
-                                $substr: [
-                                  "$$this.Note",
-                                  0,
-                                  15,
-                                ],
-                              },
-                              "You Got Staking",
-                            ],
-                          },
-                          then: {
-                            $reduce: {
-                              input: {
-                                $filter: {
-                                  input: "$amount13123456",
-                                  as: "item",
-                                  cond: {
-                                    $and: [
-                                      {
-                                        $gte: ["$$item.createdAt", new Date(todayIST)]
-                                      },
-                                      {
-                                        $lt: ["$$item.createdAt", new Date(nextDayIST)]
-                                      }
-                                    ]
-                                  }
-                                }
-                              },
-                              initialValue: 0,
-                              in: {
-                                $add: ["$$value", "$$this.Amount"]
-                              }
-                            }
-                          },
-                          else: 0,
-                        },
-                      },
-                    ],
-                  },
-                },
-              },
               TodaStakingBonusIncome: {
                 $reduce: {
                   input: {
@@ -1725,6 +1673,18 @@ exports.stack = {
                       as: "item",
                       cond: {
                         $and: [
+                          {
+                            $eq: [
+                              {
+                                $substr: [
+                                  "$$this.Note",
+                                  0,
+                                  13,
+                                ],
+                              },
+                              "You Got Level",
+                            ],
+                          },
                           {
                             $gte: ["$$item.createdAt", new Date(todayIST)],
                           },
