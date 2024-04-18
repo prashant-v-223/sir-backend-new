@@ -1696,11 +1696,11 @@ exports.stack = {
                             ],
                           },
                           {
-                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                            $gte: ["$$item.createdAt", new Date(startOfDayIST)],
                           },
                           {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
-                          }
+                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
+                          },
                         ],
                       },
                     },
