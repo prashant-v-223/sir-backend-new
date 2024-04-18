@@ -159,6 +159,16 @@ const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1);
 nextDayIST.setHours(0, 0, 0, 0);
 
+const nowIST1 = new Date();
+nowIST1.setUTCHours(nowIST1.getUTCHours() + 5, nowIST1.getUTCMinutes() + 30, 0, 0); // Convert to IST
+
+// Set time to midnight for the current day in IST
+const startOfDayIST = new Date(nowIST1);
+startOfDayIST.setHours(0, 0, 0, 0);
+
+// Set time to 23:59:59 for the current day in IST
+const endOfDayIST = new Date(nowIST);
+endOfDayIST.setHours(23, 59, 59, 999);
 // // Set the start time to 7:00 PM today
 // const startOfDay = currentDate.clone().set({ hour: 19, minute: 0, second: 0, millisecond: 0 }).toDate();
 
@@ -1126,10 +1136,10 @@ exports.stack = {
                       cond: {
                         $and: [
                           {
-                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                            $gte: ["$$item.createdAt", new Date(startOfDayIST)],
                           },
                           {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
                           },
                         ],
                       },
