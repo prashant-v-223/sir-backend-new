@@ -160,7 +160,7 @@ nextDayIST.setDate(nextDayIST.getDate() + 1);
 nextDayIST.setHours(0, 0, 0, 0);
 
 const nowIST1 = new Date();
-nowIST1.setUTCHours(nowIST1.getUTCHours() + 5, nowIST1.getUTCMinutes(), 0, 0); // Convert to IST
+nowIST1.setUTCHours(nowIST1.getUTCHours() - 5, nowIST1.getUTCMinutes(), 0, 0); // Convert to IST
 // Set time to midnight for the current day in IST
 const startOfDayIST = new Date(nowIST1);
 startOfDayIST.setHours(0, 0, 0, 0);
@@ -171,7 +171,6 @@ endOfDayIST.setHours(0, 0, 0, 0);
 console.log("startOfDayIST", startOfDayIST);
 console.log("endOfDayIST", endOfDayIST);
 console.log("Start of Day (IST):", startOfDayIST.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-console.log("Start of Day (IST):", new Date("2024-04-18T19:01:43.597+00:00").toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
 console.log("End of Day (IST):", endOfDayIST.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
 
 // // Set the start time to 7:00 PM today
