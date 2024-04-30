@@ -1045,10 +1045,6 @@ exports.stack = {
                 {
                   $match: {
                     leval: 0,
-                    createdAt: {
-                      $gte: new Date(startOfDayIST),
-                      $lt: new Date(endOfDayIST)
-                    }
                   }
                 }
               ]
