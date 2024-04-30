@@ -1635,7 +1635,7 @@ exports.stack = {
               },
               ReferandEarn: {
                 $reduce: {
-                  input: "$amount13",
+                  input: "$amount3",
                   initialValue: 0,
                   in: {
                     $add: [
