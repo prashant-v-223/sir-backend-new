@@ -1046,8 +1046,8 @@ exports.stack = {
                   $match: {
                     leval: 0,
                     createdAt: {
-                      $gte: new Date(todayIST),
-                      $lt: new Date(nextDayIST)
+                      $gte: new Date(startOfDayIST),
+                      $lt: new Date(endOfDayIST)
                     }
                   }
                 }
@@ -1165,10 +1165,10 @@ exports.stack = {
                       cond: {
                         $and: [
                           {
-                            $gte: ["$$item.createdAt", new Date(todayIST)],
+                            $gte: ["$$item.createdAt", new Date(startOfDayIST)],
                           },
                           {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
                           },
                         ],
                       },
