@@ -44,6 +44,17 @@ todayIST.setHours(0, 0, 0, 0);
 const nextDayIST = new Date(todayIST);
 nextDayIST.setDate(nextDayIST.getDate() + 1);
 nextDayIST.setHours(0, 0, 0, 0);
+
+
+const nowIST1 = new Date();
+nowIST1.setUTCHours(nowIST1.getUTCHours() + 5, nowIST1.getUTCMinutes(), 0, 0); // Convert to IST
+// Set time to midnight for the current day in IST
+const startOfDayIST = new Date(nowIST1);
+startOfDayIST.setHours(0, 0, 0, 0);
+
+const endOfDayIST = new Date(nowIST1);
+endOfDayIST.setDate(endOfDayIST.getDate() + 1);
+endOfDayIST.setHours(0, 0, 0, 0);
 console.log("ddd", { todayIST, nextDayIST });
 // Initialize Express app
 const app = express();
@@ -589,10 +600,10 @@ schedule.scheduleJob(every24hours1, async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+                    $gte: ["$$ewallate.createdAt", new Date(startOfDayIST)],
                   },
                   {
-                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+                    $lt: ["$$ewallate.createdAt", new Date(endOfDayIST)],
                   },
                   {
                     $ne: [
@@ -720,10 +731,10 @@ schedule.scheduleJob(every24hours1, async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+                    $gte: ["$$ewallate.createdAt", new Date(startOfDayIST)],
                   },
                   {
-                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+                    $lt: ["$$ewallate.createdAt", new Date(endOfDayIST)],
                   },
                   {
                     $ne: [
@@ -851,10 +862,10 @@ schedule.scheduleJob(every24hours1, async () => {
               cond: {
                 $and: [
                   {
-                    $gte: ["$$ewallate.createdAt", new Date(todayIST)],
+                    $gte: ["$$ewallate.createdAt", new Date(startOfDayIST)],
                   },
                   {
-                    $lt: ["$$ewallate.createdAt", new Date(nextDayIST)],
+                    $lt: ["$$ewallate.createdAt", new Date(endOfDayIST)],
                   },
                   {
                     $ne: [
