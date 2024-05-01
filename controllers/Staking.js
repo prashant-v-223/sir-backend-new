@@ -1136,10 +1136,10 @@ exports.stack = {
                       cond: {
                         $and: [
                           {
-                            $gt: ["$$item.createdAt", new Date(todaymy)],
+                            $gt: ["$$item.createdAt", new Date(startOfDayIST)],
                           },
                           {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
                           },
                         ],
                       },
@@ -1160,10 +1160,10 @@ exports.stack = {
                       cond: {
                         $and: [
                           {
-                            $gt: ["$$item.createdAt", new Date(todaymy)],
+                            $gte: ["$$item.createdAt", new Date(startOfDayIST)],
                           },
                           {
-                            $lt: ["$$item.createdAt", new Date(nextDayIST)],
+                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
                           },
                         ],
                       },
