@@ -297,21 +297,22 @@ exports.Withdraw = {
           const withdrawalmodal1 = await withdrawalmodal.find({
             userId: decoded.profile._id,
           });
-          let totalstaking = 0;
-          let totalwithdrawalmodal = 0;
-          console.log(withdrawalmodal1);
-          for (let i = 0; i < StakingData.length; i++) {
-            totalstaking += StakingData[i].Amount * StakingData[i].liveprice / 90;
-          }
-          for (let i = 0; i < withdrawalmodal1.length; i++) {
-            if (withdrawalmodal1[i].Remark === "Sir Income Wallate") {
-              totalwithdrawalmodal += withdrawalmodal1[i].withdrawalAmount;
-            }
-          }
-          console.log({ "totalstaking": totalstaking * SIRprice.price / 90 * 3, "totalwithdrawalmodal": totalwithdrawalmodal });
-          console.log("StakingData", StakingData);
+
           if (StakingData.length > 0) {
             if (req.body.Remark === "Sir Income Wallate") {
+              let totalstaking = 0;
+              let totalwithdrawalmodal = 0;
+              console.log(withdrawalmodal1);
+              for (let i = 0; i < StakingData.length; i++) {
+                totalstaking += StakingData[i].Amount * StakingData[i].liveprice / 90;
+              }
+              for (let i = 0; i < withdrawalmodal1.length; i++) {
+                if (withdrawalmodal1[i].Remark === "Sir Income Wallate") {
+                  totalwithdrawalmodal += withdrawalmodal1[i].withdrawalAmount;
+                }
+              }
+              console.log({ "totalstaking": totalstaking * SIRprice.price / 90 * 3, "totalwithdrawalmodal": totalwithdrawalmodal });
+              console.log("StakingData", StakingData);
               console.log(((totalstaking * 3) / 90) * SIRprice.price);
               console.log(totalwithdrawalmodal + req.body.Amount);
               let cout = totalwithdrawalmodal + req.body.Amount;
@@ -441,9 +442,16 @@ exports.Withdraw = {
                 });
               }
             } else {
+              let totalstaking = 0;
+              let totalwithdrawalmodal = 0;
+              console.log(withdrawalmodal1);
+              for (let i = 0; i < StakingData.length; i++) {
+                totalstaking += StakingData[i].Amount
+              }
               let totalwithdrawalmodal2 = 0
               for (let i = 0; i < withdrawalmodal1.length; i++) {
                 if (withdrawalmodal1[i].Remark === "Sir Wallate") {
+                  totalwithdrawalmodal += withdrawalmodal1[i].withdrawalAmount;
                   totalwithdrawalmodal2 += withdrawalmodal1[i].withdrawalAmount;
                 }
               }
