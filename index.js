@@ -47,7 +47,7 @@ nextDayIST.setHours(0, 0, 0, 0);
 
 
 const nowIST1 = new Date();
-nowIST1.setUTCHours(nowIST1.getUTCHours() - 5, nowIST1.getUTCMinutes(), 0, 0); // Convert to IST
+nowIST1.setUTCHours(nowIST1.getUTCHours() + 5, nowIST1.getUTCMinutes(), 0, 0); // Convert to IST
 // Set time to midnight for the current day in IST
 const startOfDayIST = new Date(nowIST1);
 startOfDayIST.setHours(0, 0, 0, 0);
@@ -172,17 +172,26 @@ schedule.scheduleJob(every24hours, async () => {
 });
 schedule.scheduleJob("0 0 1 * *", async () => {
   try {
-    // Find all documents where Active is true
-    const activeStakings = await Staking.find({ Active: true, TotaldaysTosendReword: 1000 });
+    const today = new Date(); // Get today's date
+    today.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for precise comparison
 
+    // Find all documents where Active is true
+    const activeStakings = await Staking.find({
+      Active: true,
+      Totalsend: 0,
+      createdAt: {
+        $lte: today,
+      }
+    });
+    console.log(activeStakings);
     // Update documents and set Active to false, Removed to true, and reset Totalsend to 0
-    await Promise.all(activeStakings.map(async (staking) => {
-      await Staking.findByIdAndUpdate(staking._id, {
-        Active: false,
-        Removed: true,
-        Totalsend: 0,
-      });
-    }));
+    // await Promise.all(activeStakings.map(async (staking) => {
+    //   await Staking.findByIdAndUpdate(staking._id, {
+    //     Active: false,
+    //     Removed: true,
+    //     Totalsend: 0,
+    //   });
+    // }));
 
     console.log("Monthly check completed successfully.");
   } catch (error) {
@@ -317,7 +326,7 @@ const updateRank = async (user, newRank, rewardAmount, teamtotalstack) => {
   }
 
 };
-schedule.scheduleJob("*/5 * * * *", async () => {
+schedule.scheduleJob("*/5 * * * * ", async () => {
   try {
     const Userdata = await findAllRecord(Usermodal, {});
     for (const user of Userdata) {
