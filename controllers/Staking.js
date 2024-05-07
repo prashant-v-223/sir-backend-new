@@ -1137,10 +1137,7 @@ exports.stack = {
                         $and: [
                           {
                             $gt: ["$$item.createdAt", new Date(startOfDayIST)],
-                          },
-                          {
-                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
-                          },
+                          }
                         ],
                       },
                     },
@@ -1161,9 +1158,6 @@ exports.stack = {
                         $and: [
                           {
                             $gte: ["$$item.createdAt", new Date(startOfDayIST)],
-                          },
-                          {
-                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
                           },
                         ],
                       },
@@ -1697,9 +1691,6 @@ exports.stack = {
                           },
                           {
                             $gt: ["$$item.createdAt", new Date(startOfDayIST)],
-                          },
-                          {
-                            $lt: ["$$item.createdAt", new Date(endOfDayIST)],
                           },
                         ],
                       },
