@@ -54,6 +54,8 @@ exports.profile = {
             refId: 1,
             username: 1,
             leval: 1,
+            mainId: 1,
+            supporterId: 1,
             createdAt: 1,
             mystack: 1,
             teamtotalstack: 1,
