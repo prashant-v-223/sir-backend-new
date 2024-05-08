@@ -117,6 +117,8 @@ exports.profile = {
             refId: 1,
             leval: 1,
             createdAt: 1,
+            mainId: 1,
+            supporterId: 1,
             mystack: 1,
             teamtotalstack: 1,
             cbbteamtotalstack: 1,
