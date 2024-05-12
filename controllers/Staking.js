@@ -163,7 +163,7 @@ const nowIST1 = new Date();
 nowIST1.setUTCHours(nowIST1.getUTCHours() - 11, nowIST1.getUTCMinutes(), 0, 0); // Convert to IST
 // Set time to midnight for the current day in IST
 const startOfDayIST = new Date(nowIST1);
-startOfDayIST.setHours(0, 0, 0, 0);
+startOfDayIST.setHours(1, 0, 0, 0);
 
 const endOfDayIST = new Date(nowIST1);
 endOfDayIST.setDate(endOfDayIST.getDate() + 1);
